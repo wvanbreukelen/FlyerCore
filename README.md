@@ -1,6 +1,8 @@
 FlyerCore
 =========
 
+![travis build status](https://api.travis-ci.org/wvanbreukelen/FlyerCore.svg)
+
 This is the core of the Flyer PHP Framework, if you like, you can contribute.
 
 ### Notes
