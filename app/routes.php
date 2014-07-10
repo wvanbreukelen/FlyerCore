@@ -1,3 +1,0 @@
-<?php
-
-// Your routing file
