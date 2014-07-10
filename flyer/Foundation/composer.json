@@ -1,0 +1,14 @@
+{
+    "name": "kwible/foundation",
+    "description": "The foundation for the Flyer Framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kwible",
+            "email": "kwibleframework@hotmail.com"
+        }
+    ],
+    "require": {
+
+    }
+}

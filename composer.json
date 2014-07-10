@@ -1,0 +1,14 @@
+{
+    "require": {
+        "symfony/http-foundation": "2.4.*",
+        "filp/whoops": "dev-master",
+        "illuminate/database": "4.1.*@dev",
+        "twig/twig": "1.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.1.*"
+    },
+    "autoload": {
+        "classmap": ["app", "flyer"]
+    }
+}

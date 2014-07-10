@@ -1,0 +1,4 @@
+- Create a cache handler
+- Create a filesystem component
+- Construct view magic object, after it has been initialized by the ViewServiceProvider
+- Create blade "look-alike" methods, such as startSection() or yieldSection()
