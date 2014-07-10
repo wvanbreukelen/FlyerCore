@@ -9,6 +9,6 @@
         "phpunit/phpunit": "4.1.*"
     },
     "autoload": {
-        "classmap": ["app", "flyer"]
+        "classmap": ["app", "flyer", "tests"]
     }
 }
