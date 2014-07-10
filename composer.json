@@ -1,4 +1,14 @@
 {
+    "name": "flyer/core",
+    "description": "The Flyer PHP Framework.",
+    "keywords": ["framework", "flyer"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "wvanbreukelen",
+            "email": "alopski@gmail.com"
+        }
+    ],
     "require": {
         "symfony/http-foundation": "2.4.*",
         "filp/whoops": "dev-master",
