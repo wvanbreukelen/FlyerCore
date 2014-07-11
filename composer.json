@@ -19,8 +19,8 @@
         "phpunit/phpunit": "4.1.*"
     },
     "autoload": {
-        "psr-0": {
-            "Flyer": "flyer/"
-        }
+        "classmap": [
+            "flyer/"
+        ]
     }
 }
