@@ -1,7 +1,7 @@
 {
     "name": "flyer/core",
-    "description": "The Flyer PHP Framework.",
-    "keywords": ["framework", "flyer"],
+    "description": "The Flyer Core component.",
+    "keywords": ["framework", "flyer", "core"],
     "license": "MIT",
     "authors": [
         {
