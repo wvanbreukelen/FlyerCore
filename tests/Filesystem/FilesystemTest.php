@@ -30,7 +30,7 @@ class FilesystemTest extends PHPUnit_Framework_TestCase
 		$file = new File;
 		$file->write(__DIR__ . '/file.txt', 'Hello');
 		$file->append(__DIR__ . '/file.txt', ' World');
-		$this->assertEquals('Hello World', file_get_contents(__DIR__ . '/file.txt')));
+		$this->assertEquals('Hello World', file_get_contents(__DIR__ . '/file.txt'));
 		unlink(__DIR__ . '/file.txt');
 	}
 
