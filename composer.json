@@ -17,8 +17,5 @@
     },
     "require-dev": {
         "phpunit/phpunit": "4.1.*"
-    },
-    "autoload": {
-        "classmap": ["app", "flyer", "tests"]
     }
 }
