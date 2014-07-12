@@ -4,7 +4,7 @@ use Flyer\Components\Filesystem\File;
 use Flyer\Components\Filesystem\Folder;
 
 /**
- * Testing the Filesystem component
+ * Testing the Filesystem component using PHPUnit
  */
 
 class FilesystemTest extends PHPUnit_Framework_TestCase
@@ -40,5 +40,23 @@ class FilesystemTest extends PHPUnit_Framework_TestCase
 		$file->write(__DIR__ . '/file.txt', 'Hello World');
 		$this->assertEquals(true, file_exists(__DIR__ . '/file.txt'));
 		unlink(__DIR__ . '/file.txt');
+	}
+
+	public function testMoveFileAndDelete()
+	{
+		$file = new File;
+		$file->write(__DIR__ . '/file.txt');
+		$file->move(__DIR__ . '/file.txt', __DIR__ . '/file2.txt');
+		$this->assertEquals(true, file_exists(__DIR__ . '/file2.txt'));
+		unlink(__DIR__ . '/file2.txt');
+	}
+
+	public function testCreateFolderExistsAndDelete()
+	{
+		$fd = new Folder;
+		$fd->create(__DIR__ . '/TestFolder');
+		$this->assertEquals(true, file_exists(__DIR__ . '/TestFolder'));
+		$fd->delete(__DIR__ . '/TestFolder');
+		$this->assertEquals(false, file_exists(__DIR__ . '/TestFolder'));
 	}
 }
