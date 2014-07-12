@@ -23,11 +23,4 @@ class RegistryTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals('Hello World 2', Registry::get('item'));
 		Registry::delete('item');
 	}
-
-	public function testSetAndGetFullRegistry()
-	{
-		Registry::set('fullregistry', 'Hello World');
-		$this->assertEquals(true, in_array('fullregistry', Registry::registry()));
-		Registry::delete('fullregistry');
-	}
 }
