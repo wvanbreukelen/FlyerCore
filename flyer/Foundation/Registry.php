@@ -67,7 +67,7 @@ class Registry
 		if (self::exists($key)) unset(self::$items[$key]);
 	}
 
-	public function registry()
+	public static function registry()
 	{
 		return self::$items;
 	}
