@@ -61,7 +61,7 @@ class Router
 
 	public function route()
 	{
-		if (in_array($this->request->server->get('REQUEST_METHOD'), $this->methods))
+		if (in_array($this->request, $this->methods))
 		{
 			foreach (self::$routes as $listener => $route)
 			{
@@ -115,6 +115,11 @@ class Router
 
 	public function setRequest(Request $request)
 	{
+		if ($request instanceof Request)
+		{
+			$this->request = $request->server->get('REQUEST_METHOD');
+		}
+
 		$this->request = $request;
 	}
 
