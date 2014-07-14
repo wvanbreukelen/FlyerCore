@@ -131,6 +131,17 @@ class Router
 	}
 
 	/**
+	 * Returns the given request
+	 *
+	 * @return  mixed
+	 */
+	
+	public function getRequest()
+	{
+		return $this->request;
+	}
+
+	/**
 	 * Create a event, by a closure
 	 *
 	 * @var  closure Route
