@@ -116,7 +116,7 @@ class Router
 	{
 		if ($request instanceof Request)
 		{
-			$this->request = array('method' => $request->server->get('REQUEST_METHOD'), 'path' => $request->server->getPathInfo());
+			$this->request = array('method' => $request->server->get('REQUEST_METHOD'), 'path' => $request->getPathInfo());
 			return;
 		}
 
