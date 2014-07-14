@@ -66,7 +66,6 @@ class Router
 			foreach (self::$routes as $listener => $route)
 			{
 				$listener = $this->resolveListener($listener);
-
 				if ($this->request['method'] == $route['method'])
 				{
 					$uri = explode('/', ltrim($this->request['path'], '/'));
