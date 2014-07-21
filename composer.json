@@ -1,7 +1,7 @@
 {
     "name": "flyer/core",
-    "description": "The Flyer PHP Framework.",
-    "keywords": ["framework", "flyer"],
+    "description": "The Flyer Core component.",
+    "keywords": ["framework", "flyer", "core"],
     "license": "MIT",
     "authors": [
         {
@@ -11,11 +11,17 @@
     ],
     "require": {
         "symfony/http-foundation": "2.4.*",
+        "symfony/console": "2.4.*",
         "filp/whoops": "dev-master",
         "illuminate/database": "4.1.*@dev",
         "twig/twig": "1.*"
     },
     "require-dev": {
         "phpunit/phpunit": "4.1.*"
+    },
+    "autoload": {
+        "classmap": [
+            "flyer/"
+        ]
     }
 }

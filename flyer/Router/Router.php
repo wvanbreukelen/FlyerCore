@@ -61,15 +61,14 @@ class Router
 
 	public function route()
 	{
-		if (in_array($this->request->server->get('REQUEST_METHOD'), $this->methods))
+		if (in_array($this->request['method'], $this->methods))
 		{
 			foreach (self::$routes as $listener => $route)
 			{
 				$listener = $this->resolveListener($listener);
-
-				if ($this->request->server->get('REQUEST_METHOD') == $route['method'])
+				if ($this->request['method'] == $route['method'])
 				{
-					$uri = explode('/', ltrim($this->request->getPathInfo(), '/'));
+					$uri = explode('/', ltrim($this->request['path'], '/'));
 
 					if (strtolower($uri[0]) == $listener)
 					{
@@ -110,12 +109,36 @@ class Router
 	/**
 	 * Sets the request, so the router can compare the routes with the current request
 	 *
-	 * @var  object Symfony\Component\HttpFoundation\Request
+	 * @var  mixed
 	 */
 
-	public function setRequest(Request $request)
+	public function setRequest($request)
 	{
-		$this->request = $request;
+		if ($request instanceof Request)
+		{
+			$this->request = array('method' => $request->server->get('REQUEST_METHOD'), 'path' => $request->getPathInfo());
+			return;
+		}
+
+		if (is_array($request))
+		{
+			$this->request = $request;
+			return;
+		}
+
+		throw new Exception("Cannot set request, because the given request is not a instance of a SymfonyRequest or a array!");
+		return false;
+	}
+
+	/**
+	 * Returns the given request
+	 *
+	 * @return  mixed
+	 */
+	
+	public function getRequest()
+	{
+		return $this->request;
 	}
 
 	/**

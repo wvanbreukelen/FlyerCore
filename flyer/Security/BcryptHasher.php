@@ -47,4 +47,18 @@ class BcryptHasher {
 		return password_verify($value, $hashedValue);
 	}
 
+	/**
+	 * Check if the given hash has been hashed using the given options.
+	 *
+	 * @param  string  $hashedValue
+	 * @param  array   $options
+	 * @return bool
+	 */
+	public function needsRehash($hashedValue, array $options = array())
+	{
+		$cost = isset($options['rounds']) ? $options['rounds'] : $this->rounds;
+
+		return password_needs_rehash($hashedValue, PASSWORD_BCRYPT, array('cost' => $cost));
+	}
+
 }
