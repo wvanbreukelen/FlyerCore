@@ -1,6 +1,6 @@
 <?php
 
-use Flyer\Foundation\App;
+use Flyer\App;
 use Flyer\Foundation\Config;
 use Flyer\Foundation\Registry;
 
