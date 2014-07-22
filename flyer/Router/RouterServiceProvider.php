@@ -4,6 +4,7 @@ namespace Flyer\Components\Router;
 
 use Flyer\Foundation\ServiceProvider;
 use Flyer\Foundation\Events\Events;
+use Flyer\Foundation\Config;
 use Symfony\Component\HttpFoundation\Request;
 
 class RouterServiceProvider extends ServiceProvider
@@ -20,7 +21,7 @@ class RouterServiceProvider extends ServiceProvider
 	{
 		$this->router = new Router();
 
-		$this->router->setRequest(Request::createFromGlobals());
+		$this->router->setRequest(explode(Config::get('basePath'), Request::createFromGlobals())[1]);
 
 		$this->share('route', new Route());
 	}	
