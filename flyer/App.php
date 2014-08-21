@@ -318,12 +318,7 @@ class App extends Container
 	{
 		unset($this->providers);
 	}
-
-	public function setRequestForConsoleEnvironment()
-	{
-		
-	}
-
+	
 	/**
 	 * Returns the application booting status
 	 *
