@@ -20,8 +20,8 @@ class RouterServiceProvider extends ServiceProvider
 	public function register()
 	{
 		$this->router = new Router();
-
-		$this->router->setRequest(explode(Config::get('basePath'), Request::createFromGlobals())[1]);
+		
+		$this->router->setRequest(Request::createFromGlobals());
 
 		$this->share('route', new Route());
 	}	
