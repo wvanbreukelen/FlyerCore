@@ -10,12 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 class RouterServiceProvider extends ServiceProvider
 {
 
-	private $router;
-
-	public function boot()
-	{
-		$this->router->route();
-	}
+	protected $router;
 
 	public function register()
 	{
@@ -25,4 +20,9 @@ class RouterServiceProvider extends ServiceProvider
 
 		$this->share('route', new Route());
 	}	
+
+	public function boot()
+	{
+		$this->router->route();
+	}
 }

@@ -3,6 +3,7 @@
 namespace Flyer\Components\Router;
 
 use Closure;
+use Exception;
 use Flyer\Foundation\Registry;
 use Symfony\Component\HttpFoundation\Request;
 use Flyer\Components\Http;
@@ -102,7 +103,7 @@ class Router
 		} else if (is_string($route)) {
 			$this->handleString($route);
 		} else {
-			throw new \Exception("Router: Cannot determain variable type of route");
+			throw new Exception("Cannot determain variable type of route");
 		}
 	}
 	
@@ -173,8 +174,6 @@ class Router
 			'title' => 'application.route',
 			'event' => function () {
 				$action = Registry::get('application.controller.path');
-
-				require(APP . 'controllers' . DS . $action['controller'] . '.php');
 
 				$route = new $action['controller'];
 				return $route->$action['method']();
