@@ -12,7 +12,6 @@
     "require": {
         "symfony/http-foundation": "2.4.*",
         "symfony/console": "2.4.*",
-        "wvanbreukelen/commandr": "dev-master",
         "filp/whoops": "dev-master",
         "illuminate/database": "4.1.*@dev",
         "twig/twig": "1.*"
