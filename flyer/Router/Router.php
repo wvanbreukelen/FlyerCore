@@ -55,6 +55,17 @@ class Router
 	}
 
 	/**
+	 * Returns all routes that where binded to the router
+	 *
+	 * @return array
+	 */
+
+	public static function getRoutes()
+	{
+		return self::$routes;
+	}
+
+	/**
 	 * Resolve the route of the given request
 	 *
 	 * @return  void
@@ -67,10 +78,10 @@ class Router
 			foreach (self::$routes as $listener => $route)
 			{
 				$listener = $this->resolveListener($listener);
+				$uri = explode('/', ltrim($this->request['path'], '/'));
+				
 				if ($this->request['method'] == $route['method'])
 				{
-					$uri = explode('/', ltrim($this->request['path'], '/'));
-
 					if (strtolower($uri[0]) == $listener)
 					{
 						$this->generateRouteEvent($route['route']);
