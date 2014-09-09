@@ -48,9 +48,9 @@ class SimulateRouteCommand extends Command
 
 		if (strtolower($route['method']) != strtolower($method))
 		{
-			//$this->output->error("Cannot simulate " . $this->getArgument("route") . ", because it does not matches with the request method");
+			$this->output->error("Cannot simulate " . $this->getArgument("route") . ", because it does not matches with the request method");
 
-			//return;
+			return;
 		}
 
 		$router->generateRouteEvent($route['route']);
