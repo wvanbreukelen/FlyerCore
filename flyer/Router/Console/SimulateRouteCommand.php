@@ -5,6 +5,7 @@ namespace Flyer\Components\Router\Console;
 use Commandr\Core\Command;
 use Flyer\Components\Router\Router;
 use Flyer\Foundation\Events\Events;
+use ReflectionClass;
 
 class SimulateRouteCommand extends Command
 {
@@ -57,17 +58,32 @@ class SimulateRouteCommand extends Command
 		$output = Events::trigger('application.route');
 
 		$this->output->writeln();
-		$this->output->success("Route Simulation");
+		$this->output->success("Route Simulation...");
 		$this->output->writeln();
 		$this->output->writeln();
 
 		$this->output->writeln("Simulated route: " . $this->getArgument("route"));
 		$this->output->writeln();
 
-		$this->output->writeln("Route: ");
-		$this->output->writeln("    [method] => " . $route['method']);
-		$this->output->writeln("    [route] => " . $route['route']);
-		$this->output->writeln();
+		if (strpos($route['route'], '@') !== false)
+		{
+			$controller = explode('@', $route['route'])[0];
+			$method = explode('@', $route['route'])[1];
+
+			$reflector = new ReflectionClass($controller);
+			$controllerLoc = explode(ROOT, $reflector->getFileName())[1];
+
+			$this->output->writeln("Route: ");
+			$this->output->success("    [http] => " . $route['method']);
+			$this->output->success("    [controller] => " . $controller);
+			$this->output->success("    [controllerLocation] => " . $controllerLoc);
+			$this->output->success("    [method] => " . $method);
+			$this->output->writeln();
+		} else {
+			$this->output->writeln("Route: ");
+			$this->output->writeln("    [http] => " . $route['method']);
+			$this->output->writeln();
+		}
 
 		$this->output->writeln("Output: ");
 		$this->output->writeln();
