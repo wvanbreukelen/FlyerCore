@@ -3,6 +3,8 @@
 namespace Flyer\Components\Router\Console;
 
 use Commandr\Core\Command;
+use Flyer\Components\Router\Router;
+use Flyer\Foundation\Events\Events;
 
 class SimulateRouteCommand extends Command
 {
@@ -10,12 +12,66 @@ class SimulateRouteCommand extends Command
 
 	public function prepare()
 	{
+
+		$this->setConfig(
+			array("arguments" => array("route", "method")
+		));
+
 		$this->setDescription("With this command you can simulate your routes very easy.");
 		$this->setSummary("Simulate a http route");
 	}
 
 	public function action()
 	{
-		$this->output->writeln("Hello World!");
+		$route = $this->getArgument("route");
+		$method = $this->getArgument("method");
+
+		$routes = Router::getRoutes();
+		$router = new Router;
+
+		// Resolve the listener
+		foreach ($routes as $id => $action)
+		{
+			if (explode('.?.', $id)[0] == $route)
+			{
+				$route = $routes[$id];
+			}
+		}
+
+		if (!is_array($route))
+		{
+			$this->output->error("Cannot simulate " . $this->getArgument("route") . ", because it does not exists!");
+
+			return;
+		}
+
+		if (strtolower($route['method']) != strtolower($method))
+		{
+			//$this->output->error("Cannot simulate " . $this->getArgument("route") . ", because it does not matches with the request method");
+
+			//return;
+		}
+
+		$router->generateRouteEvent($route['route']);
+
+		$output = Events::trigger('application.route');
+
+		$this->output->writeln();
+		$this->output->success("Route Simulation");
+		$this->output->writeln();
+		$this->output->writeln();
+
+		$this->output->writeln("Simulated route: " . $this->getArgument("route"));
+		$this->output->writeln();
+
+		$this->output->writeln("Route: ");
+		$this->output->writeln("    [method] => " . $route['method']);
+		$this->output->writeln("    [route] => " . $route['route']);
+		$this->output->writeln();
+
+		$this->output->writeln("Output: ");
+		$this->output->writeln();
+		$this->output->info($output);
+
 	}
 }
