@@ -13,6 +13,14 @@ class BcryptHasher {
 	 */
 	protected $rounds = 10;
 
+	public function __construct()
+	{
+		if (phpversion() < "5.50")
+		{
+			throw new RuntimeException("This PHP version does not support Bcrypt based hashing, please update to PHP 5 of higher");
+		}
+	}
+
 	/**
 	 * Hash the given value.
 	 *
