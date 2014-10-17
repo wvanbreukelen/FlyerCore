@@ -43,7 +43,7 @@ class ViewEngine
 
 		if (is_null($id))
 		{
-			return $this->render($view . '.php', $values);
+			return $this->renderTwig($view . '.php', $values);
 		}
 
 		return $this->compiler->compile($id, $view, $values);
@@ -70,7 +70,7 @@ class ViewEngine
 	 * @param  mix [varname] [description]
 	 */
 
-	private function render($view, $values)
+	private function renderTwig($view, $values)
 	{
 		return $this->twig->render($view);
 	}
