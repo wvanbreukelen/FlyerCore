@@ -22,7 +22,7 @@ class File
 	/**
 	 * Get the contents of a file
 	 * 
-	 * @var  $path The path
+	 * @var  $path The path of the file 
 	 * @return    bool
 	 */
 
@@ -34,7 +34,7 @@ class File
 	/**
 	 * Write some content to a specified file
 	 * 
-	 * 
+	 * @var  $path  The path of the file 
 	 */
 
 	public function write($path, $data = null)
@@ -44,6 +44,9 @@ class File
 	
 	/**
 	 * Append some content to a specified file
+	 *
+	 * @var  $path  The path of the file
+	 * @var  $data  Data to append to the file
 	 */
 
 	public function append($path, $data)
@@ -57,7 +60,9 @@ class File
 	}
 	
 	/**
-	 * Delete a file
+	 * Deletes a file
+	 *
+	 * @var  $path  The path of the file 
 	 */
 
 	public function delete($path)
@@ -67,6 +72,9 @@ class File
 	
 	/**
 	 * Move a file from a specified directory to another directory
+	 *
+	 * @var  $path  The path of the file
+	 * @var  $target The new target of the file
 	 */
 
 	public function move($path, $target)
@@ -76,6 +84,8 @@ class File
 	
 	/**
 	 * Check the extension of a file
+	 *
+	 * @var  $path  The path of the file
 	 */
 
 	public function extension($path)
@@ -89,6 +99,8 @@ class File
 	
 	/**
 	 * Get filesize of a file
+	 *
+	 * @var  $path  The path of the file
 	 */
 
 	public function size($path)
@@ -98,6 +110,9 @@ class File
 	
 	/**
 	 * Get the file last modified date
+	 *
+	 * @var  $path  The path of the file
+	 * @var  $path  The time format
 	 */
 
 	public function lastModified($path, $format = 'timestamp')
@@ -107,14 +122,20 @@ class File
 			if ($format == 'timestamp')
 			{
 				return filemtime($path);
-			} else {
+			} else if ($format == 'date') {
 				return date(filemtime($path));
+			} else {
+				throw new Exception("Cannot get last modified date, because this format does not exists");
+
+				return filemtime($path);
 			}
 		}
 	}
 	
 	/**
-	 * Check if a path matches a file
+	 * Check if a path is a file
+	 *
+	 * @var  $path  The path of the file
 	 */
 
 	public function is($path)
