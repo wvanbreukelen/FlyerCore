@@ -7,6 +7,8 @@ use Flyer\Foundation\ServiceProvider;
 use Flyer\Components\View\ViewEngine;
 use Flyer\Components\View\Compiler\ViewCompiler;
 use Flyer\Components\View;
+use Twig_Environment;
+use Twig_Loader_Filesystem;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -16,7 +18,7 @@ class ViewServiceProvider extends ServiceProvider
 
 	public function register()
 	{
-		$this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(APP . 'views' . DS), array(
+		$this->twig = new Twig_Environment(new Twig_Loader_Filesystem(APP . 'views' . DS), array(
 			'cache' => APP . 'storage' . DS . 'cache' . DS,
 			'auto_reload' => true
 		));
