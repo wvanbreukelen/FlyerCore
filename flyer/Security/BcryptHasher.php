@@ -2,6 +2,8 @@
 
 namespace Flyer\Components\Security;
 
+use RuntimeException;
+
 class BcryptHasher {
 
 	/**
@@ -28,7 +30,7 @@ class BcryptHasher {
 
 		if ($hash === false)
 		{
-			throw new \RuntimeException("Bcrypt hashing not supported.");
+			throw new RuntimeException("Bcrypt hashing not supported.");
 		}
 
 		return $hash;
