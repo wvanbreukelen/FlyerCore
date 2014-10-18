@@ -15,7 +15,7 @@ class Randomiser implements RandomiserInterface
 		return substr(str_shuffle($allowedChars), 0, $length);
 	}
 
-	public function randomInteger($min, $max)
+	public function randomInteger($min, $max, $length)
 	{
 		if (is_null($min) && is_null($max))
 		{
@@ -24,7 +24,9 @@ class Randomiser implements RandomiserInterface
 
 		if (is_int($min) && is_int($max))
 		{
-			return rand($min, $max);
+			$rand = rand($min, $max);
+
+			return (is_null($length)) ? $rand : substr($rand, 0, 0 - $length);
 		}
 		
 		throw new Exception("Cannot create a random integer with minimum of " . $min . " and maximum of " . $max);
