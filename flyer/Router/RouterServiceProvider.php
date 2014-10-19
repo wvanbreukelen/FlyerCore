@@ -19,7 +19,6 @@ class RouterServiceProvider extends ServiceProvider
 		$this->router->setRequest(Request::createFromGlobals());
 
 		$this->share('route', new Route());
-
 	}	
 
 	public function boot()
