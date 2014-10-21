@@ -48,6 +48,9 @@ class Router
 	public static function addRoute($method, $listener, $route)
 	{
 		$salt = rand(0, 999999);
+		
+		$listener = ltrim($listener, '/');
+
 		self::$routes[$listener . '.?.' . $salt] = array(
 			'method' => $method,
 			'route' => $route
@@ -154,7 +157,7 @@ class Router
 	}
 
 	/**
-	 * Create a event, by a closure
+	 * Create an routing event, by a closure
 	 *
 	 * @var  closure Route
 	 * 
@@ -170,7 +173,7 @@ class Router
 	}
 
 	/**
-	 * Create a event, by a string
+	 * Create an routing event, by a string
 	 *
 	 * @var  string Route
 	 *
@@ -205,7 +208,7 @@ class Router
 	}
 
 	/**
-	 * Resolve the controller of a given route
+	 * Resolve the controller and method of a given route
 	 *
 	 * @var  array Route
 	 *
