@@ -8,7 +8,6 @@ use Flyer\Foundation\ServiceProvider;
 use Flyer\Foundation\Events\Events;
 use Flyer\Foundation\Config\Config;
 use Flyer\Foundation\AliasLoader;
-
 use Flyer\Components\Security\BcryptHasher;
 
 /**
@@ -180,19 +179,11 @@ class App extends Container
 	 * @param array The classes
 	 */
 
-	public function createAliases(array $options = array(), $facade = true)
+	public function createAliases(array $options = array())
 	{
-		if ($facade)
+		foreach ($options as $alias => $class)
 		{
-			foreach ($options as $alias => $class)
-			{
-				AliasLoader::create($class, $alias);
-			}
-		} else {
-			foreach ($options as $alias => $class)
-			{
-				AliasLoader::create($class, $alias);
-			}
+			class_alias($class, $alias);
 		}
 	}
 	
