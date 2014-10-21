@@ -43,12 +43,6 @@ class App extends Container
 	protected $bootedProviders = array();
 
 	/**
-	 * The facade prefix
-	 */
-	
-	protected $facadePrefix = '';
-
-	/**
 	 * Holds the current booting status of the application
 	 */
 
@@ -261,7 +255,7 @@ class App extends Container
 	{
 		if (class_exists($class))
 		{
-			$this[$this->facadePrefix . $alias] = new $class;
+			$this[$alias] = new $class;
 		}
 	}
 
