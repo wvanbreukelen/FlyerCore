@@ -7,7 +7,7 @@ class Facade
 	/**
 	 * The application instance being facaded
 	 *
-	 * @var  \Flyer\Foundation\app
+	 * @var  Flyer\App
 	 */
 	
 	protected static $app;

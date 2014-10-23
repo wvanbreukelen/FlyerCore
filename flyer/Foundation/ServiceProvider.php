@@ -17,7 +17,7 @@ abstract class ServiceProvider
 
 	public function package($package, $namespace = null, $path = null)
 	{
-		$namespace = $this->resolvePackageNamespace($package, $namespace);
+		//$namespace = $this->resolvePackageNamespace($package, $namespace);
 
 		$path = $path ?: $this->guessPackagePath();
 

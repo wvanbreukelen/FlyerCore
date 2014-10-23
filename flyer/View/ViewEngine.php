@@ -14,6 +14,8 @@ class ViewEngine
 
 	protected $app;
 
+	protected $compiler;
+
 	/**
 	 * Construct a new ViewEngine instance, expects a twig instance and a compiler
 	 *

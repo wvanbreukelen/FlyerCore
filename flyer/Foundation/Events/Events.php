@@ -2,6 +2,8 @@
 
 namespace Flyer\Foundation\Events;
 
+use Closure;
+
 class Events
 {
 
