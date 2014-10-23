@@ -2,6 +2,8 @@
 
 namespace Flyer\Components\View\Compiler;
 
+use File;
+
 class ViewCompiler
 {
 
@@ -23,12 +25,14 @@ class ViewCompiler
 	 * Compile a view using a given view compiler
 	 *
 	 * @param  string The ID of the view compiler
-	 * @param  string The view to be compiled
+	 * @param  string The view path that will be compiled
 	 * @param  mixed The value that will be passed to the view compiler
 	 */
 
-	public function compile($id, $view, $values)
+	public function compile($id, $path, $view, $values)
 	{
+		$contents = $this->resolveViewContents($path);
+
 		if (is_null($values))
 		{
 			$values = array();
@@ -36,9 +40,14 @@ class ViewCompiler
 
 		if (isset($this->compilers[$id]))
 		{
-			return $this->compilers[$id]->compile($view, $values);
+			return $this->compilers[$id]->compile($contents, $view, $values);
 		}
 
 		throw new Exception("ViewCompiler: Compiler " . $id . " does not exists!");
+	}
+
+	protected function resolveViewContents($path)
+	{
+		return File::contents($path);
 	}
 }
