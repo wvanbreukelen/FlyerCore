@@ -8,5 +8,5 @@ namespace Flyer\Components\View\Compiler;
 
 abstract class Compiler
 {
-	abstract public function compile($view);
+	abstract public function compile($contents, $view);
 }
