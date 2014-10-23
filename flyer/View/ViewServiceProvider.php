@@ -5,6 +5,7 @@ namespace Flyer\Components\View;
 use Flyer\Foundation\Registry;
 use Flyer\Foundation\ServiceProvider;
 use Flyer\Components\View\ViewEngine;
+use Flyer\Components\View\ViewFinder;
 use Flyer\Components\View\Compiler\ViewCompiler;
 use Flyer\Components\View;
 use Twig_Environment;
@@ -15,6 +16,7 @@ class ViewServiceProvider extends ServiceProvider
 
 	protected $twig;
 	protected $engine;
+	protected $viewFinder;
 
 	public function register()
 	{
@@ -24,8 +26,14 @@ class ViewServiceProvider extends ServiceProvider
 		));
 		
 		$this->share('application.view.compiler', new ViewCompiler());
-		$this->share('application.view.engine', new ViewEngine($this->twig, $this->app()['application.view.compiler']));
+		$this->share('application.view.engine', new ViewEngine($this->twig, $this->app(), $this->app()['application.view.compiler']));
+		$this->share('application.view.finder', new ViewFinder());
 		
 		$this->share('view', new View($this->app()['application.view.engine']));
+	}
+
+	public function boot()
+	{
+		$this->app()->access('application.view.finder')->addViewsPath(APP . 'views' . DS);
 	}
 }
