@@ -13,5 +13,7 @@ class RandomServiceProvider extends ServiceProvider
 		$random = new Random(new Randomiser);
 
 		$this->share('random', $random);
+
+		$this->package('flyer/random');
 	}
 }
