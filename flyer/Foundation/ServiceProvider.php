@@ -62,7 +62,7 @@ abstract class ServiceProvider
 		return realpath(dirname($path . '/../../'));
 	}
 
-	protected function resolvePackageNamespace($package, $namespace)
+	/**protected function resolvePackageNamespace($package, $namespace)
 	{
 		if (is_null($namespace))
 		{
@@ -70,7 +70,7 @@ abstract class ServiceProvider
 		}
 
 		return $vendor;
-	}
+	}**/
 
 	/**
 	 * Sets the application instance
