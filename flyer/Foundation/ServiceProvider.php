@@ -4,10 +4,12 @@ namespace Flyer\Foundation;
 
 use Flyer\App;
 
+use ReflectionClass;
+
 abstract class ServiceProvider
 {	
 
-	public static $app;
+	protected static $app;
 
 	public function boot() {}
 
@@ -15,8 +17,18 @@ abstract class ServiceProvider
 
 	public function package($package, $namespace = null, $path = null)
 	{
+		$namespace = $this->resolvePackageNamespace($package, $namespace);
+
+		$path = $path ?: $this->guessPackagePath();
+
 		// Processing views
+
+		$views = $path . '/views';
 		
+		if ($this->app()['folder']->is($views))
+		{
+			
+		}
 
 		// Processing routes
 		
@@ -25,18 +37,6 @@ abstract class ServiceProvider
 		
 		
 		// Processing controllers
-	}
-
-	/**
-	 * Sets the application instance
-	 *
-	 * @param  \App $app The application
-	 * @return  void
-	 */
-
-	public static function setApp(App $app)
-	{
-		self::$app = $app;
 	}
 
 	public function share($id, $value = null)
@@ -53,5 +53,34 @@ abstract class ServiceProvider
 	public function app()
 	{
 		return self::$app;
+	}
+
+	protected function guessPackagePath()
+	{
+		$path = (new ReflectionClass($this))->getFileName();
+
+		return realpath(dirname($path . '/../../'));
+	}
+
+	protected function resolvePackageNamespace($package, $namespace)
+	{
+		if (is_null($namespace))
+		{
+			list($vendor, $namespace) = explode('/', $package);
+		}
+
+		return $namespace;
+	}
+
+	/**
+	 * Sets the application instance
+	 *
+	 * @param  \App $app The application
+	 * @return  void
+	 */
+
+	public static function setApp(App $app)
+	{
+		self::$app = $app;
 	}
 }
