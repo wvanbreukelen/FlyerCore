@@ -28,7 +28,5 @@ class DatabaseServiceProvider extends ServiceProvider
 	public function boot()
 	{
 		$this->share('application.db', $this->driver);
-
-		$this->app()->database()->table('users')->get();
 	}
 }

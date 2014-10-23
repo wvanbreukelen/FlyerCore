@@ -135,13 +135,15 @@ class File
 			if ($format == 'timestamp')
 			{
 				return filemtime($path);
-			} else if ($format == 'date') {
-				return date(filemtime($path));
-			} else {
-				throw new Exception("Cannot get last modified date, because this format does not exists");
-
-				return filemtime($path);
 			}
+
+			if ($format == 'date') 
+			{
+				return date(filemtime($path));
+			}
+
+			throw new Exception("Cannot get last modified date, because this format does not exists");
+			return filemtime($path);
 		}
 	}
 	

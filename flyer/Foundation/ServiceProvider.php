@@ -69,7 +69,7 @@ abstract class ServiceProvider
 			list($vendor, $namespace) = explode('/', $package);
 		}
 
-		return $namespace;
+		return $vendor;
 	}
 
 	/**

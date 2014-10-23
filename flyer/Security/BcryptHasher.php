@@ -52,7 +52,7 @@ class BcryptHasher {
 	 * @param  array   $options
 	 * @return bool
 	 */
-	public function check($value, $hashedValue, array $options = array())
+	public function check($value, $hashedValue)
 	{	
 		return password_verify($value, $hashedValue);
 	}

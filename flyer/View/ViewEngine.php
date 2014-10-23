@@ -49,7 +49,7 @@ class ViewEngine
 
 		if (is_null($id))
 		{
-			return $this->renderTwig($this->resolveViewPath($view), $values);
+			return $this->renderTwig($this->resolveViewPath($view));
 		}
 
 		return $this->compiler->compile($id, $view, $values);
@@ -81,7 +81,7 @@ class ViewEngine
 	 * @param  mix [varname] [description]
 	 */
 
-	private function renderTwig($path, $values)
+	private function renderTwig($path)
 	{
 		return $this->twig->render($path);
 	}

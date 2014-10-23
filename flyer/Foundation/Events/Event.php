@@ -19,12 +19,12 @@ class Event
 		$this->event = $event;
 	}
 
-	public function getTitle($title)
+	public function getTitle()
 	{
 		return $this->title;
 	}
 
-	public function getEvent($event)
+	public function getEvent()
 	{
 		return $this->event;
 	}

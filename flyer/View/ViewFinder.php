@@ -37,7 +37,7 @@ class ViewFinder
 		}
 	}
 
-	public function getViewPath($view, $suffix = 'blade.php')
+	public function getViewPath($view)
 	{
 		if (isset($this->views[$view]))
 		{
