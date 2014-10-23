@@ -28,7 +28,7 @@ class File
 
 	public function contents($path)
 	{
-		if ($this->exists($path)) return file_get_contents($path);
+		return ($this->exists($path)) ? file_get_contents($path) : false;
 	}
 	
 	/**
@@ -92,8 +92,21 @@ class File
 	{
 		if ($this->exists($path))
 		{
-			$split = explode('.', $path);
-			return $split[0];	
+			return pathinfo($path, PATHINFO_EXTENSION);
+		}
+	}
+
+	/**
+	 * Get the filename of a path
+	 *
+	 * @var  $path The path of the file
+	 */
+
+	public function filename($path, $suffix = null)
+	{
+		if ($this->exists($path))
+		{
+			return (is_null($suffix)) ? basename($path) : basename($path, $suffix);
 		}
 	}
 	

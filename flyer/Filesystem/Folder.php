@@ -95,6 +95,28 @@ class Folder
 		}
 	}
 
+	public function listFiles($path)
+	{
+		$list = array();
+
+		if ($this->exists($path))
+		{
+			$scan = array_diff(scandir($path), array('..', '.'));
+
+			foreach ($scan as $key => $filePos)
+			{
+				$optPath = $path . $filePos;
+
+				if (\File::is($optPath))
+				{
+					$list[] = $optPath;
+				}
+			}
+		}
+
+		return $list;
+	}
+
 	public function is($path)
 	{
 		if ($this->exists($path)) return is_dir($path);
