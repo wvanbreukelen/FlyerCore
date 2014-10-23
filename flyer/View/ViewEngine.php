@@ -5,11 +5,14 @@ namespace Flyer\Components\View;
 use Twig_Environment;
 use Flyer\Foundation\Registry;
 use Flyer\Foundation\Config\Config;
+use Flyer\App;
 
 class ViewEngine
 {
 
 	protected $twig;
+
+	protected $app;
 
 	/**
 	 * Construct a new ViewEngine instance, expects a twig instance and a compiler
@@ -18,9 +21,10 @@ class ViewEngine
 	 * @param object Our own created compiler
 	 */
 
-	public function __construct(Twig_Environment $twig, $compiler)
+	public function __construct(Twig_Environment $twig, App $app, $compiler)
 	{
 		$this->twig = $twig;
+		$this->app = $app;
 		$this->compiler = $compiler;
 	}
 
@@ -37,30 +41,35 @@ class ViewEngine
 	public function compile($view, $values, $id)
 	{
 		if (Config::exists('defaultViewCompiler') && is_null($id))
-		{
-			return $this->renderDefault($view, $values);
+		{	
+			return $this->renderDefault($this->resolveViewPath($view), $view, $values);
 		}
 
 		if (is_null($id))
 		{
-			return $this->renderTwig($view . '.php', $values);
+			return $this->renderTwig($this->resolveViewPath($view), $values);
 		}
 
 		return $this->compiler->compile($id, $view, $values);
 	}
 
+	protected function resolveViewPath($view)
+	{
+		return $this->app->access('application.view.finder')->getViewPath($view);
+	}
+
 	/**
 	 * Render using the default view compiler
 	 *
-	 * @param  string The view to be compiled
+	 * @param  string The view path that will be compiled
 	 * @param  mixed The values that have to be passed to the view compiler
 	 *
 	 * @return  string 
 	 */
 
-	private function renderDefault($view, $values)
+	private function renderDefault($path, $view, $values)
 	{
-		return $this->compiler->compile(Config::get('defaultViewCompiler'), $view, $values);
+		return $this->compiler->compile(Config::get('defaultViewCompiler'), $path, $view, $values);
 	}
 
 	/**
@@ -70,9 +79,9 @@ class ViewEngine
 	 * @param  mix [varname] [description]
 	 */
 
-	private function renderTwig($view, $values)
+	private function renderTwig($path, $values)
 	{
-		return $this->twig->render($view);
+		return $this->twig->render($path);
 	}
 
 }	
