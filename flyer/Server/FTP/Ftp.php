@@ -8,7 +8,7 @@ use Flyer\Components\Server\FTP\Client;
 
 class Ftp
 {
-	protected $client;
+	public $client;
 
 	private $connection;
 

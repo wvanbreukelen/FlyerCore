@@ -1,6 +1,6 @@
 <?php
 
-namespace Flyer\Components\Server\Ftp\Exceptions;
+namespace Flyer\Components\Server\FTP\Exceptions;
 
 use Exception;
 

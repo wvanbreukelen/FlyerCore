@@ -1,8 +1,8 @@
 <?php
 
-namespace Flyer\Components\Server\Ftp;
+namespace Flyer\Components\Server\FTP;
 
-use Exceptions\FtpTransportException;
+use Flyer\Components\Server\FTP\Exceptions\FtpTransportException;
 use Exception;
 use Folder;
 use File;

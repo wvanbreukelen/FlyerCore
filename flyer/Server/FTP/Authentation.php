@@ -1,6 +1,6 @@
 <?php
 
-namespace Flyer\Components\Server\Ftp;
+namespace Flyer\Components\Server\FTP;
 
 class Authentation
 {

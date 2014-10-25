@@ -1,11 +1,13 @@
 <?php
 
-namespace Flyer\Components\Server\Ftp;
+namespace Flyer\Components\Server\FTP;
 
-use Exceptions\FtpConnectionException;
+use Flyer\Components\Server\FTP\Exceptions\FtpConnectionException;
 
 class Connector
 {
+
+	public $connector;
 
 	protected $auth;
 
