@@ -15,6 +15,12 @@ class Connector
 
 	protected $port;
 
+	/**
+	 * Initialise the connector
+	 * @param Authentation $auth   The authentation instance
+	 * @param string       $server The server host to connect with
+	 * @param integer      $port   Server host port number
+	 */
 	public function __construct(Authentation $auth, $server, $port = 21)
 	{
 		if (!$this->FtpExtensionExists())
@@ -27,6 +33,12 @@ class Connector
 		$this->auth = $auth;
 	}
 
+	/**
+	 * Connect to the FTP server
+	 * @param  integer $timeout Timeout
+	 * @param  boolean $ssl     Using SSL
+	 * @return object           The new connector
+	 */
 	public function connect($timeout = 10, $ssl = false)
 	{
 		if ($ssl)
@@ -54,11 +66,19 @@ class Connector
 		return $this->connector;
 	}
 
+	/**
+	 * Disconnect from the FTP server
+	 * @return mixed
+	 */
 	public function disconnect()
 	{
 		ftp_close($this->connector);
 	}
 
+	/**
+	 * Check if the FTP Extension has been loaded in php
+	 * @return  mixed
+	 */
 	protected function FtpExtensionExists()
 	{
 		return extension_loaded('ftp');
