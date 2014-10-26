@@ -8,7 +8,7 @@ use Flyer\Components\Server\FTP\Client;
 
 class Ftp extends Client
 {
-	public function connect($server, $user, $password, $port = 21, $ssl = false)
+	public function connect($server, $user, $password, $port = 21, $ssl = false, $timeout = 10)
 	{
 		$ftpauth = new Authentation();
 
@@ -16,7 +16,7 @@ class Ftp extends Client
 		$ftpauth->setPassword($password);
 
 		$this->connector = new Connector($ftpauth, $server, $port);
-		$this->connector->connect();
+		$this->connector->connect($timeout, $ssl);
 
 		$this->setConnector($this->connector);
 	}
@@ -24,11 +24,6 @@ class Ftp extends Client
 	public function disconnect()
 	{
 		$this->destroyConnection();
-	}
-
-	public function getClient()
-	{
-		return $this->client;
 	}
 
 	private function destroyConnection()

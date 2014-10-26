@@ -259,7 +259,7 @@ class Client
 
 	/**
 	 * Format a list provied by the ftp_rawlist function
-	 * @param  string $buffer The buffer
+	 * @param  array $buffer The buffer
 	 * @return array         The formatted list
 	 */
 	protected function formatList($buffer)
