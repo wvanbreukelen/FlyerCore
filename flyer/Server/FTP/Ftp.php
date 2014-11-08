@@ -19,6 +19,8 @@ class Ftp extends Client
 		$this->connector->connect($timeout, $ssl);
 
 		$this->setConnector($this->connector);
+
+		return true;
 	}
 
 	public function disconnect()
@@ -28,9 +30,16 @@ class Ftp extends Client
 
 	private function destroyConnection()
 	{
-		$this->connector->disconnect();
+		if (is_object($this->connector))
+		{
+			$this->connector->disconnect();
 
-		unset($this->client);
-		unset($this->connector);
+			unset($this->client);
+			unset($this->connector);
+
+			return true;
+		}
+
+		return false;
 	}
 }
