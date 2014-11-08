@@ -12,5 +12,6 @@ class ServerServiceProvider extends ServiceProvider
 	{
 		$this->share('server.ftp', new Ftp());
 		$this->share('server.ssh', new Ssh());
+		$this->share('server.socket', new Socket());
 	}
 }
