@@ -15,7 +15,7 @@
         "filp/whoops": "dev-master",
         "illuminate/database": "4.1.*@dev",
         "twig/twig": "1.*",
-        "cboden/ratchet": "0.3.2",
+        "cboden/ratchet": "0.3.2"
     },
     "require-dev": {
         "phpunit/phpunit": "4.1.*"
