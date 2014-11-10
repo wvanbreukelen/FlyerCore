@@ -12,8 +12,6 @@ class ConfigServiceProvider extends ServiceProvider
 
 	public function register()
 	{
-		$this->config = new Config();
-
-		$this->share('config', $this->config);
+		
 	}
 }
