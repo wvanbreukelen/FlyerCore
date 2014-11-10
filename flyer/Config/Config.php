@@ -1,8 +1,8 @@
 <?php
 
-namespace Flyer\Foundation\Config;
+namespace Flyer\Components;
 
-use Flyer\Foundation\Config\ConfigNotFoundException;
+use Flyer\Components\Config\ConfigNotFoundException;
 use Exception;
 
 class Config
@@ -22,7 +22,7 @@ class Config
                     
     }
 
-    public static function get($resource)
+    public function get($resource)
     {
             foreach (self::$resources as $configCollection)
             {
@@ -43,7 +43,7 @@ class Config
             throw new Exception("Resource " . $resource . " does not exists. Have you imported the file using import()?");
     }
 
-    public static function gets(array $resources = array())
+    public function gets(array $resources = array())
     {
         $results = array();
 
@@ -63,7 +63,7 @@ class Config
         throw new Exception("Unable to get the specified resources");
     }
 
-    public static function exists($resource)
+    public function exists($resource)
     {
         foreach (self::$resources as $configCollection) 
         {

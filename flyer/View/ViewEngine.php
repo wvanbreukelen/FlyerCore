@@ -4,8 +4,8 @@ namespace Flyer\Components\View;
 
 use Twig_Environment;
 use Flyer\Foundation\Registry;
-use Flyer\Foundation\Config\Config;
 use Flyer\App;
+use Config;
 
 class ViewEngine
 {

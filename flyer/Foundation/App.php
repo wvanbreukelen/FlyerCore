@@ -65,10 +65,9 @@ class App extends Container
 	 * @param object The config object the application has to use
 	 */
 
-	public function __construct(Config $config)
+	public function __construct()
 	{
 		$this->app = $this;
-		$this->config = $config;
 
 		ServiceProvider::setApp($this);
 	}
@@ -81,7 +80,7 @@ class App extends Container
 
 	public function config()
 	{
-		return $this->config;
+		return $this['config'];
 	}
 
 	/**

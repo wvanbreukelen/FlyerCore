@@ -3,11 +3,11 @@
 namespace Flyer\Components\Database;
 
 use Flyer\Foundation\ServiceProvider;
-use Flyer\Foundation\Config\Config;
 use Flyer\Foundation\Registry;
 use Illuminate\Database\Capsule\Manager as DatabaseHandler;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
+use Config;
 
 class DatabaseServiceProvider extends ServiceProvider
 {
@@ -17,16 +17,22 @@ class DatabaseServiceProvider extends ServiceProvider
 
 	public function register()
 	{
+		// Create a new Illuminate ORM instance
+
 		$this->driver = new DatabaseHandler;
+	}
+
+	public function boot()
+	{
+		// Prepare the database driver
 
 		$this->driver->addConnection(Config::get('database'));
 		$this->driver->setEventDispatcher(new Dispatcher(new Container));
 		$this->driver->setAsGlobal();
 		$this->driver->bootEloquent();
-	}
+		
+		// Bind the ORM to the application container
 
-	public function boot()
-	{
 		$this->share('application.db', $this->driver);
 	}
 }
