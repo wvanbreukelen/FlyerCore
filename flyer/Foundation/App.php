@@ -6,9 +6,9 @@ use Exception;
 use Flyer\Foundation\Container;
 use Flyer\Foundation\ServiceProvider;
 use Flyer\Foundation\Events\Events;
-use Flyer\Foundation\Config\Config;
 use Flyer\Foundation\AliasLoader;
 use Flyer\Components\Security\BcryptHasher;
+use Flyer\Components\Config;
 
 /**
  * The main application object
@@ -65,9 +65,10 @@ class App extends Container
 	 * @param object The config object the application has to use
 	 */
 
-	public function __construct()
+	public function __construct(Config $config)
 	{
 		$this->app = $this;
+		$this->config = $config;
 
 		ServiceProvider::setApp($this);
 	}
@@ -80,7 +81,7 @@ class App extends Container
 
 	public function config()
 	{
-		return $this['config'];
+		return $this->config;
 	}
 
 	/**
