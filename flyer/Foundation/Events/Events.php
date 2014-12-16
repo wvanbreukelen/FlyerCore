@@ -17,7 +17,7 @@ class Events
 		} else if (is_array($event)) {
 			self::$events[$event['title']] = $event['event'];
 		} else {
-			throw new Exception("Events: Cannot create new event, because the event is not an object or array.");
+			throw new Exception("Events: Cannot create new event, because the event is not a object or array.");
 		}
 	}
 
@@ -35,12 +35,7 @@ class Events
 				{
 					$event = self::$events[$eventTitle];
 
-					if (is_object($event))
-					{
-						return $event();
-					} else {
-						return $event();
-					}
+					return $event();
 				} else {
 					throw new Exception("Events: Failed to find event, named '" . $eventTitle . "'!");
 

@@ -9,7 +9,7 @@ use ReflectionClass;
 
 class ListPackagesCommand extends Command
 {
-	public $callsign = 'routelist';
+	public $callsign = 'packagelist';
 
 	public function prepare()
 	{
@@ -17,12 +17,12 @@ class ListPackagesCommand extends Command
 			array("arguments" => array()
 		));
 
-		$this->setDescription("The general router command");
-		$this->setSummary("The general router command");
+		$this->setDescription("List the registered packages");
+		$this->setSummary("Listes the application registered packages");
 	}
 
 	public function action()
 	{
-
+		
 	}
 }

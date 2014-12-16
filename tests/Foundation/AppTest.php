@@ -1,7 +1,7 @@
 <?php
 
 use Flyer\App;
-use Flyer\Foundation\Config\Config;
+use Flyer\Components\Config;
 use Flyer\Foundation\Registry;
 
 class AppTest extends PHPUnit_Framework_TestCase

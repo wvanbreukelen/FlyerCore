@@ -40,7 +40,7 @@ class Config
 		            }
 		        }
 		    }
-            throw new Exception("Resource " . $resource . " does not exists. Have you imported the file using import()?");
+            throw new ConfigNotFoundException("Resource " . $resource . " does not exists. Have you imported the file using import()?");
     }
 
     public function gets(array $resources = array())
@@ -60,7 +60,7 @@ class Config
 
         if (count($results) > 0) return $results;
 
-        throw new Exception("Unable to get the specified resources");
+        throw new ConfigNotFoundException("Unable to get the specified resources in config");
     }
 
     public function exists($resource)
@@ -78,7 +78,7 @@ class Config
         return false;
     }
 
-    public function getAllResources()
+    public function getResources()
     {
         return self::$resources;
     }
