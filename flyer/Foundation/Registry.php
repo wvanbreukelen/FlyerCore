@@ -28,7 +28,8 @@ class Registry
 	/**
 	 * Gets a registry item
 	 *
-	 * 
+	 * @var  string Item key
+	 * @return  mixed Registry item value
 	 */
 
 	public static function get($key)

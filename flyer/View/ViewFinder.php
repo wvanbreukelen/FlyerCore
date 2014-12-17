@@ -10,7 +10,7 @@ class ViewFinder
 {
 	protected $views = array();
 
-	public function addViewsPath($path)
+	public function addViewsPath($path, $extension = 'php')
 	{
 		if (Folder::is($path))
 		{
@@ -18,9 +18,12 @@ class ViewFinder
 
 			foreach ($views as $path)
 			{
-				$view = explode('.', File::filename($path))[0];
+				$explode = explode('.', File::filename($path));
 
-				$this->views[$view] = $path;
+				if (end($explode) == $extension)
+				{
+					$this->views[$explode[0]] = $path;
+				}
 			}
 
 			return;

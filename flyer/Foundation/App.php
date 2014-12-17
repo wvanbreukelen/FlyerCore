@@ -9,9 +9,10 @@ use Flyer\Foundation\Events\Events;
 use Flyer\Foundation\AliasLoader;
 use Flyer\Components\Security\BcryptHasher;
 use Flyer\Components\Config;
+use Flyer\Components\Logging\Debugger;
 
 /**
- * The main application object
+ * The main application object, extends the illuminate container, for binding instances and stuff
  */
 
 class App extends Container
@@ -103,18 +104,29 @@ class App extends Container
 
 	public function database()
 	{
-		return $this['application.db'];
+		return $this->access('application.db');
 	}
 
 	/**
-	 * Returns the view instance
+	 * Returns the debugger instance
+	 *
+	 * @return object The database instance
+	 */
+
+	public function debugger()
+	{
+		return $this->access('application.debugger');
+	}
+
+	/**
+	 * Returns the application view compiler instance
 	 *
 	 * @return object The view compiler instance
 	 */
 	
 	public function viewCompiler()
 	{
-		return $this['application.view.compiler'];
+		return $this->access('application.view.compiler');
 	}
 
 	/**
@@ -147,7 +159,7 @@ class App extends Container
 			return $this[$id];
 		}
 
-		throw new Exception("App: Cannot access " . $id);
+		throw new Exception("Cannot access " . $id . " in application container!");
 	}
 
 	/**
@@ -206,7 +218,7 @@ class App extends Container
 
 					$this->providers[] = $provider;
 				} else {
-					throw new Exception("Cannot load " . $provider . " because the Service Provider does not exists!");
+					throw new Exception("Cannot load " . $provider . " service provider, because the provider does not exists!");
 				}
 			}
 
@@ -219,7 +231,7 @@ class App extends Container
 
 			$this->registerCompilers();
 		} else {
-			throw new Exception("Unable to register provider(s), variable type has to been a array or object, not " . gettype($providerCollection));
+			throw new Exception("Unable to register provider, given input variable has to be an array or object, not a " . gettype($providerCollection));
 		}
 	}
 
@@ -237,9 +249,14 @@ class App extends Container
 			{
 				$this->viewCompiler()->addCompiler($viewCompilerID, new $viewCompiler);
 			} else {
-				throw new \Exception("Unable to register view compiler " . $viewCompiler . ", because it does not exists");
+				throw new Exception("Unable to register " . $viewCompiler . " view compiler, because the compiler is not registered to this application");
 			}
 		}
+	}
+
+	public function setDebuggerHandler(Debugger $debugger)
+	{
+		$this->attach('application.debugger', $debugger);
 	}
 
 	protected function registerFacade($alias, $class)
@@ -249,6 +266,7 @@ class App extends Container
 			$this[$alias] = new $class;
 		}
 	}
+	
 
 	/**
 	 * Boot the application, boots all of the imported Service Providers
@@ -267,12 +285,18 @@ class App extends Container
 	}
 	
 	/**
-	 * Trigger the final events to shutdown the application
+	 * Trigger the final events to shutdown the application, and display it's output to the user
 	 */
 
 	public function shutdown()
 	{
-		if (!$this->booted) throw new \Exception("App: Application cannot been shutdown, it has to be in a booted state!");
+		if (!$this->booted)
+		{
+			throw new Exception("Application cannot been shutdown, it isn't even booted :$");
+
+			return;
+		}
+
 		if (Events::exists('application.route'))
 		{
 			echo Events::trigger('application.route');
@@ -314,10 +338,15 @@ class App extends Container
 		return $this->booted;
 	}
 
+	public function getConfig()
+	{
+		return $this->config;
+	}
+
 	/**
-	 * Gets the instance of the app object
+	 * Get the current application instance
 	 *
-	 * @return  object The app instance
+	 * @return  object The application instance
 	 */
 	
 	public function getInstance()
