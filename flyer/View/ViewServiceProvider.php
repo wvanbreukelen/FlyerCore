@@ -2,7 +2,6 @@
 
 namespace Flyer\Components\View;
 
-use Flyer\Foundation\Registry;
 use Flyer\Foundation\ServiceProvider;
 use Flyer\Components\View\ViewEngine;
 use Flyer\Components\View\ViewFinder;

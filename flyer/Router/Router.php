@@ -4,11 +4,11 @@ namespace Flyer\Components\Router;
 
 use Closure;
 use Exception;
-use Flyer\Foundation\Registry;
 use Symfony\Component\HttpFoundation\Request;
 use Flyer\Components\Http;
 use Flyer\Components\Router\Route;
 use Flyer\Foundation\Events\Events;
+use App;
 
 /**
  * The router matches the developer own routes and returns a request for that route
@@ -182,12 +182,15 @@ class Router
 
 	protected function handleString($route)
 	{
-		Registry::set('application.controller.path', $this->resolveController($route));
+		App::attach('application.controller.path', $this->resolveController($route));
 
 		Events::create(array(
 			'title' => 'application.route',
 			'event' => function () {
-				$action = Registry::get('application.controller.path');
+				$action = App::access('application.controller.path');
+
+				// Truncate the app asset instantly
+				App::remove('application.controller.path');
 
 				$route = new $action['controller'];
 				return $route->$action['method']();

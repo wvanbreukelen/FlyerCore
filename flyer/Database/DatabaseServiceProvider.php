@@ -3,7 +3,6 @@
 namespace Flyer\Components\Database;
 
 use Flyer\Foundation\ServiceProvider;
-use Flyer\Foundation\Registry;
 use Illuminate\Database\Capsule\Manager as DatabaseHandler;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;

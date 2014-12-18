@@ -3,7 +3,6 @@
 namespace Flyer\Components\View;
 
 use Twig_Environment;
-use Flyer\Foundation\Registry;
 use Flyer\App;
 use Config;
 

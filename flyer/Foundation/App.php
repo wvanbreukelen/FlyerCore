@@ -49,12 +49,6 @@ class App extends Container
 	protected $booted = false;
 
 	/**
-	 * Holds the registry handler that is used the application
-	 */
-
-	protected $registryHandler;
-
-	/**
 	 * The application instance
 	 */
 
@@ -83,17 +77,6 @@ class App extends Container
 	public function config()
 	{
 		return $this->config;
-	}
-
-	/**
-	 * Returns the Registry instance
-	 *
-	 * @return object The registry instance
-	 */
-	
-	public function registry()
-	{
-		return $this->registryHandler->registry();
 	}
 
 	/**
@@ -159,19 +142,26 @@ class App extends Container
 			return $this[$id];
 		}
 
-		throw new Exception("Cannot access " . $id . " in application container!");
+		throw new Exception("Cannot access [" . $id . "] in application container!");
 	}
 
 	/**
-	 * Sets the registry handler that the application has to use
+	 * Removes a value that is attached to the application container
 	 *
-	 * @var  object The registry handler
-	 * @return  void
+	 * @var  string
+	 * @return  bool
 	 */
 
-	public function setRegistryHandler($handler)
+	public function remove($id)
 	{
-		$this->registryHandler = $handler;
+		if (isset($this[$id]))
+		{
+			unset($this[$id]);
+			return true;
+		}
+
+		throw new Exception("Cannot remove [" . $id . "] from the container, because this asset does not exists!");
+		return false;
 	}
 
 	/**
