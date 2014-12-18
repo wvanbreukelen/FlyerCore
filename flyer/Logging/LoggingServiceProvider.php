@@ -15,16 +15,19 @@ class LoggingServiceProvider extends ServiceProvider
 	public function register()
 	{
 		$this->logger = new Writer(
-			new Logger('debug')
+			new Logger('flyer')
 		);
 
-		$this->logger->useFiles(ROOT . $this->app()->config()->get('defaultDebugFolder'));
+		$this->logger->useFiles(ROOT . $this->app()->access('env')['defaultDebugFolder']);
 
 		$this->app()->bind('log', $this->logger);
 	}
 
 	public function boot()
 	{
-		$this->app()->access('application.debugger')->process($this->logger);
+		if ($this->app()->access('env')['debug'] == true)
+		{
+			$this->app()->access('application.debugger')->process($this->logger);
+		}
 	}
 }

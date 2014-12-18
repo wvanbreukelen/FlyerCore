@@ -259,6 +259,14 @@ class App extends Container
 		$this->attach('application.debugger', $debugger);
 	}
 
+	public function setEnvironment()
+	{
+		if (!isset($this['env']))
+		{
+			$this->attach('env', $this->config->get('environment'));
+		}
+	}
+
 	protected function registerFacade($alias, $class)
 	{
 		if (class_exists($class))

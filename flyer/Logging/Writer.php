@@ -136,6 +136,13 @@ class Writer
 		return $this->log($level, $message, $context);
 	}
 
+	/**
+	 * Write a message with any level to a log
+	 * @param  string
+	 * @param  string
+	 * @param  string
+	 * @return mixed
+	 */
 	public function writeLog($level, $message, $context)
 	{
 		$message = $this->formatMessage($message);
@@ -143,6 +150,12 @@ class Writer
 		$this->monolog->{$level}($message, $context);
 	}
 
+	/**
+	 * Set the files that have to be used by Monolog
+	 * @param  string
+	 * @param  string
+	 * @return mixed
+	 */
 	public function useFiles($path, $level = 'debug')
 	{
 		$this->monolog->pushHandler($handler = new StreamHandler($path, $this->parseLevel($level)));
@@ -157,11 +170,23 @@ class Writer
 		$handler->setFormatter($this->getDefaultFormatter());
 	}
 
+	/**
+	 * Use the System log handler
+	 * @param  string
+	 * @param  string
+	 * @return [type]
+	 */
 	public function useSyslog($name = 'laravel', $level = 'debug')
 	{
-		return $this->monolog->pushHandler(new SyslogHandler('laravel', LOG_USER, $level));
+		return $this->monolog->pushHandler(new SyslogHandler('flyer', LOG_USER, $level));
 	}
 
+	/**
+	 * Use the error log handler
+	 * @param  string
+	 * @param  mixed
+	 * @return mixed
+	 */
 	public function useErrorLog($level = 'debug', $messageType = ErrorLogHandler::OPERATING_SYSTEM)
 	{
 		$this->monolog->pushHandler(
@@ -170,6 +195,11 @@ class Writer
 		$handler->setFormatter($this->getDefaultFormatter());
 	}
 
+	/**
+	 * Format a logging message
+	 * @param  mixed
+	 * @return mixed
+	 */
 	protected function formatMessage($message)
 	{
 		if (is_array($message))
@@ -187,6 +217,11 @@ class Writer
 		return $message;
 	}
 
+	/**
+	 * Parse a monolog level
+	 * @param  [type]
+	 * @return [type]
+	 */
 	protected function parseLevel($level)
 	{
 		if (isset($this->levels[$level]))
@@ -197,7 +232,7 @@ class Writer
 	}
 
 	/**
-	 * Get a defaut Monolog formatter instance.
+	 * Get a default Monolog formatter instance.
 	 *
 	 * @return \Monolog\Formatter\LineFormatter
 	 */
@@ -206,6 +241,10 @@ class Writer
 		return new LineFormatter(null, null, true, true);
 	}
 
+	/**
+	 * Get the current Monolog logging instance
+	 * @return [type]
+	 */
 	public function getMonolog()
 	{
 		return $this->monolog;
