@@ -10,6 +10,7 @@ use Flyer\Foundation\AliasLoader;
 use Flyer\Components\Security\BcryptHasher;
 use Flyer\Components\Config;
 use Flyer\Components\Logging\Debugger;
+use Flyer\Components\Router\Router;
 
 /**
  * The main application object, extends the illuminate container, for binding instances and stuff
@@ -299,19 +300,8 @@ class App extends Container
 		{
 			echo Events::trigger('application.route');
 		} else {
-			echo $this->triggerErrorPage('404');
+			echo Router::triggerErrorPage(404);
 		}
-	}
-	
-	/**
-	 * Triggers the error page, developer has to give the HTTP error code
-	 * 
-	 * @param $error The HTTP error code
-	 */
-
-	public function triggerErrorPage($error)
-	{
-		return Events::trigger('application.error.' . $error);
 	}
 
 	/**

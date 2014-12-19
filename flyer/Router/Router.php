@@ -157,6 +157,17 @@ class Router
 	}
 
 	/**
+	 * Triggers the error page, developer has to give the HTTP error code
+	 * 
+	 * @param $error The HTTP error code
+	 */
+
+	public static function triggerErrorPage($error)
+	{
+		return Events::trigger('application.error.' . $error);
+	}
+
+	/**
 	 * Create an routing event, by a closure
 	 *
 	 * @var  closure Route
