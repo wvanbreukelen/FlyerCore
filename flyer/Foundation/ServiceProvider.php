@@ -41,7 +41,12 @@ abstract class ServiceProvider
 
 	public function share($id, $value = null)
 	{
-		$this->app()[$id] = $value;
+		return $this->app()->attach($id, $value);
+	}
+
+	public function make($id)
+	{
+		return $this->app()->make($id);
 	}
 
 	/**

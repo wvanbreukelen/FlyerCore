@@ -164,7 +164,14 @@ class Router
 
 	public static function triggerErrorPage($error)
 	{
-		return Events::trigger('application.error.' . $error);
+		$asset = 'application.error.' . $error;
+
+		if (App::offsetExists($asset))
+		{
+			return App::make('application.error.' . $error);
+		}
+
+		throw new Exception("Cannot trigger error page for error " . $error . "! Did you create a error page for this specified error?");
 	}
 
 	/**

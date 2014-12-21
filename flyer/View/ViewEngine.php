@@ -56,7 +56,7 @@ class ViewEngine
 
 	protected function resolveViewPath($view)
 	{
-		return $this->app->access('application.view.finder')->getViewPath($view);
+		return $this->app->make('application.view.finder')->getViewPath($view);
 	}
 
 	/**

@@ -10,10 +10,11 @@
         }
     ],
     "require": {
-        "symfony/http-foundation": "2.4.*",
-        "symfony/console": "2.4.*",
+        "symfony/http-foundation": "2.5.*",
+        "symfony/console": "2.5.*",
         "filp/whoops": "dev-master",
         "illuminate/database": "4.2.*",
+        "illuminate/html": "4.2.*",
         "twig/twig": "1.*",
         "cboden/ratchet": "0.3.2",
         "monolog/monolog": ">=1.1.0"

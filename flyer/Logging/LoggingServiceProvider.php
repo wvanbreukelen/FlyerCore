@@ -20,14 +20,14 @@ class LoggingServiceProvider extends ServiceProvider
 
 		$this->logger->useFiles(ROOT . $this->app()->access('env')['defaultDebugFolder']);
 
-		$this->app()->bind('log', $this->logger);
+		$this->share('log', $this->logger);
 	}
 
 	public function boot()
 	{
 		if ($this->app()->access('env')['debug'] == true)
 		{
-			$this->app()->access('application.debugger')->process($this->logger);
+			$this->make('application.debugger')->process($this->logger);
 		}
 	}
 }

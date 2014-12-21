@@ -3,6 +3,7 @@
 namespace Flyer;
 
 use Exception;
+use RuntimeException;
 use Flyer\Foundation\Container;
 use Flyer\Foundation\ServiceProvider;
 use Flyer\Foundation\Events\Events;
@@ -13,7 +14,7 @@ use Flyer\Components\Logging\Debugger;
 use Flyer\Components\Router\Router;
 
 /**
- * The main application object, extends the illuminate container, for binding instances and stuff
+ * The main application object, simply the core of your application. Extends the Illuminate container, for binding instances and stuff
  */
 
 class App extends Container
@@ -22,37 +23,31 @@ class App extends Container
 	/**
 	 * Holds the config object
 	 */
-	
 	public $config;
 
 	/**
 	 * Holds all of the view compilers
 	 */
-	
 	protected $viewCompilers = array();
 
 	/**
 	 * Holds all of the service providers
 	 */
-
 	protected $providers = array();
 
 	/**
 	 * Holds all of the booted service providers
 	 */
-
 	protected $bootedProviders = array();
 
 	/**
 	 * Holds the current booting status of the application
 	 */
-
 	protected $booted = false;
 
 	/**
 	 * The application instance
 	 */
-
 	protected $app;
 
 	/**
@@ -60,7 +55,6 @@ class App extends Container
 	 *
 	 * @param object The config object the application has to use
 	 */
-
 	public function __construct(Config $config)
 	{
 		$this->app = $this;
@@ -74,7 +68,6 @@ class App extends Container
 	 *
 	 * @return object The object instance
 	 */
-
 	public function config()
 	{
 		return $this->config;
@@ -85,10 +78,9 @@ class App extends Container
 	 *
 	 * @return object The database instance
 	 */
-
 	public function database()
 	{
-		return $this->access('application.db');
+		return $this->make('application.db');
 	}
 
 	/**
@@ -96,10 +88,9 @@ class App extends Container
 	 *
 	 * @return object The database instance
 	 */
-
 	public function debugger()
 	{
-		return $this->access('application.debugger');
+		return $this->make('application.debugger');
 	}
 
 	/**
@@ -107,10 +98,9 @@ class App extends Container
 	 *
 	 * @return object The view compiler instance
 	 */
-	
 	public function viewCompiler()
 	{
-		return $this->access('application.view.compiler');
+		return $this->make('application.view.compiler');
 	}
 
 	/**
@@ -118,7 +108,6 @@ class App extends Container
 	 *
 	 * @var mixed
 	 */
-	
 	public function attach($id, $value = null)
 	{
 		if (is_callable($value))
@@ -135,7 +124,6 @@ class App extends Container
 	 * @var id Container id
 	 * @return  mixed Container value
 	 */
-	
 	public function access($id)
 	{
 		if (isset($this[$id]))
@@ -152,7 +140,6 @@ class App extends Container
 	 * @var  string
 	 * @return  bool
 	 */
-
 	public function remove($id)
 	{
 		if (isset($this[$id]))
@@ -170,7 +157,6 @@ class App extends Container
 	 *
 	 * @var  array The View compilers
 	 */
-
 	public function setViewCompilers(array $viewCompilers = array())
 	{
 		$this->viewCompilers = $viewCompilers;
@@ -181,7 +167,6 @@ class App extends Container
 	 *
 	 * @param array The classes
 	 */
-
 	public function createAliases(array $options = array())
 	{
 		foreach ($options as $alias => $class)
@@ -195,7 +180,6 @@ class App extends Container
 	 *
 	 * @var mixed The Service Provider(s), a array or an object 
 	 */
-
 	public function register($providerCollection)
 	{
 		if (is_array($providerCollection))
@@ -231,7 +215,6 @@ class App extends Container
 	 *
 	 * @var  $config Out of the config
 	 */
-	
 	protected function registerCompilers()
 	{
 		foreach ($this->viewCompilers as $viewCompilerID => $viewCompiler)
@@ -245,11 +228,18 @@ class App extends Container
 		}
 	}
 
+	/**
+	 * Set the application debugger handler
+	 * @param Debugger $debugger The debugger
+	 */
 	public function setDebuggerHandler(Debugger $debugger)
 	{
 		$this->attach('application.debugger', $debugger);
 	}
 
+	/**
+	 * Sets up the application environment
+	 */
 	public function setEnvironment()
 	{
 		if (!isset($this['env']))
@@ -258,6 +248,12 @@ class App extends Container
 		}
 	}
 
+	/**
+	 * Register any given facade
+	 * @param  string $alias The alias for this facade
+	 * @param  string $class The class ifself
+	 * @return mixed
+	 */
 	protected function registerFacade($alias, $class)
 	{
 		if (class_exists($class))
@@ -272,7 +268,6 @@ class App extends Container
 	 *
 	 * @return  void
 	 */
-
 	public function boot() 
 	{
 		foreach ($this->providers as $provider)
@@ -282,11 +277,19 @@ class App extends Container
 	
 		$this->booted = true;
 	}
+
+	public function abort($error, $exception = false)
+	{
+		echo Router::triggerErrorPage($error);
+
+		if ($exception) throw new RuntimeException("Aborted application, triggered error " . $error . "!"); 
+	}
 	
 	/**
 	 * Trigger the final events to shutdown the application, and display it's output to the user
+	 *
+	 * @return string The application output
 	 */
-
 	public function shutdown()
 	{
 		if (!$this->booted)
@@ -309,7 +312,6 @@ class App extends Container
 	 *
 	 * @return  void 
 	 */
-
 	public function resetProviders()
 	{
 		unset($this->providers);
@@ -320,12 +322,15 @@ class App extends Container
 	 *
 	 * @return bool The booting status
 	 */
-
 	public function booted()
 	{
 		return $this->booted;
 	}
 
+	/**
+	 * Get the configuration object
+	 * @return object /Flyer/Components/Config
+	 */
 	public function getConfig()
 	{
 		return $this->config;

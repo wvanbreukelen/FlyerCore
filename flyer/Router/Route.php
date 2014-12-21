@@ -3,7 +3,7 @@
 namespace Flyer\Components\Router;
 
 /**
- * The Route class responds to the RouteBuilder which builds a instance for the Router.
+ * The Route class responds to the Router
  */
 
 class Route
@@ -19,7 +19,7 @@ class Route
 	{
 		Router::addRoute("GET", $uri, $action);
 	}
-	
+
 	/**
 	 * Add a route by the HTTP POST method
 	 * 

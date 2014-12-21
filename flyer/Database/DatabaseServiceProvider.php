@@ -3,9 +3,9 @@
 namespace Flyer\Components\Database;
 
 use Flyer\Foundation\ServiceProvider;
-use Illuminate\Database\Capsule\Manager as DatabaseHandler;
-use Illuminate\Events\Dispatcher;
-use Illuminate\Container\Container;
+use Illuminate\Database\Capsule\Manager as IlluminateDatabaseHandler;
+use Illuminate\Events\Dispatcher as IlluminateDispatcher;
+use Illuminate\Container\Container as IlluminateContainer;
 use Config;
 
 class DatabaseServiceProvider extends ServiceProvider
@@ -18,7 +18,11 @@ class DatabaseServiceProvider extends ServiceProvider
 	{
 		// Create a new Illuminate ORM instance
 
-		$this->driver = new DatabaseHandler;
+		$this->driver = new IlluminateDatabaseHandler;
+
+		// Bind the ORM to the application container
+
+		$this->share('application.db', $this->driver);
 	}
 
 	public function boot()
@@ -26,12 +30,8 @@ class DatabaseServiceProvider extends ServiceProvider
 		// Prepare the database driver
 
 		$this->driver->addConnection(Config::get('database'));
-		$this->driver->setEventDispatcher(new Dispatcher(new Container));
+		$this->driver->setEventDispatcher(new IlluminateDispatcher(new IlluminateContainer));
 		$this->driver->setAsGlobal();
 		$this->driver->bootEloquent();
-		
-		// Bind the ORM to the application container
-
-		$this->share('application.db', $this->driver);
 	}
 }
