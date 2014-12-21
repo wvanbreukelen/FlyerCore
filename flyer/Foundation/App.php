@@ -278,6 +278,12 @@ class App extends Container
 		$this->booted = true;
 	}
 
+	/**
+	 * Abort the currect application request
+	 * @param  integer  $error     HTTP type of error
+	 * @param  boolean $exception Throw a RuntimeException
+	 * @return mixed
+	 */
 	public function abort($error, $exception = false)
 	{
 		echo Router::triggerErrorPage($error);
@@ -288,7 +294,7 @@ class App extends Container
 	/**
 	 * Trigger the final events to shutdown the application, and display it's output to the user
 	 *
-	 * @return string The application output
+	 * @return mixed The application response output
 	 */
 	public function shutdown()
 	{
@@ -296,7 +302,7 @@ class App extends Container
 		{
 			throw new Exception("Application cannot been shutdown, it isn't even booted :$");
 
-			return;
+			return false;
 		}
 
 		if (Events::exists('application.route'))
@@ -305,6 +311,8 @@ class App extends Container
 		} else {
 			echo Router::triggerErrorPage(404);
 		}
+
+		return true;
 	}
 
 	/**

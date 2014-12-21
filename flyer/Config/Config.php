@@ -8,8 +8,17 @@ use Exception;
 class Config
 {
 
+    /**
+     * All the saves resources
+     * @var array
+     */
     protected static $resources = array();
 
+    /**
+     * Import any given config file
+     * @param  string $configFile The path
+     * @return mixed             
+     */
     public function import($configFile)
     {
         if (is_array($resource = require($configFile)))
@@ -22,27 +31,39 @@ class Config
                     
     }
 
+    /**
+     * Get a specific resource in the resources
+     * @param  string $resource The resource you need
+     * @return mixed            The (optional) results
+     */
     public function get($resource)
     {
+        //print_r(self::$resources);
+        
             foreach (self::$resources as $configCollection)
             {
                 foreach ($configCollection as $configItemName => $configItem) {
                     if ($resource == $configItemName)
                     {
-                            return $configItem;
+                        return $configItem;
                     }
                 }
 		        foreach (self::$resources as $configResource)
 		        {
 		            if (in_array($resource, $configResource))
 		            {
-		                    return $configResource[$resource];
+		                return $configResource[$resource];
 		            }
 		        }
 		    }
             throw new ConfigNotFoundException("Resource " . $resource . " does not exists. Have you imported the file using import()?");
     }
 
+    /**
+     * Get mulitple resources
+     * @param  array  $resources The resources that you need
+     * @return mixed             The (optional) resources
+     */
     public function gets(array $resources = array())
     {
         $results = array();
@@ -63,6 +84,11 @@ class Config
         throw new ConfigNotFoundException("Unable to get the specified resources in config");
     }
 
+    /**
+     * Check if a specific resource exists
+     * @param  string $resource The resource to check
+     * @return bool             The result
+     */
     public function exists($resource)
     {
         foreach (self::$resources as $configCollection) 
@@ -78,6 +104,10 @@ class Config
         return false;
     }
 
+    /**
+     * Get all the resources
+     * @return array All the resources
+     */
     public function getResources()
     {
         return self::$resources;
