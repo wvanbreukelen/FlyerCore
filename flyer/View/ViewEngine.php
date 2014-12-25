@@ -9,10 +9,22 @@ use Config;
 class ViewEngine
 {
 
+	/**
+	 * Holds the Twig instance
+	 * @var object Twig_Environment
+	 */
 	protected $twig;
 
+	/**
+	 * Holds the current application instance
+	 * @var object Flyer\App
+	 */
 	protected $app;
 
+	/**
+	 * The compiler that have to be used
+	 * @var object
+	 */
 	protected $compiler;
 
 	/**
@@ -21,7 +33,6 @@ class ViewEngine
 	 * @param object The Twig compiler instance
 	 * @param object Our own created compiler
 	 */
-
 	public function __construct(Twig_Environment $twig, App $app, $compiler)
 	{
 		$this->twig = $twig;
@@ -38,7 +49,6 @@ class ViewEngine
 	 *
 	 * @return  string The compiled view
 	 */
-
 	public function compile($view, $values, $id)
 	{
 		if (Config::exists('defaultViewCompiler') && is_null($id))
@@ -54,6 +64,11 @@ class ViewEngine
 		return $this->compiler->compile($id, $view, $values);
 	}
 
+	/**
+	 * Resolve the path for any given view
+	 * @param  [type] $view [description]
+	 * @return [type]       [description]
+	 */
 	protected function resolveViewPath($view)
 	{
 		return $this->app->make('application.view.finder')->getViewPath($view);
@@ -67,19 +82,17 @@ class ViewEngine
 	 *
 	 * @return  string 
 	 */
-
 	private function renderDefault($path, $view, $values)
 	{
 		return $this->compiler->compile(Config::get('defaultViewCompiler'), $path, $view, $values);
 	}
 
 	/**
-	 * Render a view using fallback Twig
+	 * Render a view using the fallback Twig engine
 	 *
 	 * @param  string The view to be compiled
-	 * @param  mix [varname] [description]
+	 * @return  string The results from the Twig engine
 	 */
-
 	private function renderTwig($path)
 	{
 		return $this->twig->render($path);

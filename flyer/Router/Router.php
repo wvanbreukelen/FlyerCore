@@ -38,9 +38,9 @@ class Router
 	/**
 	 * Add a route to the router
 	 *
-	 * @var  string Request method
-	 * @var  string Listener for the route
-	 * @var  mixed Route, can be an array or a closure
+	 * @param  string Request method
+	 * @param  string Listener for the route
+	 * @param  mixed Route, can be an array or a closure
 	 *
 	 * @return  void 
 	 */
@@ -104,7 +104,7 @@ class Router
 	/**
 	 * Determine which type of route is given, and generate a event for that type of variable
 	 *
-	 * @var  mixed Route
+	 * @param  mixed Route
 	 *
 	 * @return  void
 	 */
@@ -117,14 +117,14 @@ class Router
 		} else if (is_string($route)) {
 			$this->handleString($route);
 		} else {
-			throw new Exception("Cannot determain variable type of route");
+			throw new Exception("Cannot determine variable type of route");
 		}
 	}
 	
 	/**
 	 * Sets the request, so the router can compare the routes with the current request
 	 *
-	 * @var  mixed
+	 * @param  mixed
 	 */
 
 	public function setRequest($request)
@@ -177,7 +177,7 @@ class Router
 	/**
 	 * Create an routing event, by a closure
 	 *
-	 * @var  closure Route
+	 * @param  closure Route
 	 * 
 	 * @return  void
 	 */
@@ -193,7 +193,7 @@ class Router
 	/**
 	 * Create an routing event, by a string
 	 *
-	 * @var  string Route
+	 * @param  string Route
 	 *
 	 * @return void
 	 */
@@ -207,7 +207,7 @@ class Router
 			'event' => function () {
 				$action = App::access('application.controller.path');
 
-				// Truncate the app asset instantly
+				// Truncate the application asset instantly
 				App::remove('application.controller.path');
 
 				$route = new $action['controller'];
@@ -231,7 +231,7 @@ class Router
 	/**
 	 * Resolve the controller and method of a given route
 	 *
-	 * @var  array Route
+	 * @param  array Route
 	 *
 	 * @return  array Resolved controller
 	 */

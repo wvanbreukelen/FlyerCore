@@ -3,9 +3,8 @@
 namespace Flyer\Components\View\Compiler;
 
 /**
- * ViewCompiler instances have to extend this class
+ * Compiler have to extend this abstract class
  */
-
 abstract class Compiler
 {
 	abstract public function compile($contents, $view);

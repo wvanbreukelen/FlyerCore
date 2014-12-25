@@ -7,12 +7,28 @@ use Flyer\Components\Server\FTP\Exceptions\FtpConnectionException;
 class Connector
 {
 
+	/**
+	 * The connector instance
+	 * @var object
+	 */
 	public $connector;
 
+	/**
+	 * The authentation object
+	 * @var object Authentation
+	 */
 	protected $auth;
 
+	/**
+	 * The server to connect with
+	 * @var string The server
+	 */
 	protected $server;
 
+	/**
+	 * The port to connect with
+	 * @var integer The port
+	 */
 	protected $port;
 
 	/**

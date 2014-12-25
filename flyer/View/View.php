@@ -12,11 +12,10 @@ class View
 {
 
 	/**
-	 * The view compiler instance
+	 * The view engine instance
 	 *
-	 * @var  object \Flyer\Components\View\ViewEngine
+	 * @param  object \Flyer\Components\View\ViewEngine
 	 */
-
 	protected $engine;
 
 	/**
@@ -24,7 +23,6 @@ class View
 	 *
 	 * @param object The view engine instance
 	 */
-
 	public function __construct(ViewEngine $viewEngine)
 	{
 		$this->engine = $viewEngine;

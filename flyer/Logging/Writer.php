@@ -26,6 +26,10 @@ class Writer
 		'emergency' => MonologLogger::EMERGENCY,
 	);
 
+	/**
+	 * Construct a new writer instance, with a Monolog instance
+	 * @param MonologLogger $monolog The Monolog instance to use
+	 */
 	public function __construct(MonologLogger $monolog)
 	{
 		$this->monolog = $monolog;
@@ -162,6 +166,13 @@ class Writer
 		$handler->setFormatter($this->getDefaultFormatter());
 	}
 
+	/**
+	 * Use daily files to process a log
+	 * @param  string  $path  The path
+	 * @param  integer $days  Amount of days
+	 * @param  string  $level The log level, default is debug
+	 * @return mixed         
+	 */
 	public function useDailyFiles($path, $days = 0, $level = 'debug')
 	{
 		$this->monolog->pushHandler(
@@ -218,9 +229,9 @@ class Writer
 	}
 
 	/**
-	 * Parse a monolog level
-	 * @param  [type]
-	 * @return [type]
+	 * Parse a Monolog level
+	 * @param  string The level
+	 * @return mixed
 	 */
 	protected function parseLevel($level)
 	{
@@ -243,7 +254,7 @@ class Writer
 
 	/**
 	 * Get the current Monolog logging instance
-	 * @return [type]
+	 * @return Monolog\Logger The current Monolog instance
 	 */
 	public function getMonolog()
 	{

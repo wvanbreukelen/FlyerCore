@@ -27,6 +27,10 @@ class Connector
 		$this->auth = $auth;
 	}
 
+	/**
+	 * Connect to the SSH server
+	 * @return object Connector
+	 */
 	public function connect()
 	{
 		$this->connector = ssh2_connect($this->server, $this->port);
@@ -44,11 +48,19 @@ class Connector
 		return $this->connector;
 	}
 
+	/**
+	 * Disconnect from the SSH server
+	 * @return mixed
+	 */
 	public function disconnect()
 	{
 		unset($this->connector);
 	}
 
+	/**
+	 * Check if the SSH2 extension has been loaded by PHP
+	 * @return  boolean Is the SSH2 connect loaded
+	 */
 	protected function SshExtensionExists()
 	{
 		return extension_loaded('ssh2');

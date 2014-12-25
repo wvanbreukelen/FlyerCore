@@ -6,6 +6,14 @@ use Flyer\Components\Server\Socket\SocketConnector;
 
 class Socket
 {
+
+	/**
+	 * Create the socket
+	 * @param  object  $socket The socket the use
+	 * @param  integer $port   The port that the socket will be running at, the default is port 8080
+	 * @param  boolean $force  Force the connection
+	 * @return boolean         The result of the socket generation
+	 */
 	public function create($socket, $port = 8080, $force = false)
 	{
 		$this->connector = new SocketConnector($port, $force);
@@ -23,6 +31,10 @@ class Socket
 		return true;
 	}
 
+	/**
+	 * Close the socket
+	 * @return boolean The closing socket results
+	 */
 	public function close()
 	{
 		if (is_object($this->connector))

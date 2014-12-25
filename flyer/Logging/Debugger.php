@@ -13,6 +13,10 @@ class Debugger
 
 	protected $config;
 
+	/**
+	 * Create a new debugger instance
+	 * @param Config $config The config instance that is used in the application
+	 */
 	public function __construct(Config $config)
 	{
 		$this->config = $config->get('debugMessages');

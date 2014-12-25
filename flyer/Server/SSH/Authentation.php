@@ -3,7 +3,7 @@
 namespace Flyer\Components\Server\SSH;
 
 /**
- * Used for authentation for the SSH client
+ * Used for authentication for the SSH client
  */
 class Authentation
 {

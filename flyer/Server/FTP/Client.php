@@ -10,13 +10,17 @@ use File;
 class Client
 {
 
+	/**
+	 * The connector for the client
+	 * @var object
+	 */
 	protected $connector;
 
 	/**
 	 * Download a file from the FTP server
 	 * @param  string $fromPath The path on the FTP server
 	 * @param  string $toPath   The local path where the downloaded file must be placed
-	 * @param  global $mode     The tranfer mode
+	 * @param  global $mode     The transfer mode
 	 * @return string           Returns $toPath
 	 */
 	public function download($fromPath, $toPath, $mode = FTP_ASCII)
@@ -131,11 +135,11 @@ class Client
 	 */
 	public function size($file)
 	{
-		$size = ftp_size($this->getConnector(), $file);
+		$size = ftp_size($this->getConnector(), $file);s
 
 		if ($size == -1)
 		{
-			throw new Exception("Cannot get filesize of " . $file . " on FTP server");
+			throw new Exception("Cannot get file size of " . $file . " on FTP server");
 		}
 
 		return ($size != -1 ) ? $size : false;
@@ -183,7 +187,7 @@ class Client
 
 	/**
 	 * List file in a folder on the FTP server
-	 * @param  string $path Optinal: Give a path to list
+	 * @param  string $path Optional -> Give a path to list
 	 * @return array The formatted list
 	 */
 	public function listFiles($path = null)
@@ -258,7 +262,7 @@ class Client
 	}
 
 	/**
-	 * Format a list provied by the ftp_rawlist function
+	 * Format a list provided by the ftp_rawlist function
 	 * @param  array $buffer The buffer
 	 * @return array         The formatted list
 	 */

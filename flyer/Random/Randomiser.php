@@ -7,6 +7,13 @@ use Flyer\Components\Random\RandomiserException;
 
 class Randomiser implements RandomiserInterface
 {
+
+	/**
+	 * Create a random string with given length and allowed characters
+	 * @param  integer $length       The length of the random string
+	 * @param  string $allowedChars  The allowed characters to been used
+	 * @return string                The random generated string
+	 */
 	public function randomString($length, $allowedChars)
 	{
 		if (is_null($allowedChars))
@@ -16,6 +23,13 @@ class Randomiser implements RandomiserInterface
 		return substr(str_shuffle($allowedChars), 0, $length);
 	}
 
+	/**
+	 * Create a random integer
+	 * @param  integer $min    The minimum length of a random integer
+	 * @param  integer $max    The maximal length of a random integer
+	 * @param  integer $length The length of the random integer
+	 * @return integer         The random generated integer
+	 */
 	public function randomInteger($min, $max, $length)
 	{
 		if (is_int($min) && is_int($max))
@@ -36,6 +50,10 @@ class Randomiser implements RandomiserInterface
 		return null;
 	}
 
+	/**
+	 * Create a random boolean
+	 * @return bool Returns true of false as a boolean
+	 */
 	public function randomBoolean()
 	{
 		return (rand(0, 1) == 1) ? true : false;

@@ -56,7 +56,8 @@ class Config
 		            }
 		        }
 		    }
-            throw new ConfigNotFoundException("Resource " . $resource . " does not exists. Have you imported the file using import()?");
+
+            return false;
     }
 
     /**
@@ -68,20 +69,22 @@ class Config
     {
         $results = array();
 
-        foreach (self::$resources as $configResource)
+        foreach (self::$resources as $resource)
         {
-            foreach ($resources as $resource)
-            {
-                if (in_array($resource, $configResource))
-                {
-                    $results[$resource] = $configResource;
-                }
-            }
+            $results[] = $this->get($resource);
         }
 
         if (count($results) > 0) return $results;
 
         throw new ConfigNotFoundException("Unable to get the specified resources in config");
+    }
+
+    /**
+     * Add a resource
+     */
+    public function add(array $resource = array())
+    {
+        self::$resources = array_merge(self::$resources, $resource);
     }
 
     /**
