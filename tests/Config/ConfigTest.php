@@ -2,7 +2,7 @@
 
 use Flyer\Components\Config;
 
-class ConfigTest extends PHPUnit_Framework_TestCase
+/**class ConfigTest extends PHPUnit_Framework_TestCase
 {
 	public function __construct()
 	{
@@ -84,4 +84,4 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 	{
 		$this->config = new Config;
 	}
-}
+}**/

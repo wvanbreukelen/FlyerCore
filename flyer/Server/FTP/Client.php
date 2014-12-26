@@ -135,7 +135,7 @@ class Client
 	 */
 	public function size($file)
 	{
-		$size = ftp_size($this->getConnector(), $file);s
+		$size = ftp_size($this->getConnector(), $file);
 
 		if ($size == -1)
 		{
