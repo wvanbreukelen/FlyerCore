@@ -81,6 +81,27 @@ class File
 	{
 		if ($this->exists($path)) rename($path, $target);
 	}
+
+	/**
+	 * Unzip a specified file to a path
+	 * @param  string $path The original path
+	 * @param  string $to   The destination path
+	 * @return mixed
+	 */
+	public function unzip($path, $to)
+	{
+		$zip = (new ZipArchive)->open($path);
+
+		if ($zip === true)
+		{
+			$zip->extractTo($to);
+			$zip->close();
+
+			return true;
+		}
+
+		return false;
+	}
 	
 	/**
 	 * Check the extension of a file

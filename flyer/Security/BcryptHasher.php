@@ -13,6 +13,9 @@ class BcryptHasher {
 	 */
 	protected $rounds = 10;
 
+	/**
+	 * Construct a new BcryptHasher instance
+	 */
 	public function __construct()
 	{
 		if (phpversion() < "5.50")

@@ -134,6 +134,11 @@ class App extends Container
 		throw new Exception("Cannot access [" . $id . "] in application container!");
 	}
 
+	public function exists($id)
+	{
+		return (isset($this[$id]));
+	}
+
 	/**
 	 * Removes a value that is attached to the application container
 	 *
@@ -305,9 +310,9 @@ class App extends Container
 			return false;
 		}
 
-		if (Events::exists('application.route'))
+		if ($this->exists('application.route'))
 		{
-			echo Events::trigger('application.route');
+			echo $this->make('application.route');
 		} else {
 			echo Router::triggerErrorPage(404);
 		}

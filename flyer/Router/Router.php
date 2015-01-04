@@ -184,10 +184,9 @@ class Router
 
 	protected function handleClosure($route)
 	{
-		Events::create(array(
-			'title' => 'application.route',
-			'event' => $route
-		));
+		App::bind('application.route', function () use ($route) {
+			return $route;
+		});
 	}
 
 	/**
@@ -200,20 +199,11 @@ class Router
 
 	protected function handleString($route)
 	{
-		App::attach('application.controller.path', $this->resolveController($route));
+		$route = $this->resolveController($route, App::access('request.get'));
 
-		Events::create(array(
-			'title' => 'application.route',
-			'event' => function () {
-				$action = App::access('application.controller.path');
-
-				// Truncate the application asset instantly
-				App::remove('application.controller.path');
-
-				$route = new $action['controller'];
-				return $route->$action['method']();
-			}
-		));
+		App::bind('application.route', function () use ($route) {
+			return call_user_func_array(array(new $route['controller'], $route['method']), $route['params']);
+		});
 	}
 
 	/**
@@ -236,13 +226,18 @@ class Router
 	 * @return  array Resolved controller
 	 */
 
-	protected function resolveController($route)
+	protected function resolveController($route, $request)
 	{
-		$pieces = explode('@', $route);
+		$resolver = new ControllerResolver($route, $request);
 
+		//App::attach('route.parameters', $resolver->generateArgumentList());
+		//App::attach('route.controller', $resolver->getResolvedAsset('controller'));
+		//App::attach('route.method', $resolver->getResolvedAsset('method'));
+		
 		return array(
-			'controller' => $pieces[0],
-			'method' => $pieces[1]
+			'controller' => $resolver->getResolvedAsset('controller'),
+			'method'     => $resolver->getResolvedAsset('method'),
+			'params'     => $resolver->generateArgumentList()
 		);
 	}
 }

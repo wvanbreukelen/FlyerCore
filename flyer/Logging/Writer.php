@@ -13,8 +13,16 @@ use Exception;
 
 class Writer
 {
+	/**
+	 * Contains the Monolog instance
+	 * @var object
+	 */
 	protected $monolog;
 
+	/**
+	 * All the debug levels, with their Monolog logger static
+	 * @var array
+	 */
 	protected $levels = array(
 		'debug'     => MonologLogger::DEBUG,
 		'info'      => MonologLogger::INFO,
@@ -135,6 +143,13 @@ class Writer
 		return $this->writeLog($level, $message, $context);
 	}
 
+	/**
+	 * Simply write to the log
+	 * @param  string $level   The level
+	 * @param  string $message The message
+	 * @param  array  $context The context
+	 * @return string          The added item
+	 */
 	public function write($level, $message, array $context = array())
 	{
 		return $this->log($level, $message, $context);
