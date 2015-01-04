@@ -184,7 +184,7 @@ class Router
 
 	protected function handleClosure($route)
 	{
-		App::bind('application.route', function () use ($route) {
+		App::bind('application.route', function () {
 			return $route;
 		});
 	}
