@@ -2,13 +2,10 @@
 
 namespace Flyer\Components\Logging;
 
-use Closure;
 use Monolog\Handler\SyslogHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
 use Monolog\Formatter\LineFormatter;
-use Psr\Log\LoggerInterface as PsrLoggerInterface;
-use Flyer\Components\Logging\Log as LogInterface;
 use Exception;
 use Jsonable;
 use Arrayable;
@@ -138,6 +135,7 @@ class Writer
 	 *
 	 * @param  string  $message
 	 * @param  array  $context
+	 * @param string $level
 	 * @return void
 	 */
 	public function log($level, $message, array $context = array())
@@ -162,6 +160,7 @@ class Writer
 	 * @param  string
 	 * @param  string
 	 * @param  string
+	 * @param string $message
 	 * @return mixed
 	 */
 	public function writeLog($level, $message, $context)
@@ -175,6 +174,7 @@ class Writer
 	 * Set the files that have to be used by Monolog
 	 * @param  string
 	 * @param  string
+	 * @param string $path
 	 * @return mixed
 	 */
 	public function useFiles($path, $level = 'debug')
@@ -248,7 +248,8 @@ class Writer
 	/**
 	 * Parse a Monolog level
 	 * @param  string The level
-	 * @return mixed
+	 * @param string $level
+	 * @return integer
 	 */
 	protected function parseLevel($level)
 	{
