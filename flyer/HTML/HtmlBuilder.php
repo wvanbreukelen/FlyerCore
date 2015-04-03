@@ -2,8 +2,6 @@
 
 namespace Flyer\Components\Html;
 
-use Symfony\Request;
-
 class HtmlBuilder
 {
 

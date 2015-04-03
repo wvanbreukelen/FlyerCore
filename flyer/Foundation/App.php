@@ -66,7 +66,7 @@ class App extends Container
 	/**
 	 * Returns the config instance
 	 *
-	 * @return object The object instance
+	 * @return Config The object instance
 	 */
 	public function config()
 	{
@@ -122,6 +122,7 @@ class App extends Container
 	 * Access a value that is attacted to the application container
 	 *
 	 * @var id Container id
+	 * @param string $id
 	 * @return  mixed Container value
 	 */
 	public function access($id)
@@ -290,7 +291,6 @@ class App extends Container
 	/**
 	 * Abort the currect application request
 	 * @param  integer  $error     HTTP type of error
-	 * @param  boolean $exception Throw a RuntimeException
 	 * @return mixed
 	 */
 	public function abort($error)
@@ -301,7 +301,7 @@ class App extends Container
 	/**
 	 * Trigger the final events to shutdown the application, and display it's output to the user
 	 *
-	 * @return mixed The application response output
+	 * @return boolean The application response output
 	 */
 	public function shutdown()
 	{
@@ -343,7 +343,7 @@ class App extends Container
 	/**
 	 * Get the current application instance
 	 *
-	 * @return  object The application instance
+	 * @return  App The application instance
 	 */
 	
 	public function getInstance()
