@@ -118,10 +118,11 @@ class Router
 	 * Triggers the error page, developer has to give the HTTP error code
 	 * 
 	 * @param $error The HTTP error code
+	 * @return mixed
 	 */
 	public static function triggerErrorPage($error)
 	{
-		if (App::offsetExists('application.error.' . $error))
+		if (App::exists('application.error.' . $error))
 		{
 			return App::make('application.error.' . $error);
 		}

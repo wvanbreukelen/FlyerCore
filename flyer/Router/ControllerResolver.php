@@ -55,14 +55,14 @@ class ControllerResolver
 		return $params;
 	}
 
-	public function getResolvedAsset($key)
-	{
-		return $this->resolved[$key];
-	}
-
 	public function addResolvedAsset($key, $value)
 	{
 		$this->resolved[$key] = $value;
+	}
+
+	public function getResolvedAsset($key)
+	{
+		return $this->resolved[$key];
 	}
 
 	protected function resolveClassController()

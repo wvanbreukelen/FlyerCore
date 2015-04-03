@@ -296,9 +296,7 @@ class App extends Container
 	 */
 	public function abort($error, $exception = false)
 	{
-		echo Router::triggerErrorPage($error);
-
-		if ($exception) throw new RuntimeException("Aborted application, triggered error " . $error . "!"); 
+		exit(Router::triggerErrorPage($error));
 	}
 	
 	/**
