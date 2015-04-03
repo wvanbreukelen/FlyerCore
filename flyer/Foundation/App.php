@@ -248,7 +248,7 @@ class App extends Container
 	}
 
 	/**
-	 * Sets up the application environment
+	 * Set up the application environment
 	 */
 	public function setEnvironment()
 	{
@@ -307,17 +307,17 @@ class App extends Container
 	{
 		if (!$this->booted)
 		{
-			throw new Exception("Application cannot been shutdown, it isn't even booted :$");
+			throw new Exception("Application cannot been shutdown, it has not been booted!");
 		}
 
 		if ($this->exists('application.route'))
 		{
-			echo $this->make('application.route');
+			return $this->make('application.route');
+		} else if ($this->exists('application.error.404')) {
+			return Router::triggerErrorPage(404);
 		} else {
-			echo Router::triggerErrorPage(404);
+			throw new RuntimeException("Unable to return a response, please check app code");
 		}
-
-		return true;
 	}
 
 	/**

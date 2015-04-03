@@ -120,14 +120,9 @@ class Router
 	 */
 	public static function triggerErrorPage($error)
 	{
-		if (App::exists('application.error.' . $error))
-		{
-			return App::make('application.error.' . $error);
-		}
-
-		throw new Exception("Cannot trigger error page for error " . $error . "! Did you create a error page for this specified error?");
-		return null;
+		return App::make('application.error.' . $error);
 	}
+
 
 	/**
 	 * Create an routing event, by a closure
