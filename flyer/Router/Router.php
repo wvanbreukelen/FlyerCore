@@ -77,8 +77,10 @@ class Router
 
 	public function generateRouteEvent($route)
 	{
+
 		if (is_object($route) && $route instanceof Closure)
 		{
+
 			$this->handleClosure($route);
 		} else if (is_string($route)) {
 			$this->handleString($route);
@@ -149,8 +151,8 @@ class Router
 
 	protected function handleClosure($route)
 	{
-		App::bind('application.route', function () {
-			return $route;
+		App::bind('application.route', function () use ($route) {
+			return call_user_func($route);
 		});
 	}
 
