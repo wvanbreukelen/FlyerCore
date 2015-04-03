@@ -78,7 +78,6 @@ class PackageInstaller
 	/**
 	 * Write a setup reader for the package
 	 * @param  array  $config   The config for the package
-	 * @param  string  $basepath The package basepath
 	 * @param  boolean $write    Save the page to a file or not
 	 * @return string            The setup text itself
 	 */

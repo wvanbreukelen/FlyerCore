@@ -5,9 +5,7 @@ namespace Flyer\Components\Router;
 use Closure;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
-use Flyer\Components\Http;
 use Flyer\Components\Router\Route;
-use Flyer\Foundation\Events\Events;
 use App;
 
 /**
@@ -85,6 +83,7 @@ class Router
 	 * Sets the request, so the router can compare the routes with the current request
 	 *
 	 * @param  mixed
+	 * @param Request $request
 	 */
 	public function setRequest($request)
 	{
@@ -134,6 +133,7 @@ class Router
 	 * Create an routing event, by a closure
 	 *
 	 * @param  closure Route
+	 * @param Closure $route
 	 * 
 	 * @return  void
 	 */
@@ -149,6 +149,7 @@ class Router
 	 * Create an routing event, by a string
 	 *
 	 * @param  string Route
+	 * @param string $route
 	 *
 	 * @return void
 	 */
@@ -186,6 +187,7 @@ class Router
 	 * @param  string Request method
 	 * @param  string Listener for the route
 	 * @param  mixed Route, can be an array or a closure
+	 * @param string $method
 	 *
 	 * @return  void 
 	 */

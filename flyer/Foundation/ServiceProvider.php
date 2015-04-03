@@ -15,6 +15,9 @@ abstract class ServiceProvider
 
 	abstract public function register();
 
+	/**
+	 * @param string $package
+	 */
 	public function package($package, $namespace = null, $path = null)
 	{
 		//$namespace = $this->resolvePackageNamespace($package, $namespace);
@@ -39,11 +42,17 @@ abstract class ServiceProvider
 		// Processing controllers
 	}
 
+	/**
+	 * @param string $id
+	 */
 	public function share($id, $value = null)
 	{
 		return $this->app()->attach($id, $value);
 	}
 
+	/**
+	 * @param string $id
+	 */
 	public function make($id)
 	{
 		return $this->app()->make($id);
@@ -52,7 +61,7 @@ abstract class ServiceProvider
 	/**
 	 * Returns the instance of the application
 	 *
-	 * @return object The app
+	 * @return App The app
 	 */
 
 	public function app()
@@ -74,7 +83,7 @@ abstract class ServiceProvider
 	/**
 	 * Sets the application instance
 	 *
-	 * @param  \App $app The application
+	 * @param  App $app The application
 	 * @return  void
 	 */
 
