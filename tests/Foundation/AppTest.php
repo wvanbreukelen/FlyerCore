@@ -10,5 +10,7 @@ class AppTest extends PHPUnit_Framework_TestCase
 		$app = new App(new Config);
 
 		$this->assertTrue(is_object($app));
+
+		$app->boot();
 	}
 }
