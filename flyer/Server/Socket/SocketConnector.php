@@ -16,13 +16,13 @@ class SocketConnector
 
 	/**
 	 * The IO server to use
-	 * @var resource
+	 * @var object
 	 */
 	protected $server;
 
 	/**
 	 * The IO class to use
-	 * @var resource
+	 * @var object
 	 */
 	protected $ioclass;
 

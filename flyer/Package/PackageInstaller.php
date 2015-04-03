@@ -50,7 +50,7 @@ class PackageInstaller
 
 		// Write a simple setup package for the user
 		
-		$this->writeSetupPage($config, $this->basepath);
+		$this->writeSetupPage($config);
 	}
 
 	/**
@@ -82,7 +82,7 @@ class PackageInstaller
 	 * @param  boolean $write    Save the page to a file or not
 	 * @return string            The setup text itself
 	 */
-	protected function writeSetupPage($config, $basepath, $write = true)
+	protected function writeSetupPage($config, $write = true)
 	{
 		$text = "======================= Package install report for " . $config['name'] . " =======================\n\n";
 

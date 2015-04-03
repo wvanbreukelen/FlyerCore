@@ -7,7 +7,7 @@ class Package
 
 	protected $path;
 
-	protected $basepath = false;
+	protected $basepath;
 
 	/**
 	 * Set the current zip package path

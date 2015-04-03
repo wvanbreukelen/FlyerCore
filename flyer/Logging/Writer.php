@@ -10,6 +10,8 @@ use Monolog\Formatter\LineFormatter;
 use Psr\Log\LoggerInterface as PsrLoggerInterface;
 use Flyer\Components\Logging\Log as LogInterface;
 use Exception;
+use Jsonable;
+use Arrayable;
 
 class Writer
 {
@@ -202,9 +204,9 @@ class Writer
 	 * @param  string
 	 * @return mixed
 	 */
-	public function useSyslog($name = 'laravel', $level = 'debug')
+	public function useSyslog($name = 'flyer', $level = 'debug')
 	{
-		return $this->monolog->pushHandler(new SyslogHandler('flyer', LOG_USER, $level));
+		return $this->monolog->pushHandler(new SyslogHandler($name, LOG_USER, $level));
 	}
 
 	/**
