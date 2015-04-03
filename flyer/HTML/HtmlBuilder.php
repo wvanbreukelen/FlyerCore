@@ -26,7 +26,7 @@ class HtmlBuilder
 
 	public function script($url, $attributes = array(), $secure = null)
 	{
-		$attributes['src'] = 
+		
 	}
 
 	public function setBaseUrl($baseUrl)

@@ -13,15 +13,20 @@ class ViewReader
 
 	/**
 	 * The view finder instance
-	 * @var The view to read
+	 * @var object The view to read
 	 */
 	protected $viewFinder;
+
+	/**
+	 * The view you want to read
+	 * @var string
+	 */
 	protected $view;
 
 	/**
 	 * Construct a new view reader instance using a view finder instance and a given view
-	 * @param ViewFinder $finder The view finder instance
-	 * @param string     $view   The name of the view
+	 * @param object $finder The view finder instance
+	 * @param string $view   The name of the view
 	 */
 	public function __construct(ViewFinder $finder, $view)
 	{

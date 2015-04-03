@@ -73,12 +73,13 @@ class Config
 
         foreach (self::$resources as $resource)
         {
-            $results[] = $this->get($resource);
+            if (in_array($resource, $resources))
+            {
+               $results[] = $this->get($resource); 
+            }
         }
-
-        if (count($results) > 0) return $results;
-
-        throw new ConfigNotFoundException("Unable to get the specified resources in config");
+        
+        return $results;
     }
 
     /**

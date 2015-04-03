@@ -18,8 +18,8 @@ class SocketWamp extends Socket implements WampServerInterface
 
 	public function onError(ConnectionInterface $conn, Exception $e)
 	{
-		throw new Exception("Socket IO: An error has occurred: " $e->getMessage());
-
 		$conn->close();
+		
+		throw new Exception("Socket IO: An error has occurred: " . $e->getMessage());
 	}
 }

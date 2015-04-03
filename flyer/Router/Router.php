@@ -101,7 +101,6 @@ class Router
 		}
 
 		throw new Exception("Cannot set request, because the given request is not a instance of a SymfonyRequest or a array!");
-		return false;
 	}
 
 	/**

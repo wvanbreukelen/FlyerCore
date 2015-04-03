@@ -15,9 +15,9 @@ class Random
 	 * Construct a new random instance with a randomiser instance
 	 * @param objecr $randomiser The randomiser instance
 	 */
-	public function __construct($randomister)
+	public function __construct($randomiser)
 	{
-		$this->randomiser = $randomister;
+		$this->randomiser = $randomiser;
 	}
 
 	/**

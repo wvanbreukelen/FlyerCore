@@ -4,7 +4,6 @@ namespace Flyer\Components\Router;
 
 use Flyer\Foundation\ServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
-use App;
 
 class RouterServiceProvider extends ServiceProvider
 {

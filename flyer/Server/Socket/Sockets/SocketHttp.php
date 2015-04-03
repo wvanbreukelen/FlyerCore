@@ -17,8 +17,8 @@ class SocketHttp extends Socket implements HttpServerInterface
 
 	public function onError(ConnectionInterface $conn, Exception $e)
 	{
-		throw new Exception("Socket HTTP: An error has occurred: " $e->getMessage());
-
 		$conn->close();
+		
+		throw new Exception("Socket HTTP: An error has occurred: " . $e->getMessage());
 	}
 }

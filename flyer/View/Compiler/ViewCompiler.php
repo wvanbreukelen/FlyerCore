@@ -47,8 +47,7 @@ class ViewCompiler
 			return $this->compilers[$id]->compile($contents, $view, $values);
 		}
 
-		throw new Exception("ViewCompiler: Compiler " . $id . " does not exists!");
-		return false;
+		throw new Exception("Compiler " . $id . " does not exists!");
 	}
 
 	/**

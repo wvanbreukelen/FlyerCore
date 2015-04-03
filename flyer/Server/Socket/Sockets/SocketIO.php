@@ -27,8 +27,6 @@ class SocketIO extends Socket implements MessageComponentInterface
 
 	public function onMessage(ConnectionInterface $from, $payload) 
 	{
-		$clientAmout = count($this->clients) - 1;
-
 		foreach ($this->clients as $client)
 		{
 			if ($from !== $client)
@@ -45,8 +43,8 @@ class SocketIO extends Socket implements MessageComponentInterface
 
 	public function onError(ConnectionInterface $conn, Exception $e)
 	{
-		throw new Exception("Socket IO: An error has occurred: " . $e->getMessage());
-
 		$conn->close();
+		
+		throw new Exception("Socket IO: An error has occurred: " . $e->getMessage());
 	}
 }

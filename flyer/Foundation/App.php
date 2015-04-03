@@ -159,7 +159,6 @@ class App extends Container
 		}
 
 		throw new Exception("Cannot remove [" . $id . "] from the container, because this asset does not exists!");
-		return false;
 	}
 
 	/**
@@ -294,7 +293,7 @@ class App extends Container
 	 * @param  boolean $exception Throw a RuntimeException
 	 * @return mixed
 	 */
-	public function abort($error, $exception = false)
+	public function abort($error)
 	{
 		exit(Router::triggerErrorPage($error));
 	}
@@ -309,8 +308,6 @@ class App extends Container
 		if (!$this->booted)
 		{
 			throw new Exception("Application cannot been shutdown, it isn't even booted :$");
-
-			return false;
 		}
 
 		if ($this->exists('application.route'))

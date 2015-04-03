@@ -6,6 +6,11 @@ use Flyer\Components\Server\Socket\SocketConnector;
 
 class Socket
 {
+	/**
+	 * The connector instance
+	 * @var resource
+	 */
+	public $connector;
 
 	/**
 	 * Create the socket
@@ -21,8 +26,6 @@ class Socket
 		if (!is_object($socket))
 		{
 			throw new Exception("Cannot create socket, please give a socket object");
-
-			return false;
 		}
 
 		$this->connector->connect($socket, $force);

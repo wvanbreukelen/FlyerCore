@@ -4,7 +4,7 @@ namespace Flyer\Components\Logging;
 
 use Flyer\Components\Config;
 use Flyer\Components\Logging\Writer;
-use DebuggerException;
+use Flyer\Components\Logging\DebuggerException;
 
 class Debugger
 {

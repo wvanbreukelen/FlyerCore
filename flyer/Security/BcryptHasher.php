@@ -52,7 +52,6 @@ class BcryptHasher {
 	 *
 	 * @param  string  $value
 	 * @param  string  $hashedValue
-	 * @param  array   $options
 	 * @return bool
 	 */
 	public function check($value, $hashedValue)

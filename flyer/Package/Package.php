@@ -7,17 +7,17 @@ class Package
 
 	protected $path;
 
-	protected $basepath;
+	protected $basepath = false;
 
 	/**
-	 * Set a package path
-	 * @param string $path Package path
+	 * Set the current zip package path
+	 * @param string $path Package zip path
 	 */
 	public function setPath($path)
 	{
 		$this->path = $path;
 
-		$this->guessBasePath();
+		$this->guessBasePath($this->guessPackageName());
 	}
 
 	/**
@@ -26,18 +26,18 @@ class Package
 	 */
 	public function guessPackageName()
 	{
-		$explod = explode('.zip', $this->path);
+		$pieces = explode('.zip', $this->path);
 
-		return $explod[count($explod) - 1];
+		return $pieces[count($pieces) - 1];
 	}
 
 	/**
 	 * Guess the package base path
 	 * @return string The basepath used in the package
 	 */
-	public function guessBasePath()
+	public function guessBasePath($name)
 	{
-		$this->basepath = $this->path . ROOT . 'workbench' . DS;
+		$this->basepath = getcwd() . '..\\workbench' . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR;
 
 		return $this->basepath;
 	}

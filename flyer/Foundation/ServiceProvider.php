@@ -60,22 +60,16 @@ abstract class ServiceProvider
 		return self::$app;
 	}
 
+	/**
+	 * Guess the path of a installed package
+	 * @return String The package class
+	 */
 	protected function guessPackagePath()
 	{
 		$path = (new ReflectionClass($this))->getFileName();
 
 		return realpath(dirname($path . '/../../'));
 	}
-
-	/**protected function resolvePackageNamespace($package, $namespace)
-	{
-		if (is_null($namespace))
-		{
-			list($vendor, $namespace) = explode('/', $package);
-		}
-
-		return $vendor;
-	}**/
 
 	/**
 	 * Sets the application instance

@@ -273,6 +273,7 @@ class Client
 		foreach ($buffer as $child)
 		{
 			$chunks = preg_split("/\s+/", $child);
+			$item = array();
 
 			list($item['rights'],
 				$item['number'],

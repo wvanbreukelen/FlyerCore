@@ -38,8 +38,6 @@ class Events
 					return $event();
 				} else {
 					throw new Exception("Events: Failed to find event, named '" . $eventTitle . "'!");
-
-					return false;
 				}
 			}
 		}

@@ -66,8 +66,8 @@ class ViewEngine
 
 	/**
 	 * Resolve the path for any given view
-	 * @param  [type] $view [description]
-	 * @return [type]       [description]
+	 * @param  string $view The name of the view
+	 * @return string       The resolved view path
 	 */
 	protected function resolveViewPath($view)
 	{

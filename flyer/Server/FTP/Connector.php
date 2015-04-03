@@ -9,7 +9,7 @@ class Connector
 
 	/**
 	 * The connector instance
-	 * @var object
+	 * @var resource
 	 */
 	public $connector;
 

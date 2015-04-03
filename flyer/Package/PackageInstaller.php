@@ -69,14 +69,14 @@ class PackageInstaller
 	 */
 	protected function runPackageInstallScript($path)
 	{
-		if (File::exists($path)
+		if (File::exists($path))
 		{
-			include($path);
+			include_once($path);
 		}
 	}
 
 	/**
-	 * Write a setup package for the package
+	 * Write a setup reader for the package
 	 * @param  array  $config   The config for the package
 	 * @param  string  $basepath The package basepath
 	 * @param  boolean $write    Save the page to a file or not

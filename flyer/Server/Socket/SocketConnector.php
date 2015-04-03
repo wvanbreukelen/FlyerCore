@@ -8,8 +8,23 @@ use Ratchet\Server\IoServer;
 class SocketConnector
 {
 
+	/**
+	 * The port to connect with
+	 * @var integer
+	 */
 	protected $port;
+
+	/**
+	 * The IO server to use
+	 * @var resource
+	 */
 	protected $server;
+
+	/**
+	 * The IO class to use
+	 * @var resource
+	 */
+	protected $ioclass;
 
 	/**
 	 * The Socket connector needs a port to create a connection

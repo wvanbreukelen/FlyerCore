@@ -200,7 +200,7 @@ class Writer
 	 * Use the System log handler
 	 * @param  string
 	 * @param  string
-	 * @return [type]
+	 * @return mixed
 	 */
 	public function useSyslog($name = 'laravel', $level = 'debug')
 	{

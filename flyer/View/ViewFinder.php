@@ -65,7 +65,6 @@ class ViewFinder
 		}
 
 		throw new Exception("Cannot find path for " . $view . " view, make sure that you added the right paths!");
-		return false;
 	}
 
 	/**
