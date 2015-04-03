@@ -6,8 +6,9 @@ use Closure;
 use ArrayAccess;
 use ReflectionClass;
 use ReflectionParameter;
+use Exception;
 
-class BindingResolutionException extends \Exception {}
+class BindingResolutionException extends Exception {}
 
 class Container implements ArrayAccess {
 

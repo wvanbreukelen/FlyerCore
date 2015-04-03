@@ -36,39 +36,6 @@ class Router
 	private $request;
 
 	/**
-	 * Add a route to the router
-	 *
-	 * @param  string Request method
-	 * @param  string Listener for the route
-	 * @param  mixed Route, can be an array or a closure
-	 *
-	 * @return  void 
-	 */
-
-	public static function addRoute($method, $listener, $route)
-	{
-		$salt = rand(0, 999999);
-		
-		$listener = ltrim($listener, '/');
-
-		self::$routes[$listener . '.?.' . $salt] = array(
-			'method' => $method,
-			'route' => $route
-		);
-	}
-
-	/**
-	 * Returns all routes that where binded to the router
-	 *
-	 * @return array
-	 */
-
-	public static function getRoutes()
-	{
-		return self::$routes;
-	}
-
-	/**
 	 * Resolve the route of the given request
 	 *
 	 * @return  void
@@ -80,7 +47,6 @@ class Router
 		{
 			foreach (self::$routes as $listener => $route)
 			{
-				$listener = $this->resolveListener($listener);
 				$uri = explode('/', ltrim($this->request['path'], '/'));
 				
 				if ($this->request['method'] == $route['method'])
@@ -164,14 +130,13 @@ class Router
 
 	public static function triggerErrorPage($error)
 	{
-		$asset = 'application.error.' . $error;
-
-		if (App::offsetExists($asset))
+		if (App::offsetExists('application.error.' . $error))
 		{
 			return App::make('application.error.' . $error);
 		}
 
 		throw new Exception("Cannot trigger error page for error " . $error . "! Did you create a error page for this specified error?");
+		return null;
 	}
 
 	/**
@@ -199,23 +164,11 @@ class Router
 
 	protected function handleString($route)
 	{
-		$route = $this->resolveController($route, App::access('request.get'));
+		$route = $this->resolveController($route, App::make('request.get'));
 
 		App::bind('application.route', function () use ($route) {
 			return call_user_func_array(array(new $route['controller'], $route['method']), $route['params']);
 		});
-	}
-
-	/**
-	 * Resolve the listener out a "salted" listener
-	 *
-	 * @param  string The listener
-	 * @return  string The resolved listener
-	 */
-
-	protected function resolveListener($listener)
-	{
-		return explode('.?.', $listener)[0];
 	}
 
 	/**
@@ -229,15 +182,42 @@ class Router
 	protected function resolveController($route, $request)
 	{
 		$resolver = new ControllerResolver($route, $request);
-
-		//App::attach('route.parameters', $resolver->generateArgumentList());
-		//App::attach('route.controller', $resolver->getResolvedAsset('controller'));
-		//App::attach('route.method', $resolver->getResolvedAsset('method'));
 		
 		return array(
 			'controller' => $resolver->getResolvedAsset('controller'),
 			'method'     => $resolver->getResolvedAsset('method'),
 			'params'     => $resolver->generateArgumentList()
 		);
+	}
+
+	/**
+	 * Add a route to the router
+	 *
+	 * @param  string Request method
+	 * @param  string Listener for the route
+	 * @param  mixed Route, can be an array or a closure
+	 *
+	 * @return  void 
+	 */
+
+	public static function addRoute($method, $listener, $route)
+	{
+		$listener = ltrim($listener, '/');
+
+		self::$routes[$listener] = array(
+			'method' => $method,
+			'route' => $route
+		);
+	}
+
+	/**
+	 * Returns all routes that where binded to the router
+	 *
+	 * @return array
+	 */
+
+	public static function getRoutes()
+	{
+		return self::$routes;
 	}
 }

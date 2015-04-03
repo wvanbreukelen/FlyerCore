@@ -3,6 +3,7 @@
 namespace Flyer\Components\Filesystem;
 
 use Exception;
+use Flyer\Components\Filesystem\FilesystemException;
 
 class File
 {
@@ -28,7 +29,7 @@ class File
 
 	public function contents($path)
 	{
-		return ($this->exists($path)) ? file_get_contents($path) : false;
+		return file_get_contents($path);
 	}
 	
 	/**
@@ -55,7 +56,7 @@ class File
 		{
 			file_put_contents($path, $data, FILE_APPEND);
 		} else {
-			throw new \Exception();
+			throw new FilesystemException("Cannot append to " . $path . ", path does not exists");
 		}
 	}
 	
@@ -79,6 +80,17 @@ class File
 
 	public function move($path, $target)
 	{
+		$this->rename($path, $target);
+	}
+
+	/**
+	 * Rename a file
+	 * @param  string $path   The path
+	 * @param  string $target The target path
+	 * @return mixed
+	 */
+	public function rename($path, $target)
+	{
 		if ($this->exists($path)) rename($path, $target);
 	}
 
@@ -92,7 +104,7 @@ class File
 	{
 		$zip = (new ZipArchive)->open($path);
 
-		if ($zip === true)
+		if ($zip)
 		{
 			$zip->extractTo($to);
 			$zip->close();

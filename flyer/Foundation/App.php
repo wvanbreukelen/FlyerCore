@@ -134,13 +134,18 @@ class App extends Container
 		throw new Exception("Cannot access [" . $id . "] in application container!");
 	}
 
+	/**
+	 * Check if a asset exists in the container
+	 * @param  string $id The id
+	 * @return bool       Asset exists
+	 */
 	public function exists($id)
 	{
 		return (isset($this[$id]));
 	}
 
 	/**
-	 * Removes a value that is attached to the application container
+	 * Remove a value that is attached to the application container
 	 *
 	 * @var  string
 	 * @return  bool
@@ -335,18 +340,9 @@ class App extends Container
 	 *
 	 * @return bool The booting status
 	 */
-	public function booted()
+	public function isBooted()
 	{
 		return $this->booted;
-	}
-
-	/**
-	 * Get the configuration object
-	 * @return object /Flyer/Components/Config
-	 */
-	public function getConfig()
-	{
-		return $this->config;
 	}
 
 	/**

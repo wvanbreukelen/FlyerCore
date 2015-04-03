@@ -10,12 +10,14 @@ class Config
 
     /**
      * All the saves resources
-     * @var array
+     * 
+     * @param array
      */
     protected static $resources = array();
 
     /**
      * Import any given config file
+     * 
      * @param  string $configFile The path
      * @return mixed             
      */

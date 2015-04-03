@@ -9,8 +9,16 @@ use DebuggerException;
 class Debugger
 {
 
+	/**
+	 * The points that have been created by the application
+	 * @var array
+	 */
 	protected $points = array();
 
+	/**
+	 * The config instance used by the application
+	 * @var object
+	 */
 	protected $config;
 
 	/**

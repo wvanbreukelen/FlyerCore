@@ -14,7 +14,7 @@ class LoggingServiceProvider extends ServiceProvider
 
 	public function register()
 	{
-		// Create a new file Logger
+		// Create a new file logger
 
 		$this->logger = new Writer(
 			new Logger('flyer')
@@ -31,7 +31,7 @@ class LoggingServiceProvider extends ServiceProvider
 
 	public function boot()
 	{
-		// Check if the application is in debug mode, if so, make the current debugger instance and process the log inputs
+		// Check if the application is in debug mode, if so, make the current debugger instance and process the log input
 
 		if ($this->app()->access('env')['debug'] == true)
 		{
