@@ -33,6 +33,7 @@ class Package
 
 	/**
 	 * Guess the package base path
+	 * @param string $name
 	 * @return string The basepath used in the package
 	 */
 	public function guessBasePath($name)

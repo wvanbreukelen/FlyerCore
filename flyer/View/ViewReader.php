@@ -25,7 +25,7 @@ class ViewReader
 
 	/**
 	 * Construct a new view reader instance using a view finder instance and a given view
-	 * @param object $finder The view finder instance
+	 * @param ViewFinder $finder The view finder instance
 	 * @param string $view   The name of the view
 	 */
 	public function __construct(ViewFinder $finder, $view)
