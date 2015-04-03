@@ -13,26 +13,22 @@ use App;
 /**
  * The router matches the developer own routes and returns a request for that route
  */
-
 class Router
 {
 
 	/**
 	 * All of the routes
 	 */
-
 	protected static $routes = array();
 
 	/**
 	 * All for the method that can been used
 	 */
-
 	protected $methods = array("POST", "GET", "DELETE", "UPDATE");
 
 	/**
 	 * The request to match the routes
 	 */
-
 	private $request;
 
 	/**
@@ -40,7 +36,6 @@ class Router
 	 *
 	 * @return  void
 	 */
-
 	public function route()
 	{
 		if (in_array($this->request['method'], $this->methods))
@@ -74,18 +69,15 @@ class Router
 	 *
 	 * @return  void
 	 */
-
 	public function generateRouteEvent($route)
 	{
-
 		if (is_object($route) && $route instanceof Closure)
 		{
-
 			$this->handleClosure($route);
 		} else if (is_string($route)) {
 			$this->handleString($route);
 		} else {
-			throw new Exception("Cannot determine variable type of route");
+			throw new Exception("Cannot determine variable type of route, has to be a string or closure");
 		}
 	}
 	
@@ -94,7 +86,6 @@ class Router
 	 *
 	 * @param  mixed
 	 */
-
 	public function setRequest($request)
 	{
 		if ($request instanceof Request)
@@ -118,7 +109,6 @@ class Router
 	 *
 	 * @return  mixed
 	 */
-	
 	public function getRequest()
 	{
 		return $this->request;
@@ -129,7 +119,6 @@ class Router
 	 * 
 	 * @param $error The HTTP error code
 	 */
-
 	public static function triggerErrorPage($error)
 	{
 		if (App::offsetExists('application.error.' . $error))
@@ -148,10 +137,10 @@ class Router
 	 * 
 	 * @return  void
 	 */
-
 	protected function handleClosure($route)
 	{
-		App::bind('application.route', function () use ($route) {
+		App::bind('application.route', function () use ($route) 
+		{
 			return call_user_func($route);
 		});
 	}
@@ -163,12 +152,12 @@ class Router
 	 *
 	 * @return void
 	 */
-
 	protected function handleString($route)
 	{
 		$route = $this->resolveController($route, App::make('request.get'));
 
-		App::bind('application.route', function () use ($route) {
+		App::bind('application.route', function () use ($route) 
+		{
 			return call_user_func_array(array(new $route['controller'], $route['method']), $route['params']);
 		});
 	}
@@ -180,12 +169,11 @@ class Router
 	 *
 	 * @return  array Resolved controller
 	 */
-
 	protected function resolveController($route, $request)
 	{
 		$resolver = new ControllerResolver($route, $request);
 		
-		return array(
+		return array (
 			'controller' => $resolver->getResolvedAsset('controller'),
 			'method'     => $resolver->getResolvedAsset('method'),
 			'params'     => $resolver->generateArgumentList()
@@ -201,7 +189,6 @@ class Router
 	 *
 	 * @return  void 
 	 */
-
 	public static function addRoute($method, $listener, $route)
 	{
 		$listener = ltrim($listener, '/');
@@ -217,7 +204,6 @@ class Router
 	 *
 	 * @return array
 	 */
-
 	public static function getRoutes()
 	{
 		return self::$routes;
