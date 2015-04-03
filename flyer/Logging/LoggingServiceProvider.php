@@ -22,7 +22,7 @@ class LoggingServiceProvider extends ServiceProvider
 
 		// Set the files that have to been used in the logger
 
-		$this->logger->useFiles(ROOT . $this->app()->access('env')['defaultDebugFolder']);
+		$this->logger->useFiles(ROOT . $this->app()->access('env')['defaultDebugFile']);
 
 		// Share the log instance to the application container
 
