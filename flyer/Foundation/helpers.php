@@ -1,6 +1,8 @@
 <?php
 
-// 'base', 'bindings', 'config', 'debug', 'storage', 'views'
+/**
+ * The helper functions all available in the whole application, when requiring them
+ */
 
 use Flyer\App;
 

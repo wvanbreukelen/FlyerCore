@@ -16,7 +16,6 @@ use Flyer\Components\Router\Router;
 /**
  * The main application object, simply the core of your application. Extends the Illuminate container, for binding instances and stuff
  */
-
 class App extends Container
 {
 
@@ -260,6 +259,10 @@ class App extends Container
 		}
 	}
 
+	/**
+	 * Set the application base path
+	 * @param String $basePath The basepath
+	 */
 	public function setBasePath($basePath)
 	{
 		if (is_null($basePath))
@@ -272,6 +275,10 @@ class App extends Container
 		$this->bindPathsInContainer();
 	}
 
+	/**
+	 * Bind all needed paths into the container
+	 * @return mixed
+	 */
 	protected function bindPathsInContainer()
 	{
 		$this->instance('path', $this->path());
@@ -282,41 +289,73 @@ class App extends Container
 		}
 	}
 
+	/**
+	 * Get the application base path
+	 * @return string The app base path
+	 */
 	public function path()
 	{
 		return $this->basePath . 'app' . DIRECTORY_SEPARATOR;
 	}
 
+	/**
+	 * Get the application path
+	 * @return string The app path
+	 */
 	public function appPath()
 	{
 		return $this->path();
 	}
 
+	/**
+	 * Get the base path
+	 * @return string Base path
+	 */
 	public function basePath()
 	{
 		return $this->basePath;
 	}
 
+	/**
+	 * Get the bindings path
+	 * @return string Bindings path
+	 */
 	public function bindingsPath()
 	{
 		return $this->path() . 'bindings' . DIRECTORY_SEPARATOR;
 	}
 
+	/**
+	 * Get the config path
+	 * @return string Config path
+	 */
 	public function configPath()
 	{
 		return $this->path() . 'config' . DIRECTORY_SEPARATOR;
 	}
 
+	/**
+	 * Get the debug path
+	 * @return string Debug path
+	 */
 	public function debugPath()
 	{
 		return $this->path() . 'debug' . DIRECTORY_SEPARATOR;
 	}
 
+	/**
+	 * Get the storage path
+	 * @return string Storage path
+	 */
 	public function storagePath()
 	{
 		return $this->path() . 'storage' . DIRECTORY_SEPARATOR;
 	}
 
+	/**
+	 * The views path
+	 * @return string Views path
+	 */
 	public function viewsPath()
 	{
 		return $this->path() . 'views' . DIRECTORY_SEPARATOR;
@@ -404,6 +443,10 @@ class App extends Container
 		return $this->booted;
 	}
 
+	/**
+	 * Set the application config handler
+	 * @param Config $config Config handler
+	 */
 	public function setConfig(Config $config)
 	{
 		$this->config = $config;
@@ -414,7 +457,6 @@ class App extends Container
 	 *
 	 * @return  App The application instance
 	 */
-	
 	public static function getInstance()
 	{
 		return self::$app;
