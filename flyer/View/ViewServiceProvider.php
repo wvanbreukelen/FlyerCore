@@ -19,8 +19,8 @@ class ViewServiceProvider extends ServiceProvider
 
 	public function register()
 	{
-		$this->twig = new TwigEnvironment(new TwigFilesystem(APP . 'views' . DS), array(
-			'cache' => APP . 'storage' . DS . 'cache' . DS,
+		$this->twig = new TwigEnvironment(new TwigFilesystem(views_path()), array(
+			'cache' => storage_path() . 'cache' . DIRECTORY_SEPARATOR,
 			'auto_reload' => true
 		));
 		
@@ -33,6 +33,6 @@ class ViewServiceProvider extends ServiceProvider
 
 	public function boot()
 	{
-		$this->make('application.view.finder')->addViewsPath(APP . 'views' . DS);
+		$this->make('application.view.finder')->addViewsPath(views_path());
 	}
 }

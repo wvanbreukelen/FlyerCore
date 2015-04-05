@@ -20,6 +20,8 @@ use Flyer\Components\Router\Router;
 class App extends Container
 {
 
+	public $basePath;
+
 	/**
 	 * Holds the config object
 	 */
@@ -48,17 +50,17 @@ class App extends Container
 	/**
 	 * The application instance
 	 */
-	protected $app;
+	protected static $app;
 
 	/**
 	 * Construct
 	 *
 	 * @param object The config object the application has to use
 	 */
-	public function __construct(Config $config)
+	public function __construct($basePath = null)
 	{
-		$this->app = $this;
-		$this->config = $config;
+		$this->setBasePath($basePath);
+		self::$app = $this;
 
 		ServiceProvider::setApp($this);
 	}
@@ -258,6 +260,68 @@ class App extends Container
 		}
 	}
 
+	public function setBasePath($basePath)
+	{
+		if (is_null($basePath))
+		{
+			$this->basePath = realpath(getcwd() . '/../') . DIRECTORY_SEPARATOR;
+		} else {
+			$this->basePath = rtrim($basePath, '/') . DIRECTORY_SEPARATOR;
+		}
+		
+		$this->bindPathsInContainer();
+	}
+
+	protected function bindPathsInContainer()
+	{
+		$this->instance('path', $this->path());
+
+		foreach (['app', 'base', 'bindings', 'config', 'debug', 'storage', 'views'] as $path)
+		{
+			$this->instance('path.' . $path, $this->{$path . 'Path'}());
+		}
+	}
+
+	public function path()
+	{
+		return $this->basePath . 'app' . DIRECTORY_SEPARATOR;
+	}
+
+	public function appPath()
+	{
+		return $this->path();
+	}
+
+	public function basePath()
+	{
+		return $this->basePath;
+	}
+
+	public function bindingsPath()
+	{
+		return $this->path() . 'bindings' . DIRECTORY_SEPARATOR;
+	}
+
+	public function configPath()
+	{
+		return $this->path() . 'config' . DIRECTORY_SEPARATOR;
+	}
+
+	public function debugPath()
+	{
+		return $this->path() . 'debug' . DIRECTORY_SEPARATOR;
+	}
+
+	public function storagePath()
+	{
+		return $this->path() . 'storage' . DIRECTORY_SEPARATOR;
+	}
+
+	public function viewsPath()
+	{
+		return $this->path() . 'views' . DIRECTORY_SEPARATOR;
+	}
+
 	/**
 	 * Register any given facade
 	 * @param  string $alias The alias for this facade
@@ -340,14 +404,19 @@ class App extends Container
 		return $this->booted;
 	}
 
+	public function setConfig(Config $config)
+	{
+		$this->config = $config;
+	}
+
 	/**
 	 * Get the current application instance
 	 *
 	 * @return  App The application instance
 	 */
 	
-	public function getInstance()
+	public static function getInstance()
 	{
-		return $this;
+		return self::$app;
 	}
 }
