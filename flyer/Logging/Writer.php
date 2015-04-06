@@ -161,6 +161,7 @@ class Writer
 	 * @param  string
 	 * @param  string
 	 * @param string $message
+	 * @param string $level
 	 * @return mixed
 	 */
 	public function writeLog($level, $message, $context)
@@ -226,6 +227,7 @@ class Writer
 	/**
 	 * Format a logging message
 	 * @param  mixed
+	 * @param string $message
 	 * @return mixed
 	 */
 	protected function formatMessage($message)
