@@ -162,6 +162,7 @@ class Router
 	 * Resolve the controller and method of a given route
 	 *
 	 * @param  array Route
+	 * @param string $route
 	 *
 	 * @return  array Resolved controller
 	 */
