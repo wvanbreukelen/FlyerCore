@@ -3,7 +3,7 @@
 namespace Flyer\Components\Router;
 
 use Closure;
-use Exception;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Flyer\Components\Router\Route;
 use App;
@@ -75,7 +75,7 @@ class Router
 		} else if (is_string($route)) {
 			$this->handleString($route);
 		} else {
-			throw new Exception("Cannot determine variable type of route, has to be a string or closure");
+			throw new RuntimeException("Cannot determine variable type of route, has to be a string or closure");
 		}
 	}
 	
@@ -99,7 +99,7 @@ class Router
 			return;
 		}
 
-		throw new Exception("Cannot set request, because the given request is not a instance of a SymfonyRequest or a array!");
+		throw new RuntimeException("Cannot set request, because the given request is not a instance of a SymfonyRequest or a array!");
 	}
 
 	/**
@@ -136,6 +136,8 @@ class Router
 	{
 		App::bind('application.route', function () use ($route) 
 		{
+			// Call the closure that corresponds to the correct route
+
 			return call_user_func($route);
 		});
 	}
@@ -154,6 +156,8 @@ class Router
 
 		App::bind('application.route', function () use ($route) 
 		{
+			// Call the controller with the controller class en method, with the resolved parameters
+
 			return call_user_func_array(array(new $route['controller'], $route['method']), $route['params']);
 		});
 	}
