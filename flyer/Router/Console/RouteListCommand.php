@@ -17,8 +17,8 @@ class RouteListCommand extends Command
 			array("arguments" => array()
 		));
 
-		$this->setDescription("The general router command");
-		$this->setSummary("The general router command");
+		$this->setDescription("Lists all registered routes, with their arguments, which are implemented into the application");
+		$this->setSummary("Lists all registered routes");
 	}
 
 	public function action()
@@ -28,7 +28,7 @@ class RouteListCommand extends Command
 		foreach ($routes as $callsign => $route)
 		{
 			$this->output->writeln();
-			$this->output->success(ucfirst(explode('.?.', $callsign)[0]) . ":");
+			$this->output->success(ucfirst(explode('.?.', strtolower($callsign))[0]) . ":");
 
 			foreach ($route as $id => $element)
 			{

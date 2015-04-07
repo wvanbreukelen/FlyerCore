@@ -18,8 +18,8 @@ class SimulateRouteCommand extends Command
 			array("arguments" => array("route", "method")
 		));
 
-		$this->setDescription("With this command you can simulate your routes very easy.");
-		$this->setSummary("Simulate a http route");
+		$this->setDescription("With this command you can simulate your own routes very easy");
+		$this->setSummary("Simulate a http route request");
 	}
 
 	public function action()
@@ -41,14 +41,14 @@ class SimulateRouteCommand extends Command
 
 		if (!is_array($route))
 		{
-			$this->output->error("Cannot simulate " . $this->getArgument("route") . " route, because it does not exists!");
+			$this->output->error("Unable to simulate " . ucfirst($this->getArgument("route")) . " route, because the route does not exists!");
 
 			return;
 		}
 
 		if (strtolower($route['method']) != strtolower($method))
 		{
-			$this->output->error("Cannot simulate " . $this->getArgument("route") . " route, because it does not matches with the request method");
+			$this->output->error("Unable to simulate " . ucfirst($this->getArgument("route")) . " route, because the route does not match with the HTTP request method!");
 
 			return;
 		}
@@ -58,7 +58,7 @@ class SimulateRouteCommand extends Command
 		$output = Events::trigger('application.route');
 
 		$this->output->writeln();
-		$this->output->success("Route Simulation for " . ucfirst($this->getArgument("route")));
+		$this->output->success("Route simulation for " . ucfirst($this->getArgument("route")));
 		$this->output->writeln();
 		$this->output->writeln();
 
@@ -70,19 +70,19 @@ class SimulateRouteCommand extends Command
 			$reflector = new ReflectionClass($controller);
 			$controllerLoc = explode(ROOT, $reflector->getFileName())[1];
 
-			$this->output->writeln("Route: ");
-			$this->output->success("    [http] => " . $route['method']);
-			$this->output->success("    [controller] => " . $controller);
-			$this->output->success("    [controllerLocation] => " . $controllerLoc);
-			$this->output->success("    [method] => " . $method);
+			$this->output->writeln("ROUTE: ");
+			$this->output->success("    HTTP method -> " . $route['method']);
+			$this->output->success("    Controller -> " . $controller);
+			$this->output->success("    Controller location -> " . $controllerLoc);
+			$this->output->success("    Method => " . $method);
 			$this->output->writeln();
 		} else {
-			$this->output->writeln("Route: ");
-			$this->output->writeln("    [http] => " . $route['method']);
+			$this->output->writeln("ROUTE: ");
+			$this->output->writeln("    HTTP method => " . $route['method']);
 			$this->output->writeln();
 		}
 
-		$this->output->writeln("Output: ");
+		$this->output->writeln("OUTPUT: ");
 		$this->output->writeln();
 		$this->output->info("    " . $output);
 
