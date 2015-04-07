@@ -15,7 +15,7 @@ class Router
 {
 
 	/**
-	 * All of the routes
+	 * All of the routes that have been registered into this router
 	 */
 	protected static $routes = array();
 
@@ -25,7 +25,7 @@ class Router
 	protected $methods = array("POST", "GET", "DELETE", "UPDATE");
 
 	/**
-	 * The request to match the routes
+	 * The current HTTP request
 	 */
 	private $request;
 

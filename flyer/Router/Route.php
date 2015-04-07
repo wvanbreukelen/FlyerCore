@@ -5,7 +5,6 @@ namespace Flyer\Components\Router;
 /**
  * The Route class responds to the Router
  */
-
 class Route
 {
 	/**
