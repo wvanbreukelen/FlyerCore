@@ -23,7 +23,7 @@ class Config
      */
     public function import($configFile)
     {
-        if (is_array($resource = require($configFile)))
+        if (is_array($resource = require_once($configFile)))
         {
             self::$resources[] = $resource;
             return;
