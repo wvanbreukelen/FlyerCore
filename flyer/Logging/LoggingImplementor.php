@@ -9,23 +9,30 @@ use Monolog\Logger;
 class LoggingImplementor extends Implementor
 {
 
-	private $logger;
+	private $writer, $debugger;
 
 	public function register()
 	{
 		$this->createWriter();
 
-		$debugger = App::getInstance()->debugger();
+		$this->debugger = App::getInstance()->debugger();
 
-		$this->getExceptionizer()->addExceptionAction(array($this->logger, 'alert'));
+		$this->getExceptionizer()->addExceptionAction(array($this, 'archive'));
+	}
+
+	public function archive($exception)
+	{
+		$this->debugger->process($this->writer);
+
+		$this->writer->warning($exception);
 	}
 
 	public function createWriter()
 	{
-		$this->logger = new Writer(
+		$this->writer = new Writer(
 			new Logger('flyer')
 		);
 
-		$this->logger->useFiles(base_path() . App::getInstance()->access('env')['defaultDebugFile']);
+		$this->writer->useFiles(base_path() . App::getInstance()->access('env')['defaultDebugFile']);
 	}
 }
