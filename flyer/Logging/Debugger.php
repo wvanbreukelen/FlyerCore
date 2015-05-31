@@ -49,6 +49,14 @@ class Debugger
 		);
 	}
 
+	public function exception($exception)
+	{
+		$this->points[] = array(
+			'message' => $exception,
+			'level' => 'debug'
+		);	
+	}
+
 	/**
 	 * Add a flag message to the debugger
 	 * @param  mixed
@@ -66,7 +74,15 @@ class Debugger
 	 */
 	public function error($mixed)
 	{
-		$this->point($mixed, 'error');
+		if (is_object($mixed))
+		{
+			if (method_exists($mixed, 'getMessage'))
+			{
+				$this->point($mixed, 'error');
+			}
+		} else if (is_string($mixed)) {
+			$this->point($mixed, 'error');
+		}
 	}
 
 	/**
