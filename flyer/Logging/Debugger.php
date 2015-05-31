@@ -92,9 +92,24 @@ class Debugger
 	 */
 	public function process(Writer $writer)
 	{
-		foreach ($this->points as $id => $point)
+		if (isset($this->points) && count($this->points) > 0)
 		{
-			$writer->{$point['level']}($point['message']);
+			foreach ($this->points as $id => $point)
+			{
+				$writer->{$point['level']}($point['message']);
+			}
+
+			// Clean the cache so the points are not processed twice
+			$this->clean();
 		}
+	}
+
+	/**
+	 * Clean the points cache of the debugger
+	 * @return mixed
+	 */
+	public function clean()
+	{
+		unset($this->points);
 	}
 }
