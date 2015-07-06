@@ -4,7 +4,7 @@ namespace Flyer\Components\Router\Console;
 
 use Commandr\Core\Command;
 use Flyer\Components\Router\Router;
-use Flyer\Foundation\Events\Events;
+use App;
 use ReflectionClass;
 
 class SimulateRouteCommand extends Command
@@ -13,7 +13,6 @@ class SimulateRouteCommand extends Command
 
 	public function prepare()
 	{
-
 		$this->setConfig(
 			array("arguments" => array("route", "method")
 		));
@@ -30,7 +29,7 @@ class SimulateRouteCommand extends Command
 		$routes = Router::getRoutes();
 		$router = new Router;
 
-		// Resolve the listener
+		// Resolves the listener
 		foreach ($routes as $id => $action)
 		{
 			if (explode('.?.', $id)[0] == $route)
@@ -55,35 +54,38 @@ class SimulateRouteCommand extends Command
 
 		$router->generateRouteEvent($route['route']);
 
-		$output = Events::trigger('application.route');
+		$output = App::make('application.route');
 
 		$this->output->writeln();
 		$this->output->success("Route simulation for " . ucfirst($this->getArgument("route")));
 		$this->output->writeln();
 		$this->output->writeln();
 
-		if (strpos($route['route'], '@') !== false)
+
+
+		if (is_string($route['route']) && strpos($route['route'], '@') !== false)
 		{
 			$controller = explode('@', $route['route'])[0];
 			$method = explode('@', $route['route'])[1];
 
 			$reflector = new ReflectionClass($controller);
-			$controllerLoc = explode(ROOT, $reflector->getFileName())[1];
+			$controllerLocation = explode(base_path(), $reflector->getFileName())[1];
 
 			$this->output->writeln("ROUTE: ");
 			$this->output->success("    HTTP method -> " . $route['method']);
 			$this->output->success("    Controller -> " . $controller);
-			$this->output->success("    Controller location -> " . $controllerLoc);
-			$this->output->success("    Method => " . $method);
+			$this->output->success("    Controller location -> " . $controllerLocation);
+			$this->output->success("    Method -> " . $method);
 			$this->output->writeln();
 		} else {
 			$this->output->writeln("ROUTE: ");
-			$this->output->writeln("    HTTP method => " . $route['method']);
+			$this->output->writeln("    HTTP method -> " . $route['method']);
+			$this->output->writeln("    Closure => true");
 			$this->output->writeln();
 		}
 
+
 		$this->output->writeln("OUTPUT: ");
-		$this->output->writeln();
 		$this->output->info("    " . $output);
 
 	}
