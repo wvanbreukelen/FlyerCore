@@ -15,7 +15,7 @@ use Flyer\Components\Router\Router;
 
 /**
  * The main application object, simply the core of your application. Extends the Illuminate container, for binding instances and stuff
- */
+*/
 class App extends Container
 {
 
@@ -63,7 +63,7 @@ class App extends Container
 
 		ServiceProvider::setApp($this);
 	}
-	
+
 	/**
 	 * Returns the config instance
 	 *
@@ -115,7 +115,7 @@ class App extends Container
 		{
 			$this[$id] = call_user_func($value);
 		} else {
-			$this[$id] = $value;	
+			$this[$id] = $value;
 		}
 	}
 
@@ -185,11 +185,11 @@ class App extends Container
 			class_alias($class, $alias);
 		}
 	}
-	
+
 	/**
 	 * Import a ServiceProvider into the application, and run the register method in the Service Provider
 	 *
-	 * @var mixed The Service Provider(s), a array or an object 
+	 * @var mixed The Service Provider(s), a array or an object
 	 */
 	public function register($providerCollection)
 	{
@@ -271,7 +271,7 @@ class App extends Container
 		} else {
 			$this->basePath = rtrim($basePath, '/') . DIRECTORY_SEPARATOR;
 		}
-		
+
 		$this->bindPathsInContainer();
 	}
 
@@ -374,20 +374,20 @@ class App extends Container
 			$this[$alias] = new $class;
 		}
 	}
-	
+
 
 	/**
 	 * Boot the application, boots all of the imported Service Providers
 	 *
 	 * @return  void
 	 */
-	public function boot() 
+	public function boot()
 	{
 		foreach ($this->providers as $provider)
 		{
 			$provider->boot();
 		}
-	
+
 		$this->booted = true;
 	}
 
@@ -400,7 +400,7 @@ class App extends Container
 	{
 		exit(Router::triggerErrorPage($error));
 	}
-	
+
 	/**
 	 * Trigger the final events to shutdown the application, and display it's output to the user
 	 *
@@ -426,13 +426,13 @@ class App extends Container
 	/**
 	 * Removes all Service Providers out of the pending boot payload
 	 *
-	 * @return  void 
+	 * @return  void
 	 */
 	public function resetProviders()
 	{
 		unset($this->providers);
 	}
-	
+
 	/**
 	 * Returns the application booting status
 	 *

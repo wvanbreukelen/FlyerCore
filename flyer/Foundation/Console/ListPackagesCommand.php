@@ -9,20 +9,20 @@ use ReflectionClass;
 
 class ListPackagesCommand extends Command
 {
-	public $callsign = 'packagelist';
+		public $callsign = 'packagelist';
 
-	public function prepare()
-	{
-		$this->setConfig(
-			array("arguments" => array()
-		));
+		public function prepare()
+		{
+				$this->setConfig(
+					array("arguments" => array()
+				));
 
-		$this->setDescription("List the registered packages");
-		$this->setSummary("Listes the application registered packages");
-	}
+				$this->setDescription("List the registered packages");
+				$this->setSummary("Listes the application registered packages");
+		}
 
-	public function action()
-	{
-		
-	}
+		public function action()
+		{
+
+		}
 }

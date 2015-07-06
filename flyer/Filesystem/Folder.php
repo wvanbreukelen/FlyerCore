@@ -10,7 +10,6 @@ class Folder
 	/**
 	 * Checks if a given directory exists
 	 */
-
 	public function exists($path)
 	{
 		return is_readable($path);
@@ -19,7 +18,6 @@ class Folder
 	/**
 	 * Create a folder
 	 */
-	
 	public function create($path, $permission = 0777)
 	{
 		if ($this->exists($path))
@@ -34,7 +32,6 @@ class Folder
 	/**
 	 * Deletes a given directory
 	 */
-	
 	public function delete($path)
 	{
 		if (!$this->exists($path))
@@ -55,7 +52,6 @@ class Folder
 	/**
 	 * Rename a given directory
 	 */
-
 	public function rename($original, $path)
 	{
 		if (!$this->exists($original))
@@ -70,18 +66,15 @@ class Folder
 	/**
 	 * Give a directory a certain permission
 	 */
-
 	public function permission($path, $permission)
 	{
 		if (!$this->exists($path))
 		{
 			throw new Exception("Cannot give directory permissions, because the directory " . $path . " does not exists!");
-			return;
 		}
 
 		chmod($path, $permission);
 	}
-
 	public function lastModified($path, $format = 'timestamp')
 	{
 		if ($this->exists($path))
@@ -94,7 +87,6 @@ class Folder
 			}
 		}
 	}
-
 	public function listFiles($path)
 	{
 		$list = array();

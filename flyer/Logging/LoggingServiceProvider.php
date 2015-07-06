@@ -3,7 +3,6 @@
 namespace Flyer\Components\Logging;
 
 use Flyer\Components\Logging\Writer;
-
 use Flyer\Foundation\ServiceProvider;
 use Monolog\Logger;
 

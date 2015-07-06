@@ -2,15 +2,14 @@
 
 namespace Flyer\Components\Filesystem;
 
-use Exception;
 use Flyer\Components\Filesystem\FilesystemException;
 
 class File
 {
-	
+
 	/**
 	 * Checks if a file exists
-	 * 
+	 *
 	 * @var  $path The path
 	 * @return   bool
 	 */
@@ -19,11 +18,11 @@ class File
 	{
 		return is_readable($path);
 	}
-	
+
 	/**
 	 * Get the contents of a file
-	 * 
-	 * @var  $path The path of the file 
+	 *
+	 * @var  $path The path of the file
 	 * @return    bool
 	 */
 
@@ -31,18 +30,18 @@ class File
 	{
 		return file_get_contents($path);
 	}
-	
+
 	/**
 	 * Write some content to a specified file
-	 * 
-	 * @var  $path  The path of the file 
+	 *
+	 * @var  $path  The path of the file
 	 */
 
 	public function write($path, $data = null)
 	{
 		file_put_contents($path, $data);
 	}
-	
+
 	/**
 	 * Append some content to a specified file
 	 *
@@ -59,25 +58,23 @@ class File
 			throw new FilesystemException("Cannot append to " . $path . ", path does not exists");
 		}
 	}
-	
+
 	/**
 	 * Deletes a file
 	 *
-	 * @var  $path  The path of the file 
+	 * @var  $path  The path of the file
 	 */
-
 	public function delete($path)
 	{
 		if ($this->exists($path)) unlink($path);
 	}
-	
+
 	/**
 	 * Move a file from a specified directory to another directory
 	 *
 	 * @var  $path  The path of the file
 	 * @var  $target The new target of the file
 	 */
-
 	public function move($path, $target)
 	{
 		$this->rename($path, $target);
@@ -114,7 +111,7 @@ class File
 
 		return false;
 	}
-	
+
 	/**
 	 * Check the extension of a file
 	 *
@@ -142,7 +139,7 @@ class File
 			return (is_null($suffix)) ? basename($path) : basename($path, $suffix);
 		}
 	}
-	
+
 	/**
 	 * Get filesize of a file
 	 *
@@ -153,7 +150,7 @@ class File
 	{
 		if ($this->exists($path)) return filesize($path);
 	}
-	
+
 	/**
 	 * Get the file last modified date
 	 *
@@ -170,16 +167,15 @@ class File
 				return filemtime($path);
 			}
 
-			if ($format == 'date') 
+			if ($format == 'date')
 			{
 				return date(filemtime($path));
 			}
 
-			throw new Exception("Cannot get last modified date, because this format does not exists");
 			return filemtime($path);
 		}
 	}
-	
+
 	/**
 	 * Check if a path is a file
 	 *
