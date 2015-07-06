@@ -47,6 +47,12 @@ class App extends Container
 	protected $booted = false;
 
 	/**
+	 * If the application is running in a console environment or not
+	 * @var bool
+	 */
+	protected $console = false;
+
+	/**
 	 * The application instance
 	 */
 	protected static $app;
@@ -257,6 +263,14 @@ class App extends Container
 		{
 			$this->attach('env', $this->config->get('environment'));
 		}
+
+		if (defined('ENV_CONSOLE'))
+		{
+		    if (ENV_CONSOLE)
+		    {
+		        $this->runAsConsole();
+		    }
+		}
 	}
 
 	/**
@@ -421,6 +435,13 @@ class App extends Container
 		} else {
 			throw new RuntimeException("Unable to return a response, please check app code");
 		}
+	}
+
+	public function runAsConsole()
+	{
+		$this->console = true;
+
+		$this->setBasePath(getcwd());
 	}
 
 	/**

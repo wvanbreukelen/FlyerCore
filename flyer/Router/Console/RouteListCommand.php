@@ -28,7 +28,10 @@ class RouteListCommand extends Command
 		foreach ($routes as $callsign => $route)
 		{
 			$this->output->writeln();
-			$this->output->success(ucfirst(explode('.?.', strtolower($callsign))[0]) . ":");
+			$routeName = ucfirst(explode('.?.', strtolower($callsign))[0]);
+
+			if ($routeName == "") $routeName = "/";
+			$this->output->success($routeName . ":");
 
 			foreach ($route as $id => $element)
 			{
@@ -36,11 +39,16 @@ class RouteListCommand extends Command
 				{
 					$this->output->success("    [" . $id . "] => " . $element);
 				} else {
-					$this->output->error("   Sorry, cannot display " . ucfirst(explode('.?.', $callsign)[0]) . "!");
+					if (is_callable($element))
+					{
+						$this->output->success("    [" . $id . "] => [closure]");
+					} else {
+						$this->output->error("   Cannot display " . $id . "!");
+					}
 				}
-				
-				$this->output->writeln();
-			}	
+			}
+
+			$this->output->writeln();
 		}
 	}
 }
