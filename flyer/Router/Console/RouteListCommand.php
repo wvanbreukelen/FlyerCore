@@ -37,11 +37,11 @@ class RouteListCommand extends Command
 			{
 				if (is_string($id) && is_string($element))
 				{
-					$this->output->success("    [" . $id . "] => " . $element);
+					$this->output->success("    [" . $id . "] -> " . $element);
 				} else {
 					if (is_callable($element))
 					{
-						$this->output->success("    [" . $id . "] => [closure]");
+						$this->output->success("    [" . $id . "] -> [closure]");
 					} else {
 						$this->output->error("   Cannot display " . $id . "!");
 					}

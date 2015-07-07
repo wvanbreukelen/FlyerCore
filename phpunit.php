@@ -1,5 +1,7 @@
 <?php
 
-// Require the composer autoloader
+/**
+ * Load the composer autoloader
+ */
 
 require('vendor/autoload.php');
