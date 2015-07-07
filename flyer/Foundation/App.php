@@ -477,6 +477,15 @@ class App extends Container
 	}
 
 	/**
+	 * Returns all for the registered service providers
+	 * @return array The service providers
+	 */
+	public function getProviders()
+	{
+		return $this->providers;
+	}
+
+	/**
 	 * Returns the application booting status
 	 *
 	 * @return bool The booting status
