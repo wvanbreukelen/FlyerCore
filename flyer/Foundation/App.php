@@ -296,6 +296,20 @@ class App extends Container
 	}
 
 	/**
+	 * Get the application environment
+	 * @return mixed
+	 */
+	public function getEnvironment()
+	{
+		if (isset($this['env']))
+		{
+			return $this->access('env');
+		} else {
+			throw new Exception("Cannot access environment, is has not been set!");
+		}
+	}
+
+	/**
 	 * Set the application base path
 	 * @param String $basePath The basepath
 	 */
@@ -493,6 +507,24 @@ class App extends Container
 	public function isBooted()
 	{
 		return $this->booted;
+	}
+
+	/**
+	 * Is the application running in a console
+	 * @return boolean The status
+	 */
+	public function isConsole()
+	{
+		return $this->console;
+	}
+
+	/**
+	 * Is the application running in debug mode
+	 * @return boolean The status
+	 */
+	public function isRunningDebug()
+	{
+		return $this->config()->get('environment')['debug'];
 	}
 
 	/**

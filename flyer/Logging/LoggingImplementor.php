@@ -5,6 +5,7 @@ namespace Flyer\Components\Logging;
 use Exceptionizer\Implement\Implementor;
 use Flyer\App;
 use Monolog\Logger;
+use Commandr\Core\Output;
 
 class LoggingImplementor extends Implementor
 {
@@ -23,8 +24,18 @@ class LoggingImplementor extends Implementor
 	public function archive($exception)
 	{
 		$this->debugger->process($this->writer);
-
 		$this->writer->warning($exception);
+
+		// If the application is running in console mode and debugging is turned on, return the warning in the console itself
+		if (App::getInstance()->isConsole() && App::getInstance()->isRunningDebug())
+		{
+			// Creating a new Commandr\Core\Output instance
+			$consoleOutput = new Output;
+
+			// Writing to the console
+			$consoleOutput->write($exception);
+			$consoleOutput->writeln();
+		}
 	}
 
 	public function createWriter()

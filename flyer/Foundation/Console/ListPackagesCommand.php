@@ -26,7 +26,6 @@ class ListPackagesCommand extends Command
 			$providers = App::getInstance()->getProviders();
 			$packageNames = array();
 
-
 			foreach ($providers as $provider)
 			{
 				$reflector = new ReflectionClass($provider);
