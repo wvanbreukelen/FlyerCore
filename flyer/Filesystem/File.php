@@ -31,6 +31,11 @@ class File
 		return file_get_contents($path);
 	}
 
+	public function create($path)
+	{
+		$this->write($path);
+	}
+
 	/**
 	 * Write some content to a specified file
 	 *

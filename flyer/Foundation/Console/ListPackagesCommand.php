@@ -3,8 +3,6 @@
 namespace Flyer\Foundation\Console;
 
 use Commandr\Core\Command;
-use Flyer\Components\Router\Router;
-use Flyer\Foundation\Events\Events;
 use Flyer\App;
 use ReflectionClass;
 use Exception;
@@ -15,18 +13,19 @@ class ListPackagesCommand extends Command
 
 		public function prepare()
 		{
-				$this->setConfig(
-					array("arguments" => array()
-				));
+			$this->setConfig(
+				array("arguments" => array()
+			));
 
-				$this->setDescription("List the registered packages");
-				$this->setSummary("Listes the application registered packages");
+			$this->setDescription("List the registered packages");
+			$this->setSummary("Listes the application registered packages");
 		}
 
 		public function action()
 		{
 			$providers = App::getInstance()->getProviders();
 			$packageNames = array();
+
 
 			foreach ($providers as $provider)
 			{
