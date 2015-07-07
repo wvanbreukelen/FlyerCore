@@ -27,6 +27,12 @@ class App extends Container
 	public $config;
 
 	/**
+	 * Holds the default backup file for logging purposes
+	 * @var string
+	 */
+	public $defaultDebugFile = "debug.log";
+
+	/**
 	 * Holds all of the view compilers
 	 */
 	protected $viewCompilers = array();
@@ -252,6 +258,22 @@ class App extends Container
 	public function setDebuggerHandler(Debugger $debugger)
 	{
 		$this->attach('application.debugger', $debugger);
+	}
+
+	/**
+	 * Resolves the debug file location for logging purposes
+	 * @return string The debug file location path
+	 */
+	public function resolveDebugFile()
+	{
+		$configDebugFile = $this->access('env')['defaultDebugFile'];
+
+		if (strlen($configDebugFile) > 0)
+		{
+			return $this->debugPath() . $configDebugFile;
+		} else {
+			return $this->debugPath() . $this->defaultDebugFile;
+		}
 	}
 
 	/**

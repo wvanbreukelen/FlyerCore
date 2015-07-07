@@ -33,6 +33,8 @@ class LoggingImplementor extends Implementor
 			new Logger('flyer')
 		);
 
-		$this->writer->useFiles(base_path() . App::getInstance()->access('env')['defaultDebugFile']);
+		echo App::getInstance()->resolveDebugFile();
+
+		$this->writer->useFiles(App::getInstance()->resolveDebugFile());
 	}
 }

@@ -24,7 +24,7 @@ class RouteListCommand extends Command
 	public function action()
 	{
 		$routes = Router::getRoutes();
-
+		s;
 		foreach ($routes as $callsign => $route)
 		{
 			$this->output->writeln();

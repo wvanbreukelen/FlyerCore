@@ -54,7 +54,7 @@ class Debugger
 		$this->points[] = array(
 			'message' => $exception,
 			'level' => 'debug'
-		);	
+		);
 	}
 
 	/**
