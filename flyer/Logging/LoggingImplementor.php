@@ -46,4 +46,5 @@ class LoggingImplementor extends Implementor
 
 		$this->writer->useFiles(App::getInstance()->resolveDebugFile());
 	}
+
 }

@@ -24,13 +24,4 @@ class LoggingServiceProvider extends ServiceProvider
 		// Share the log instance to the application container
 		$this->share('log', $this->logger);
 	}
-
-	public function boot()
-	{
-		// Check if the application is in debug mode, if so, make the current debugger instance and process the log input
-		if ($this->app()->access('env')['debug'] == true)
-		{
-			$this->make('application.debugger')->process($this->logger);
-		}
-	}
 }

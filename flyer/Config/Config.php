@@ -10,16 +10,16 @@ class Config
 
     /**
      * All the saves resources
-     * 
+     *
      * @param array
      */
     protected static $resources = array();
 
     /**
      * Import any given config file
-     * 
+     *
      * @param  string $configFile The path
-     * @return mixed             
+     * @return mixed
      */
     public function import($configFile)
     {
@@ -30,7 +30,7 @@ class Config
         }
 
         throw new ConfigNotFoundException("Config: File " . $configFile . " cannot been imported, because the datatype is not a array!");
-                    
+
     }
 
     /**
@@ -41,25 +41,24 @@ class Config
     public function get($resource)
     {
         //print_r(self::$resources);
-        
-            foreach (self::$resources as $configCollection)
-            {
-                foreach ($configCollection as $configItemName => $configItem) {
-                    if ($resource == $configItemName)
-                    {
-                        return $configItem;
-                    }
+        foreach (self::$resources as $configCollection)
+        {
+            foreach ($configCollection as $configItemName => $configItem) {
+                if ($resource == $configItemName)
+                {
+                    return $configItem;
                 }
-		        foreach (self::$resources as $configResource)
-		        {
-		            if (in_array($resource, $configResource))
-		            {
-		                return $configResource[$resource];
-		            }
-		        }
-		    }
+            }
+	        foreach (self::$resources as $configResource)
+	        {
+	            if (in_array($resource, $configResource))
+	            {
+	                return $configResource[$resource];
+	            }
+	        }
+	    }
 
-            return false;
+        return false;
     }
 
     /**
@@ -75,10 +74,10 @@ class Config
         {
             if (in_array($resource, $resources))
             {
-               $results[] = $this->get($resource); 
+               $results[] = $this->get($resource);
             }
         }
-        
+
         return $results;
     }
 
@@ -97,7 +96,7 @@ class Config
      */
     public function exists($resource)
     {
-        foreach (self::$resources as $configCollection) 
+        foreach (self::$resources as $configCollection)
         {
             foreach ($configCollection as $configItemName => $configItem) {
                 if ($resource == $configItemName)

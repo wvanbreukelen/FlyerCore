@@ -4,6 +4,7 @@ namespace Flyer\Components\Console;
 
 use Flyer\Foundation\ServiceProvider;
 use Commandr\Core\Config as CommandrConfig;
+use Debugger;
 
 class ConsoleServiceProvider extends ServiceProvider
 {
@@ -26,9 +27,13 @@ class ConsoleServiceProvider extends ServiceProvider
 		// @wvanbreukelen, maybe write to log?
 		if ($this->app()->isConsole())
 		{
+			Debugger::info("Application is running in console, creating new console application...");
 			$consoleHandler = $this->app()->getConsoleHandler();
 
+			Debugger::info("Registering console commands...");
 			$consoleHandler->registerCommands($this->app()->getCommands());
+
+			Debugger::info("Matching console argv arguments with a command...");
 			$consoleHandler->match();
 
 			$this->app()->setConsoleHandler($consoleHandler);

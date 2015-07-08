@@ -4,6 +4,7 @@ namespace Flyer\Components\Router\Console;
 
 use Commandr\Core\Command;
 use Flyer\Components\Router\Router;
+use Debugger;
 use App;
 use ReflectionClass;
 
@@ -26,6 +27,8 @@ class SimulateRouteCommand extends Command
 		$route = $this->getArgument("route");
 		$method = $this->getArgument("method");
 
+		Debugger::info("Getting routes...");
+
 		$routes = Router::getRoutes();
 		$router = new Router;
 
@@ -47,7 +50,7 @@ class SimulateRouteCommand extends Command
 
 		if (strtolower($route['method']) != strtolower($method))
 		{
-			$this->output->error("Unable to simulate " . ucfirst($this->getArgument("route")) . " route, because the route does not match with the HTTP request method!");
+			$this->output->error("Unable to simulate " . ucfirst($this->getArgument('route')) . " route, because the route does not match with the HTTP request method!");
 
 			return;
 		}
@@ -57,11 +60,9 @@ class SimulateRouteCommand extends Command
 		$output = App::make('application.route');
 
 		$this->output->writeln();
-		$this->output->success("Route simulation for " . ucfirst($this->getArgument("route")));
+		$this->output->success("Route simulation for " . ucfirst($this->getArgument('route')));
 		$this->output->writeln();
 		$this->output->writeln();
-
-
 
 		if (is_string($route['route']) && strpos($route['route'], '@') !== false)
 		{
@@ -71,6 +72,8 @@ class SimulateRouteCommand extends Command
 			$reflector = new ReflectionClass($controller);
 			$controllerLocation = explode(base_path(), $reflector->getFileName())[1];
 
+			Debugger::info("Simulating route with URI " . $this->getArgument('route') . " HTTP method " . $route['method'] . " and controller " . $controller);
+
 			$this->output->writeln("ROUTE: ");
 			$this->output->success("    HTTP method -> " . $route['method']);
 			$this->output->success("    Controller -> " . $controller);
@@ -78,15 +81,16 @@ class SimulateRouteCommand extends Command
 			$this->output->success("    Method -> " . $method);
 			$this->output->writeln();
 		} else {
+			Debugger::info("Simulating route with URI " . $this->getArgument('route') . " HTTP method " . $route['method'] . ", route is a closure");
+
 			$this->output->writeln("ROUTE: ");
 			$this->output->writeln("    HTTP method -> " . $route['method']);
 			$this->output->writeln("    Closure => true");
 			$this->output->writeln();
 		}
 
-
+		Debugger::info("Displaying route output to console");
 		$this->output->writeln("OUTPUT: ");
 		$this->output->info("    " . $output);
-
 	}
 }

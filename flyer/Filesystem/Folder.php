@@ -91,18 +91,17 @@ class Folder
 	{
 		$list = array();
 
-		if ($this->exists($path))
+		$scan = array_diff(scandir($path), array('..', '.'));
+
+		$path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+
+		foreach ($scan as $key => $filePos)
 		{
-			$scan = array_diff(scandir($path), array('..', '.'));
+			$optPath = $path . $filePos;
 
-			foreach ($scan as $key => $filePos)
+			if (\File::is($optPath))
 			{
-				$optPath = $path . $filePos;
-
-				if (\File::is($optPath))
-				{
-					$list[] = $optPath;
-				}
+				$list[] = $optPath;
 			}
 		}
 

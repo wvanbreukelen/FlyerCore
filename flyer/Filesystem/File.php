@@ -31,6 +31,10 @@ class File
 		return file_get_contents($path);
 	}
 
+	/**
+	 * Create a new empty file
+	 * @param string The filepath
+	 */
 	public function create($path)
 	{
 		$this->write($path);

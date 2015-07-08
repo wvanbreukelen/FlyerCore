@@ -5,6 +5,7 @@ namespace Flyer\Components\Router\Console;
 use Commandr\Core\Command;
 use Flyer\Components\Router\Router;
 use Flyer\Foundation\Events\Events;
+use Debugger;
 use ReflectionClass;
 
 class RouteListCommand extends Command
@@ -23,6 +24,8 @@ class RouteListCommand extends Command
 
 	public function action()
 	{
+		Debugger::info("Getting routes...");
+
 		$routes = Router::getRoutes();
 
 		foreach ($routes as $callsign => $route)

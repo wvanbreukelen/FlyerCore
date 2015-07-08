@@ -33,22 +33,21 @@ class CleanCommand extends Command
 			// Remove all the debug files
 			if ($this->file->exists(App::getInstance()->resolveDebugFile()))
 			{
-				$this->output->write("Removing debug files...");
+				$this->output->success("Removing debug files...");
 				$this->file->delete(App::getInstance()->resolveDebugFile());
 			}
 
-			$this->output->write("Creating debug folder...");
-			$this->folder->create(App::getInstance()->appPath() . 'debug');
-
-			// Cleans storage
-			if ($this->folder->exists(storage_path()))
+			// Remove the debug folder itself
+			if ($this->file->exists(App::getInstance()->appPath() . 'debug'))
 			{
-				$this->output->write("Removing storage...");
-				//$this->folder->delete(storage_path());
+				$this->output->success("Removing debug folder...");
+				$this->folder->delete(App::getInstance()->appPath() . 'debug');
 			}
 
+			// Create a new debug folder for future debugging
+			$this->output->success("Creating debug folder...");
+			$this->folder->create(App::getInstance()->appPath() . 'debug');
 			$this->output->success("Done!");
-
 			$this->output->writeln();
 		}
 }

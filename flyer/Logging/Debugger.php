@@ -57,9 +57,12 @@ class Debugger
 		);
 	}
 
-	public function info($mixed)
+	public function info($message)
 	{
-		$this->point($mixed, 'info');
+		$this->points[] = array(
+			'message' => $message,
+			'level' => 'info'
+		);
 	}
 
 	/**
@@ -99,9 +102,14 @@ class Debugger
 	{
 		if (isset($this->points) && count($this->points) > 0)
 		{
-			foreach ($this->points as $id => $point)
+			foreach ($this->points as $point)
 			{
-				$writer->{$point['level']}($point['message']);
+				if (method_exists($writer, $point['level']))
+				{
+					$writer->{$point['level']}($point['message']);
+				} else {
+					Debugger::error("Could not process logging message with level " . $point['level'] . " and message: " . $point['message']);
+				}
 			}
 
 			// Clean the cache so the points are not processed twice

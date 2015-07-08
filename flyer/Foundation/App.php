@@ -285,7 +285,7 @@ class App extends Container
 
 	/**
 	 * Set the application debugger handler
-	 * @param Debugger $debugger The debugger
+	 * @param Debugger $debugger The application debugger
 	 */
 	public function setDebuggerHandler(Debugger $debugger)
 	{
@@ -293,6 +293,15 @@ class App extends Container
 	}
 
 	/**
+	 * Get the applicatiuon debugger handler
+	 * @return Debugger $debugger The application debugger
+	 */
+	public function getDebuggerHandler()
+	{
+		return $this->make('application.debugger');
+	}
+
+	 /**
 	 * Set the application console handler
 	 * @param Console $console The console handler that is the paste between comminucation with the framework and the console application
 	 */
@@ -312,7 +321,7 @@ class App extends Container
 	{
 		if ($this->isConsole())
 		{
-			return $this->access('application.console');
+			return $this->make('application.console');
 		}
 
 		throw new Exception("Cannot return console handler, not running in console!");
@@ -513,8 +522,7 @@ class App extends Container
 
 	/**
 	 * Trigger the final events to shutdown the application, and display it's output to the user
-	 *
-	 * @return boolean The application response output
+	 * @return mixed The application response output
 	 */
 	public function shutdown()
 	{
@@ -523,19 +531,33 @@ class App extends Container
 			throw new Exception("Application cannot been shutdown, it has not been booted!");
 		}
 
+		$response = null;
+
+		// Check if the application is running in a console
 		if ($this->isConsole())
 		{
-			$this->getConsoleHandler()->run();
+			// Is the application running in a console, run the console application
+			$response = $this->getConsoleHandler()->run();
 		} else {
+			// Make the application.route container and set the response
 			if ($this->exists('application.route'))
 			{
-				return $this->make('application.route');
+				$response = $this->make('application.route');
 			} else if ($this->exists('application.error.404')) {
-				return Router::triggerErrorPage(404);
+				$response = Router::triggerErrorPage(404);
 			} else {
 				throw new RuntimeException("Unable to return a response, please check app code");
 			}
 		}
+
+		// Handle off some final debugging
+		if ($this->isRunningDebug())
+		{
+			$this->getDebuggerHandler()->process($this->make('log'));
+		}
+
+		// Finally return the response
+		return $response;
 	}
 
 	public function runAsConsole()

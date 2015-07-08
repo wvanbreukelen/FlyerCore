@@ -42,7 +42,7 @@ class Events
 			}
 		}
 	}
-	
+
 	public static function exists($eventTitle)
 	{
 		if (isset(self::$events[$eventTitle]))

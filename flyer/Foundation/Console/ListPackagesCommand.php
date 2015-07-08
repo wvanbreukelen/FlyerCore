@@ -4,6 +4,7 @@ namespace Flyer\Foundation\Console;
 
 use Commandr\Core\Command;
 use Flyer\App;
+use Debugger;
 use ReflectionClass;
 use Exception;
 
@@ -26,6 +27,8 @@ class ListPackagesCommand extends Command
 			$providers = App::getInstance()->getProviders();
 			$packageNames = array();
 
+			Debugger::info("Receiving application providers...");
+
 			foreach ($providers as $provider)
 			{
 				$reflector = new ReflectionClass($provider);
@@ -34,6 +37,8 @@ class ListPackagesCommand extends Command
 				$classname = get_class($provider);
 
 				$packageName = $this->guessPackageName($filename);
+
+				Debugger::info("Guessed package name of " . $classname . ", " . $packageName . "?");
 
 				$packageNames[] = $packageName;
 
