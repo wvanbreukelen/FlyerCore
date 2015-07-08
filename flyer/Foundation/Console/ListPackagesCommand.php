@@ -42,7 +42,10 @@ class ListPackagesCommand extends Command
 				$this->output->success("   [Class Name] -> " . $classname);
 				$this->output->success("   [Package Location] -> " . $filename);
 				$this->output->success("   [Service Provider Location] -> " . $filename);
+				$this->output->writeln();
 			}
+
+			sort($packageNames);
 
 			$this->output->write("Shortly: " . implode(", ", $packageNames));
 
