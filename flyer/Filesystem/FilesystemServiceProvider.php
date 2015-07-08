@@ -10,5 +10,6 @@ class FilesystemServiceProvider extends ServiceProvider
 	{
 		$this->share('file', new File);
 		$this->share('folder', new Folder);
+		$this->command('Flyer\Components\Filesystem\Console\CleanCommand');
 	}
 }

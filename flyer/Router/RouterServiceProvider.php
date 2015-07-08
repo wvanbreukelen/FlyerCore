@@ -13,14 +13,20 @@ class RouterServiceProvider extends ServiceProvider
 	public function register()
 	{
 		$this->router = new Router();
-		
 		$this->router->setRequest(Request::createFromGlobals());
 
 		$this->share('route', new Route());
-	}	
+		$this->registerCommands();
+	}
 
 	public function boot()
 	{
 		$this->router->route();
+	}
+
+	protected function registerCommands()
+	{
+		$this->command('Flyer\Components\Router\Console\RouteListCommand');
+		$this->command('Flyer\Components\Router\Console\SimulateRouteCommand');
 	}
 }

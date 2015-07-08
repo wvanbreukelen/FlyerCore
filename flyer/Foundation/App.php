@@ -4,6 +4,7 @@ namespace Flyer;
 
 use Exception;
 use RuntimeException;
+use ReflectionClass;
 use Flyer\Foundation\Container;
 use Flyer\Foundation\ServiceProvider;
 use Flyer\Foundation\Events\Events;
@@ -12,6 +13,7 @@ use Flyer\Components\Security\BcryptHasher;
 use Flyer\Components\Config;
 use Flyer\Components\Logging\Debugger;
 use Flyer\Components\Router\Router;
+use Flyer\Components\Console\ConsoleHandler;
 
 /**
  * The main application object, simply the core of your application. Extends the Illuminate container, for binding instances and stuff
@@ -41,6 +43,12 @@ class App extends Container
 	 * Holds all of the service providers
 	 */
 	protected $providers = array();
+
+	/**
+	 * Holds all of the registered commands
+	 * @var array
+	 */
+	protected $commands = array();
 
 	/**
 	 * Holds all of the booted service providers
@@ -221,6 +229,7 @@ class App extends Container
 			}
 
 			$this->registerCompilers();
+			$this->registerCommand(new Foundation\Console\ListPackagesCommand);
 		} else if (is_object($providerCollection)) {
 			$provider = new $providerCollection;
 
@@ -228,8 +237,31 @@ class App extends Container
 			$this->providers[] = $provider;
 
 			$this->registerCompilers();
+			$this->registerCommand(new Foundation\Console\ListPackagesCommand);
 		} else {
 			throw new Exception("Unable to register provider, given input variable has to be an array or object, not a " . gettype($providerCollection));
+		}
+	}
+
+	/**
+	 * Register a command to the application
+	 * @param  object $command The command object
+	 * @return mixed
+	 */
+	public function registerCommand($command)
+	{
+		if ($this->isConsole())
+		{
+			if (is_string($command))
+			{
+				$this->commands[] = $command;
+			} else if (is_object($command)) {
+				$this->commands[] = get_class($command);
+			} else if (is_array($command)) {
+				$this->commands = array_merge($command, $this->commands);
+			} else {
+				throw new Exception("Not able to register this kind of command");
+			}
 		}
 	}
 
@@ -258,6 +290,32 @@ class App extends Container
 	public function setDebuggerHandler(Debugger $debugger)
 	{
 		$this->attach('application.debugger', $debugger);
+	}
+
+	/**
+	 * Set the application console handler
+	 * @param Console $console The console handler that is the paste between comminucation with the framework and the console application
+	 */
+	public function setConsoleHandler(ConsoleHandler $console)
+	{
+		if ($this->isConsole())
+		{
+			$this->attach('application.console', $console);
+		}
+	}
+
+	/**
+	 * Get the application console handler
+	 * @return Console The application console handler
+	 */
+	public function getConsoleHandler()
+	{
+		if ($this->isConsole())
+		{
+			return $this->access('application.console');
+		}
+
+		throw new Exception("Cannot return console handler, not running in console!");
 	}
 
 	/**
@@ -439,6 +497,8 @@ class App extends Container
 		}
 
 		$this->booted = true;
+
+		return $this;
 	}
 
 	/**
@@ -463,13 +523,18 @@ class App extends Container
 			throw new Exception("Application cannot been shutdown, it has not been booted!");
 		}
 
-		if ($this->exists('application.route'))
+		if ($this->isConsole())
 		{
-			return $this->make('application.route');
-		} else if ($this->exists('application.error.404')) {
-			return Router::triggerErrorPage(404);
+			$this->getConsoleHandler()->run();
 		} else {
-			throw new RuntimeException("Unable to return a response, please check app code");
+			if ($this->exists('application.route'))
+			{
+				return $this->make('application.route');
+			} else if ($this->exists('application.error.404')) {
+				return Router::triggerErrorPage(404);
+			} else {
+				throw new RuntimeException("Unable to return a response, please check app code");
+			}
 		}
 	}
 
@@ -497,6 +562,15 @@ class App extends Container
 	public function getProviders()
 	{
 		return $this->providers;
+	}
+
+	/**
+	 * Returns the array containing all of the registered commands
+	 * @return array The registered commands
+	 */
+	public function getCommands()
+	{
+		return $this->commands;
 	}
 
 	/**

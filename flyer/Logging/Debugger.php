@@ -57,6 +57,11 @@ class Debugger
 		);
 	}
 
+	public function info($mixed)
+	{
+		$this->point($mixed, 'info');
+	}
+
 	/**
 	 * Add a flag message to the debugger
 	 * @param  mixed

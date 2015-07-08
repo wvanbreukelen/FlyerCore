@@ -7,7 +7,7 @@ use Flyer\App;
 use ReflectionClass;
 
 abstract class ServiceProvider
-{	
+{
 
 	protected static $app;
 
@@ -27,18 +27,18 @@ abstract class ServiceProvider
 		// Processing views
 
 		$views = $path . '/views';
-		
+
 		if ($this->app()['folder']->is($views))
 		{
-			
+
 		}
 
 		// Processing routes
-		
+
 
 		// Processing models
-		
-		
+
+
 		// Processing controllers
 	}
 
@@ -48,6 +48,11 @@ abstract class ServiceProvider
 	public function share($id, $value = null)
 	{
 		return $this->app()->attach($id, $value);
+	}
+
+	public function command($command)
+	{
+		$this->app()->registerCommand($command);
 	}
 
 	/**
