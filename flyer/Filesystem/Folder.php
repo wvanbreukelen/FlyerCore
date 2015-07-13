@@ -3,6 +3,7 @@
 namespace Flyer\Components\Filesystem;
 
 use Exception;
+use File;
 
 class Folder
 {
