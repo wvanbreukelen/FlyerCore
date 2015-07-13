@@ -170,8 +170,7 @@ class App extends Container
 	}
 
 	/**
-	 * Remove a value that is attached to the application container
-	 *
+	 * Removes a value that is attached to the application container
 	 * @var  string
 	 * @return  bool
 	 */
@@ -183,12 +182,11 @@ class App extends Container
 			return true;
 		}
 
-		throw new Exception("Cannot remove [" . $id . "] from the container, because this asset does not exists!");
+		return false;
 	}
 
 	/**
 	 * Sets the View compilers of the application that can be used
-	 *
 	 * @var  array The View compilers
 	 */
 	public function setViewCompilers(array $viewCompilers = array())
@@ -198,7 +196,6 @@ class App extends Container
 
 	/**
 	 * Creates aliases for specified classes
-	 *
 	 * @param array The classes
 	 */
 	public function createAliases(array $options = array())
@@ -211,7 +208,6 @@ class App extends Container
 
 	/**
 	 * Import a ServiceProvider into the application, and run the register method in the Service Provider
-	 *
 	 * @var mixed The Service Provider(s), a array or an object
 	 */
 	public function register($providerCollection)
@@ -270,7 +266,6 @@ class App extends Container
 
 	/**
 	 * Register all the compilers that where registered into the application
-	 *
 	 * @var  $config Out of the config
 	 */
 	protected function registerCompilers()
