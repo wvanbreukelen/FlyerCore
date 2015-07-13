@@ -99,7 +99,7 @@ class Folder
 		{
 			$optPath = $path . $filePos;
 
-			if (\File::is($optPath))
+			if (File::is($optPath))
 			{
 				$list[] = $optPath;
 			}
