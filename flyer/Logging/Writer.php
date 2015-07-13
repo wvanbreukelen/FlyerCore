@@ -7,6 +7,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
 use Monolog\Formatter\LineFormatter;
 use Exception;
+// @wvanbreukelen Are this namespaces even needed??
 use Jsonable;
 use Arrayable;
 
@@ -189,7 +190,7 @@ class Writer
 	 * @param  string  $path  The path
 	 * @param  integer $days  Amount of days
 	 * @param  string  $level The log level, default is debug
-	 * @return mixed         
+	 * @return mixed
 	 */
 	public function useDailyFiles($path, $days = 0, $level = 'debug')
 	{

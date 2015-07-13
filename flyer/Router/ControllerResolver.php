@@ -5,15 +5,35 @@ namespace Flyer\Components\Router;
 use ReflectionMethod;
 use Exception;
 
+/**
+ * Resolves controller stuff
+ */
 class ControllerResolver
 {
 
+	/**
+	 * The route
+	 * @param string
+	 */
 	protected $route;
 
+	/**
+	 * The request
+	 * @param string
+	 */
 	protected $request;
 
+	/**
+	 * The resolved arguments
+	 * @param array
+	 */
 	protected $resolved = array();
 
+	/**
+	 * Construct a new controller resolver
+	 * @param string $route   The route
+	 * @param strinbf $request The request
+	 */
 	public function __construct($route, $request)
 	{
 		$this->route = $route;
@@ -22,6 +42,10 @@ class ControllerResolver
 		$this->resolveClassController();
 	}
 
+	/**
+	 * Generate an argument list of passing thought request parameters
+	 * @return mixed The argument list
+	 */
 	public function generateArgumentList()
 	{
 		$parameters = $this->getMethodParameters();
@@ -41,6 +65,11 @@ class ControllerResolver
 		return $data;
 	}
 
+	/**
+	 * Get the parameters of a method
+	 * @wvanbreukelen Maybe create a separate package called Reflector of this kind of actions?
+	 * @return array The method parameters
+	 */
 	public function getMethodParameters()
 	{
 		$reflection = new ReflectionMethod($this->getResolvedAsset('controller'), $this->getResolvedAsset('method'));
@@ -55,16 +84,29 @@ class ControllerResolver
 		return $params;
 	}
 
+	/**
+	 * Add a resolved asset
+	 * @param string $key   The key
+	 * @param string $value The value
+	 */
 	public function addResolvedAsset($key, $value)
 	{
 		$this->resolved[$key] = $value;
 	}
 
+	/**
+	 * Get a resolved asset
+	 * @param string $key The key of the value to resolve
+	 */
 	public function getResolvedAsset($key)
 	{
 		return $this->resolved[$key];
 	}
 
+	/**
+	 * Resolve the class controller of a method
+	 * @return mixed
+	 */
 	protected function resolveClassController()
 	{
 		$pieces = explode('@', $this->route);

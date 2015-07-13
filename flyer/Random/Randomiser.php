@@ -32,22 +32,16 @@ class Randomiser implements RandomiserInterface
 	 */
 	public function randomInteger($min, $max, $length)
 	{
+		// @wvanbreukelen Maybe to a one-time check on this?
 		if (is_int($min) && is_int($max))
 		{
 			$rand = rand($min, $max);
-
-			return (is_null($length)) ? $rand : substr($rand, 0, 0 - $length);
+		} else if (is_null($min) && is_null($max)) {
+			$rand = rand(1, 999999999);
 		}
 
-		if (is_null($min) && is_null($max))
-		{
-			$rand = rand(1, 999999999);
-
-			return (is_null($length)) ? $rand : substr($rand, 0, 0 - $length);
-		} 
-		
-		throw new RandomiserException("Cannot create a random integer with minimum of " . $min . " and maximum of " . $max);
-		return null;
+		return (is_null($length)) ? $rand : substr($rand, 0, 0 - $length);
+		//throw new RandomiserException("Cannot create a random integer with minimum of " . $min . " and maximum of " . $max);
 	}
 
 	/**

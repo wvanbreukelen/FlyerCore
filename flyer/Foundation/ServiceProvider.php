@@ -9,13 +9,22 @@ use ReflectionClass;
 abstract class ServiceProvider
 {
 
+	/**
+	 * Holds the application instance
+	 * @var object Flyer\App The application instance
+	 */
 	protected static $app;
 
+	/**
+	 * Boot's the ServiceProvider provider
+	 * @return [type] [description]
+	 */
 	public function boot() {}
 
 	abstract public function register();
 
 	/**
+	 * @wvanbreukelen Is this needed?
 	 * @param string $package
 	 */
 	public function package($package, $namespace = null, $path = null)

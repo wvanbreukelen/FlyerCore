@@ -24,6 +24,10 @@ class RouterServiceProvider extends ServiceProvider
 		$this->router->route();
 	}
 
+	/**
+	 * Register all the commands for the console application
+	 * @return mixed
+	 */
 	protected function registerCommands()
 	{
 		$this->command('Flyer\Components\Router\Console\RouteListCommand');

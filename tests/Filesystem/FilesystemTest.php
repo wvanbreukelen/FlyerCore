@@ -9,54 +9,75 @@ use Flyer\Components\Filesystem\Folder;
 
 class FilesystemTest extends PHPUnit_Framework_TestCase
 {
+	public function __construct()
+	{
+		$this->file = new File;
+		$this->folder = new Folder;
+	}
+
 	public function testGetRetrievesFiles()
 	{
 		file_put_contents(__DIR__ . '/file.txt', 'Hello World');
-		$file = new File;
-		$this->assertEquals('Hello World', $file->contents(__DIR__ . '/file.txt'));
+		$this->assertEquals('Hello World', $this->file->contents(__DIR__ . '/file.txt'));
 		unlink(__DIR__ . '/file.txt');
 	}
 
 	public function testWriteFileAndExists()
 	{
-		$file = new File;
-		$file->write(__DIR__ . '/file.txt', 'Hello World');
+		$this->file->write(__DIR__ . '/file.txt', 'Hello World');
 		$this->assertEquals('Hello World', file_get_contents(__DIR__ . '/file.txt'));
 		unlink(__DIR__ . '/file.txt');
 	}
 
 	public function testWriteToFileAndAppendToFile()
 	{
-		$file = new File;
-		$file->write(__DIR__ . '/file.txt', 'Hello');
-		$file->append(__DIR__ . '/file.txt', ' World');
+		$this->file->write(__DIR__ . '/file.txt', 'Hello');
+		$this->file->append(__DIR__ . '/file.txt', ' World');
 		$this->assertEquals('Hello World', file_get_contents(__DIR__ . '/file.txt'));
 		unlink(__DIR__ . '/file.txt');
 	}
 
 	public function testWriteToFileAndDelete()
 	{
-		$file = new File;
-		$file->write(__DIR__ . '/file.txt', 'Hello World');
-		$this->assertEquals(true, file_exists(__DIR__ . '/file.txt'));
+		$this->file->write(__DIR__ . '/file.txt', 'Hello World');
+		$this->assertTrue(file_exists(__DIR__ . '/file.txt'));
 		unlink(__DIR__ . '/file.txt');
 	}
 
 	public function testMoveFileAndDelete()
 	{
-		$file = new File;
-		$file->write(__DIR__ . '/file.txt');
-		$file->move(__DIR__ . '/file.txt', __DIR__ . '/file2.txt');
-		$this->assertEquals(true, file_exists(__DIR__ . '/file2.txt'));
+		$this->file->write(__DIR__ . '/file.txt');
+		$this->file->move(__DIR__ . '/file.txt', __DIR__ . '/file2.txt');
+		$this->assertTrue(file_exists(__DIR__ . '/file2.txt'));
 		unlink(__DIR__ . '/file2.txt');
 	}
 
 	public function testCreateFolderExistsAndDelete()
 	{
-		$fd = new Folder;
-		$fd->create(__DIR__ . '/TestFolder');
-		$this->assertEquals(true, file_exists(__DIR__ . '/TestFolder'));
-		$fd->delete(__DIR__ . '/TestFolder');
-		$this->assertEquals(false, file_exists(__DIR__ . '/TestFolder'));
+		$this->folder->create(__DIR__ . '/TestFolder');
+		$this->assertTrue(file_exists(__DIR__ . '/TestFolder'));
+		$this->folder->delete(__DIR__ . '/TestFolder');
+		$this->assertFalse(file_exists(__DIR__ . '/TestFolder'));
+	}
+
+	public function testFileExists()
+	{
+		$this->assertFalse($this->file->exists(__DIR__ . '/ThisFileDoesNotExists.php'));
+	}
+
+	public function testFileRename()
+	{
+		file_put_contents(__DIR__ . '/file.txt', null);
+
+		$this->file->rename(__DIR__ . '/file.txt', __DIR__ . '/fileRename.txt');
+		$this->assertTrue(file_exists(__DIR__ . '/fileRename.txt'));
+		$this->assertFalse(file_exists(__DIR__ . '/file.txt'));
+
+		$this->file->delete(__DIR__ . '/fileRename.txt');
+	}
+
+	public function testCountFilesInCurrentFolder()
+	{   
+		$this->assertEquals(count($this->folder->listFiles(__DIR__)), 1);
 	}
 }

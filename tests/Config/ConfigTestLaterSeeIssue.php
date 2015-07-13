@@ -2,7 +2,7 @@
 
 use Flyer\Components\Config;
 
-/**class ConfigTest extends PHPUnit_Framework_TestCase
+class ConfigTesterLaterOnSeeIssue extends PHPUnit_Framework_TestCase
 {
 	public function __construct()
 	{
@@ -20,16 +20,17 @@ use Flyer\Components\Config;
 	{
 		$this->assertTrue($this->config->exists('environment'));
 		$this->assertTrue($this->config->exists('serviceProviders'));
-
 		$this->assertFalse($this->config->exists('foobar'));
 	}
 
 	public function testGetConfigResource()
 	{
 		$resource = $this->config->get('environment');
-		$config = array('debug' => true,
-		'defaultDebugFolder' => 'debug.log',
-		'url' => 'localhost/workspace/public/');
+		$config = array(
+			'debug' => true,
+			'defaultDebugFolder' => 'debug.log',
+			'url' => 'localhost/workspace/public/'
+		);
 
 		$this->assertEquals($resource, $config);
 
@@ -62,6 +63,8 @@ use Flyer\Components\Config;
 			)
 		);
 
+		//print_r($this->config->gets($resources));
+
 		$this->assertEquals($this->config->gets($resources), $expects);
 	}
 
@@ -77,11 +80,13 @@ use Flyer\Components\Config;
 			'foo' => 'test', 'bar' => 'test'
 		);
 
-		$this->assertEquals($this->config->get('simpleconfig'), $expects);
+		//print_r($this->config->get('simpleconfig'));
+
+		$this->assertTrue($this->config->get('simpleconfig') == $expects);
 	}
 
 	protected function prepare()
 	{
 		$this->config = new Config;
 	}
-}**/
+}

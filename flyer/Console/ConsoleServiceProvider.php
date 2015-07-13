@@ -24,7 +24,7 @@ class ConsoleServiceProvider extends ServiceProvider
 
 	public function boot()
 	{
-		// @wvanbreukelen, maybe write to log?
+		// Only run the following event when the application is running in a console environment
 		if ($this->app()->isConsole())
 		{
 			Debugger::info("Application is running in console, creating new console application...");

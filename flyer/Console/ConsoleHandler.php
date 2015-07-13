@@ -9,6 +9,17 @@ use Commandr\Core\Output;
 
 class ConsoleHandler
 {
+	/**
+	 * Holds the commandr application instance
+	 * @var object Commandr\Core\Application
+	 */
+	protected $commandr;
+
+	/**
+	 * Construct a new console application handler
+	 * @param string $name    The name of your console application
+	 * @param string $version The version of your console application
+	 */
 	public function __construct($name, $version)
 	{
 		$app = new CommandrApplication(
@@ -24,7 +35,7 @@ class ConsoleHandler
 
 	/**
 	 * Set the configuration for the console application
-	 * @param CommandrConfig $config Console config file
+	 * @param CommandrConfig $config The console config file
 	 */
 	public function setConfig(CommandrConfig $config)
 	{

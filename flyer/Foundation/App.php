@@ -21,6 +21,9 @@ use Flyer\Components\Console\ConsoleHandler;
 class App extends Container
 {
 
+	/**
+	 * The application base path
+	 */
 	public $basePath;
 
 	/**
@@ -531,8 +534,6 @@ class App extends Container
 			throw new Exception("Application cannot been shutdown, it has not been booted!");
 		}
 
-		$response = null;
-
 		// Check if the application is running in a console
 		if ($this->isConsole())
 		{
@@ -560,6 +561,10 @@ class App extends Container
 		return $response;
 	}
 
+	/**
+	 * Run the application as a console
+	 * @return mixed
+	 */
 	public function runAsConsole()
 	{
 		$this->console = true;
@@ -568,8 +573,7 @@ class App extends Container
 	}
 
 	/**
-	 * Removes all Service Providers out of the pending boot payload
-	 *
+	 * Removes all service providers out of the pending boot payload
 	 * @return  void
 	 */
 	public function resetProviders()
@@ -597,7 +601,6 @@ class App extends Container
 
 	/**
 	 * Returns the application booting status
-	 *
 	 * @return bool The booting status
 	 */
 	public function isBooted()
