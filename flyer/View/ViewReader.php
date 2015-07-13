@@ -45,8 +45,6 @@ class ViewReader
 			if (!$contents = File::contents($viewPath))
 			{
 				throw new Exception("Cannot find view named " . $this->view);
-
-				return null;
 			}
 
 			return $contents;

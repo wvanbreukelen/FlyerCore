@@ -17,7 +17,7 @@ abstract class ServiceProvider
 
 	/**
 	 * Boot's the ServiceProvider provider
-	 * @return [type] [description]
+	 * @return mixed
 	 */
 	public function boot() {}
 

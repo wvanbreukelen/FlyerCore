@@ -21,10 +21,11 @@ class Socket
 	 */
 	public function create($socket, $port = 8080, $force = false)
 	{
-		$this->connector = new SocketConnector($port, $force);
+		$this->connector = new SocketConnector($port);
 
 		if (!is_object($socket))
 		{
+			// @wvanbreukelen Maybe write this exception message to a log and return false?
 			throw new Exception("Cannot create socket, please give a socket object");
 		}
 

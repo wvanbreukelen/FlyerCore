@@ -13,7 +13,7 @@ class SystemPHP
 	 */
 	public function version()
 	{
-			return phpversion();
+		return phpversion();
 	}
 
 	/**
@@ -22,16 +22,16 @@ class SystemPHP
 	 */
 	public function credits()
 	{
-			return phpcredits();
+		return phpcredits();
 	}
 
 	/**
 	 * Get the current system's PHP interface
 	 * @return array The system interface
 	 */
-	public function interface()
+	public function phpInterface()
 	{
-			return php_sapi_name();
+		return php_sapi_name();
 	}
 
 	/**
@@ -40,7 +40,7 @@ class SystemPHP
 	 */
 	public function os()
 	{
-			return php_uname('s');
+		return php_uname('s');
 	}
 
 	/**
@@ -49,7 +49,7 @@ class SystemPHP
 	 */
 	public function osRelease()
 	{
-			return php_uname('r');
+		return php_uname('r');
 	}
 
 	/**
@@ -58,7 +58,7 @@ class SystemPHP
 	 */
 	public function osVersion()
 	{
-			return php_uname('v');
+		return php_uname('v');
 	}
 
 	/**
@@ -67,7 +67,7 @@ class SystemPHP
 	 */
 	public function host()
 	{
-			return php_uname('n');
+		return php_uname('n');
 	}
 
 	/**
@@ -76,7 +76,7 @@ class SystemPHP
 	 */
 	public function machine()
 	{
-			return php_uname('m');
+		return php_uname('m');
 	}
 
 	/**
@@ -85,7 +85,7 @@ class SystemPHP
 	 */
 	public function php_ini()
 	{
-			return php_ini_loaded_file();
+		return php_ini_loaded_file();
 	}
 
 	/**
@@ -94,6 +94,6 @@ class SystemPHP
 	 */
 	public function info()
 	{
-			return phpinfo();
+		return phpinfo();
 	}
 }

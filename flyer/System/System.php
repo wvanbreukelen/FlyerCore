@@ -26,7 +26,7 @@ class System
 	public static function php()
 	{
 			// Users can create calls like System::php()->version();
-			return $this->getSystem($id);
+			return self::getSystem('system.php');
 	}
 
 	/**

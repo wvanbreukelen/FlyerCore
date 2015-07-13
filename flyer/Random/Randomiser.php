@@ -38,6 +38,8 @@ class Randomiser implements RandomiserInterface
 			$rand = rand($min, $max);
 		} else if (is_null($min) && is_null($max)) {
 			$rand = rand(1, 999999999);
+		} else {
+			$rand = null;
 		}
 
 		return (is_null($length)) ? $rand : substr($rand, 0, 0 - $length);
