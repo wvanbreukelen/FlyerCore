@@ -3,7 +3,6 @@
 namespace Flyer\Components\Random;
 
 use Flyer\Components\Random\RandomiserInterface;
-use Flyer\Components\Random\RandomiserException;
 
 class Randomiser implements RandomiserInterface
 {
