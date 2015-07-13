@@ -6,8 +6,6 @@ php:
   - 5.4
   - 5.5
 
-before_install: sudo bash -c 'echo "87.98.253.108 getcomposer.org" >> /etc/hosts'
-
 before_script:
   - travis_retry composer self-update
   - travis_retry composer install --prefer-source --no-interaction --dev
