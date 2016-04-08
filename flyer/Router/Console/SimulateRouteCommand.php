@@ -78,7 +78,7 @@ class SimulateRouteCommand extends Command
 			$this->output->success("    HTTP method -> " . $route['method']);
 			$this->output->success("    Controller -> " . $controller);
 			$this->output->success("    Controller location -> " . $controllerLocation);
-			$this->output->success("    Method -> " . $method);
+			$this->output->success("    Controller method -> " . $method);
 			$this->output->writeln();
 		} else {
 			Debugger::info("Simulating route with URI " . $this->getArgument('route') . " HTTP method " . $route['method'] . ", route is a closure");
