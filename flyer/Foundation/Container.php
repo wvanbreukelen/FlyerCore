@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Flyer\Foundation;
 
@@ -9,6 +9,10 @@ use ReflectionParameter;
 use Exception;
 
 class BindingResolutionException extends Exception {}
+
+/**
+ * Application container. Holds very important stuff!
+ */
 
 class Container implements ArrayAccess {
 

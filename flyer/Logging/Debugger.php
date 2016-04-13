@@ -40,7 +40,7 @@ class Debugger
 	{
 		if (!isset($this->config[$identifier]))
 		{
-			throw new DebuggerException("Cannot load debug for [" . $identifier . "] identifier!");
+			throw new DebuggerException("Cannot load debug message for [" . $identifier . "] identifier");
 		}
 
 		$this->points[$identifier] = array(
@@ -63,6 +63,11 @@ class Debugger
 			'message' => $message,
 			'level' => 'info'
 		);
+	}
+
+	public function warning($message)
+	{
+		$this->flag($message);
 	}
 
 	/**

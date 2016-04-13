@@ -3,6 +3,7 @@
 namespace Flyer\Components\View\Compiler;
 
 use File;
+use Exception;
 
 class ViewCompiler
 {
@@ -12,7 +13,7 @@ class ViewCompiler
 	 * @param array
 	 */
 	protected $compilers = array();
-	
+
 	/**
 	 * Register a new view compiler
 	 *
@@ -29,7 +30,7 @@ class ViewCompiler
 	 *
 	 * @param  string The ID of the view compiler
 	 * @param  string The view path that will be compiled
-	 * @param  mixed The value that will be passed to the view 
+	 * @param  mixed The value that will be passed to the view
 	 * @return mixed The compiler results
 	 */
 
@@ -47,7 +48,7 @@ class ViewCompiler
 			return $this->compilers[$id]->compile($contents, $view, $values);
 		}
 
-		throw new Exception("Compiler " . $id . " does not exists!");
+		throw new Exception("Compiler " . $id . " does not exists");
 	}
 
 	/**

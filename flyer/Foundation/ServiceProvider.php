@@ -3,28 +3,39 @@
 namespace Flyer\Foundation;
 
 use Flyer\App;
-
 use ReflectionClass;
 
+/**
+ * The mother of service providers. Every service provider has to extend this abstract class.
+ */
 abstract class ServiceProvider
 {
 
 	/**
 	 * Holds the application instance
+	 *
 	 * @var object Flyer\App The application instance
 	 */
 	protected static $app;
 
 	/**
-	 * Boot's the ServiceProvider provider
+	 * Register is for the prework, like setting up database connections
+	 *
+	 * @return [type] [description]
+	 */
+	abstract public function register();
+
+	/**
+	 * Boot the service provider
+	 *
 	 * @return mixed
 	 */
 	public function boot() {}
 
-	abstract public function register();
 
 	/**
-	 * @wvanbreukelen Is this needed?
+	 * "Will be removed in the future"
+	 *
 	 * @param string $package
 	 */
 	public function package($package, $namespace = null, $path = null)
@@ -52,6 +63,8 @@ abstract class ServiceProvider
 	}
 
 	/**
+	 * Share something to the application container
+	 *
 	 * @param string $id
 	 */
 	public function share($id, $value = null)
@@ -59,12 +72,20 @@ abstract class ServiceProvider
 		return $this->app()->attach($id, $value);
 	}
 
+	/**
+	 * Register any given command into the application
+	 *
+	 * @param  command $command The command
+	 * @return mixed
+	 */
 	public function command($command)
 	{
 		$this->app()->registerCommand($command);
 	}
 
 	/**
+	 * Makes something out of the application container
+	 *
 	 * @param string $id
 	 */
 	public function make($id)
@@ -73,18 +94,19 @@ abstract class ServiceProvider
 	}
 
 	/**
-	 * Returns the instance of the application
+	 * Returns the current application instance
 	 *
 	 * @return App The app
 	 */
 
 	public function app()
 	{
-		return self::$app;
+		return static::$app;
 	}
 
 	/**
 	 * Guess the path of a installed package
+	 *
 	 * @return String The package class
 	 */
 	protected function guessPackagePath()
@@ -103,6 +125,6 @@ abstract class ServiceProvider
 
 	public static function setApp(App $app)
 	{
-		self::$app = $app;
+		static::$app = $app;
 	}
 }

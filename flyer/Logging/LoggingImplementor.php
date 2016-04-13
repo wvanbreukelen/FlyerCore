@@ -12,6 +12,10 @@ class LoggingImplementor extends Implementor
 
 	private $writer, $debugger;
 
+	/**
+	 * Register the debugger to Exceptionizer
+	 * @return mixed
+	 */
 	public function register()
 	{
 		$this->createWriter();
@@ -21,23 +25,36 @@ class LoggingImplementor extends Implementor
 		$this->getExceptionizer()->addExceptionAction(array($this, 'archive'));
 	}
 
+	/**
+	 * Archive a exception
+	 * @param  Exception $exception The exception to be achived
+	 * @return mixed
+	 */
 	public function archive($exception)
 	{
 		$this->debugger->process($this->writer);
 		$this->writer->warning($exception);
 
-		// If the application is running in console mode and debugging is turned on, return the warning in the console itself
-		if (App::getInstance()->isConsole() && App::getInstance()->isRunningDebug())
+		// Is debugging turned on?
+		if (App::getInstance()->isRunningDebug())
 		{
-			// Creating a new Commandr\Core\Output instance
-			$consoleOutput = new Output;
+			// Running in console?
+			if (App::getInstance()->isConsole())
+			{
+				// Creating a new Commandr\Core\Output instance
+				$consoleOutput = new Output;
 
-			// Writing to the console
-			$consoleOutput->write($exception);
-			$consoleOutput->writeln();
+				// Write exception message to console
+				$consoleOutput->write($exception);
+				$consoleOutput->writeln();
+			}
 		}
 	}
 
+	/**
+	 * Create a new monolog writer instance
+	 * @return mixed
+	 */
 	public function createWriter()
 	{
 		$this->writer = new Writer(

@@ -2,6 +2,11 @@
 
 namespace Flyer\Foundation\Facades;
 
+use RuntimeException;
+
+/**
+ * The underlying class the Facade calls methods on
+ */
 class Facade
 {
 	/**
@@ -9,7 +14,7 @@ class Facade
 	 *
 	 * @var  object
 	 */
-	
+
 	protected static $app;
 
 	/**
@@ -17,7 +22,7 @@ class Facade
 	 *
 	 * @var  array
 	 */
-	
+
 	protected static $resolvedInstance;
 
 	/**
@@ -25,10 +30,17 @@ class Facade
 	 *
 	 * @return mixed
 	 */
-	
+
 	public static function getFacadeRoot()
 	{
-		return static::resolveFacadeInstance(static::getFacadeAccessor());
+		$instance = static::resolveFacadeInstance(static::getFacadeAccessor());
+
+		if (is_null($instance))
+		{
+			throw new RuntimeException("Facade root instance is null");
+		}
+
+		return $instance;
 	}
 
 	/**
@@ -38,10 +50,10 @@ class Facade
 	 *
 	 * @throws \RuntimeException
 	 */
-	
+
 	protected static function getFacadeAccessor()
 	{
-		throw new \RuntimeException("Facade does not implement getFacadeAccessor method.");
+		throw new RuntimeException("Facade does not implement getFacadeAccessor method.");
 	}
 
 	/**
@@ -50,7 +62,7 @@ class Facade
 	 * @param  string  $name
 	 * @return mixed
 	 */
-	
+
 	protected static function resolveFacadeInstance($name)
 	{
 		if (is_object($name)) return $name;
@@ -69,7 +81,7 @@ class Facade
 	 * @param  string  $name
 	 * @return void
 	 */
-	
+
 	public static function clearResolvedInstance($name)
 	{
 		unset(static::$resolvedInstance[$name]);
@@ -80,7 +92,7 @@ class Facade
 	 *
 	 * @return void
 	 */
-	
+
 	public static function clearResolvedInstances()
 	{
 		static::$resolvedInstance = array();
@@ -91,7 +103,7 @@ class Facade
 	 *
 	 * @return \Illuminate\Foundation\Application
 	 */
-	
+
 	public static function getFacadeApplication()
 	{
 		return static::$app;
@@ -103,7 +115,7 @@ class Facade
 	 * @param  \Illuminate\Foundation\Application  $app
 	 * @return void
 	 */
-	
+
 	public static function setFacadeApplication($app)
 	{
 		static::$app = $app;
@@ -116,10 +128,15 @@ class Facade
 	 * @param  array   $args
 	 * @return mixed
 	 */
-	
+
 	public static function __callStatic($method, $args)
 	{
 		$instance = static::getFacadeRoot();
+
+		if (!method_exists($instance, $method))
+		{
+			throw new RuntimeException("Unable to call class '" . get_class($instance) . "' with method '" . $method . "'");
+		}
 
 		switch (count($args))
 		{

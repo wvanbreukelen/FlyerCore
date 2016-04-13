@@ -72,7 +72,11 @@ class ControllerResolver
 	 */
 	public function getMethodParameters()
 	{
-		$reflection = new ReflectionMethod($this->getResolvedAsset('controller'), $this->getResolvedAsset('method'));
+		try {
+			$reflection = new ReflectionMethod($this->getResolvedAsset('controller'), $this->getResolvedAsset('method'));
+		} catch (Exception $e) {
+			throw new Exception("Unable to get method parameters for " . $this->getResolvedAsset('controller'));
+		}
 
 		$params = array();
 

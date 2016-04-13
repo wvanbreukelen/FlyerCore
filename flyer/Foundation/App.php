@@ -75,7 +75,7 @@ class App extends Container
 	protected static $app;
 
 	/**
-	 * Construct
+	 * Construct the application, provide an optional basepath
 	 *
 	 * @param object The config object the application has to use
 	 */
@@ -88,7 +88,7 @@ class App extends Container
 	}
 
 	/**
-	 * Returns the config instance
+	 * Return the config instance
 	 *
 	 * @return Config The object instance
 	 */
@@ -98,7 +98,7 @@ class App extends Container
 	}
 
 	/**
-	 * Returns the database instance
+	 * Return the database instance
 	 *
 	 * @return object The database instance
 	 */
@@ -108,7 +108,7 @@ class App extends Container
 	}
 
 	/**
-	 * Returns the debugger instance
+	 * Return the debugger instance
 	 *
 	 * @return object The database instance
 	 */
@@ -118,7 +118,7 @@ class App extends Container
 	}
 
 	/**
-	 * Returns the application view compiler instance
+	 * Return the application view compiler instance
 	 *
 	 * @return object The view compiler instance
 	 */
@@ -207,8 +207,8 @@ class App extends Container
 	}
 
 	/**
-	 * Import a ServiceProvider into the application, and run the register method in the Service Provider
-	 * @var mixed The Service Provider(s), a array or an object
+	 * Register an provider collection indivially
+	 * @var mixed The provider collection
 	 */
 	public function register($providerCollection)
 	{
@@ -216,18 +216,25 @@ class App extends Container
 		{
 			foreach ($providerCollection as $provider)
 			{
+				// Does the given service provider exists?
 				if (class_exists($provider))
 				{
+					// Create service provider instance
 					$provider = new $provider;
+
+					// Run service provider register
 					$provider->register();
 
+					// Add service provider to providers array
 					$this->providers[] = $provider;
 				} else {
+					// Might use a ProviderException in the future
 					throw new Exception("Cannot load " . $provider . " service provider, because the provider does not exists!");
 				}
 			}
 
-			$this->registerCompilers();
+			// Register view compilers
+			$this->registerViewCompilers();
 			$this->registerCommand(new Foundation\Console\ListPackagesCommand);
 		} else if (is_object($providerCollection)) {
 			$provider = new $providerCollection;
@@ -235,7 +242,10 @@ class App extends Container
 			$provider->register();
 			$this->providers[] = $provider;
 
-			$this->registerCompilers();
+			// Register all view compilers
+			$this->registerViewCompilers();
+
+			// Register command
 			$this->registerCommand(new Foundation\Console\ListPackagesCommand);
 		} else {
 			throw new Exception("Unable to register provider, given input variable has to be an array or object, not a " . gettype($providerCollection));
@@ -268,7 +278,7 @@ class App extends Container
 	 * Register all the compilers that where registered into the application
 	 * @var  $config Out of the config
 	 */
-	protected function registerCompilers()
+	protected function registerViewCompilers()
 	{
 		foreach ($this->viewCompilers as $viewCompilerID => $viewCompiler)
 		{
@@ -322,7 +332,7 @@ class App extends Container
 			return $this->make('application.console');
 		}
 
-		throw new Exception("Cannot return console handler, not running in console!");
+		throw new Exception("Cannot return console handler, not running in console modus");
 	}
 
 	/**
@@ -331,13 +341,17 @@ class App extends Container
 	 */
 	public function resolveDebugFile()
 	{
-		$configDebugFile = $this->access('env')['defaultDebugFile'];
+		try {
+			$configDebugFile = $this->access('env')['defaultDebugFile'];
 
-		if (strlen($configDebugFile) > 0)
-		{
-			return $this->debugPath() . $configDebugFile;
-		} else {
-			return $this->debugPath() . $this->defaultDebugFile;
+			if (strlen($configDebugFile) > 0)
+			{
+				return $this->debugPath() . $configDebugFile;
+			} else {
+				return $this->debugPath() . $this->defaultDebugFile;
+			}
+		} catch (Exception $e) {
+			throw new Exception("Environmental error: " . $e->getMessage());
 		}
 	}
 
@@ -376,7 +390,7 @@ class App extends Container
 
 	/**
 	 * Set the application base path
-	 * @param String $basePath The basepath
+	 * @param String The base path
 	 */
 	public function setBasePath($basePath)
 	{
@@ -398,7 +412,7 @@ class App extends Container
 	{
 		$this->instance('path', $this->path());
 
-		foreach (['app', 'base', 'bindings', 'config', 'debug', 'storage', 'views'] as $path)
+		foreach (['app', 'base', 'bindings', 'config', 'debug', 'models', 'storage', 'views'] as $path)
 		{
 			$this->instance('path.' . $path, $this->{$path . 'Path'}());
 		}
@@ -410,16 +424,7 @@ class App extends Container
 	 */
 	public function path()
 	{
-		return $this->basePath . 'app' . DIRECTORY_SEPARATOR;
-	}
-
-	/**
-	 * Get the application path
-	 * @return string The app path
-	 */
-	public function appPath()
-	{
-		return $this->path();
+		return $this->appPath();
 	}
 
 	/**
@@ -432,12 +437,21 @@ class App extends Container
 	}
 
 	/**
+	 * Get the application path
+	 * @return string The app path
+	 */
+	public function appPath()
+	{
+		return $this->basePath() . 'app' . DIRECTORY_SEPARATOR;
+	}
+
+	/**
 	 * Get the bindings path
 	 * @return string Bindings path
 	 */
 	public function bindingsPath()
 	{
-		return $this->path() . 'bindings' . DIRECTORY_SEPARATOR;
+		return $this->appPath() . 'bindings' . DIRECTORY_SEPARATOR;
 	}
 
 	/**
@@ -446,7 +460,7 @@ class App extends Container
 	 */
 	public function configPath()
 	{
-		return $this->path() . 'config' . DIRECTORY_SEPARATOR;
+		return $this->appPath() . 'config' . DIRECTORY_SEPARATOR;
 	}
 
 	/**
@@ -455,7 +469,16 @@ class App extends Container
 	 */
 	public function debugPath()
 	{
-		return $this->path() . 'debug' . DIRECTORY_SEPARATOR;
+		return $this->appPath() . 'debug' . DIRECTORY_SEPARATOR;
+	}
+
+	/**
+	 * Get the models path
+	 * @return string Debug path
+	 */
+	public function modelsPath()
+	{
+		return $this->appPath() . 'models' . DIRECTORY_SEPARATOR;
 	}
 
 	/**
@@ -464,7 +487,7 @@ class App extends Container
 	 */
 	public function storagePath()
 	{
-		return $this->path() . 'storage' . DIRECTORY_SEPARATOR;
+		return $this->appPath() . 'storage' . DIRECTORY_SEPARATOR;
 	}
 
 	/**
@@ -473,7 +496,7 @@ class App extends Container
 	 */
 	public function viewsPath()
 	{
-		return $this->path() . 'views' . DIRECTORY_SEPARATOR;
+		return $this->appPath() . 'views' . DIRECTORY_SEPARATOR;
 	}
 
 	/**
@@ -490,7 +513,6 @@ class App extends Container
 		}
 	}
 
-
 	/**
 	 * Boot the application, boots all of the imported Service Providers
 	 *
@@ -504,7 +526,6 @@ class App extends Container
 		}
 
 		$this->booted = true;
-
 		return $this;
 	}
 
@@ -526,7 +547,7 @@ class App extends Container
 	{
 		if (!$this->booted)
 		{
-			throw new Exception("Application cannot been shutdown, it has not been booted!");
+			throw new Exception("Application has not been booted");
 		}
 
 		// Check if the application is running in a console
@@ -542,7 +563,7 @@ class App extends Container
 			} else if ($this->exists('application.error.404')) {
 				$response = Router::triggerErrorPage(404);
 			} else {
-				throw new RuntimeException("Unable to return a response, please check app code");
+				throw new RuntimeException("No route found, unable to return response");
 			}
 		}
 

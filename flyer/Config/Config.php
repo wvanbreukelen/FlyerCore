@@ -40,7 +40,6 @@ class Config
      */
     public function get($resource)
     {
-        //print_r(self::$resources);
         foreach (self::$resources as $configCollection)
         {
             foreach ($configCollection as $configItemName => $configItem) {
@@ -49,6 +48,7 @@ class Config
                     return $configItem;
                 }
             }
+
 	        foreach (self::$resources as $configResource)
 	        {
 	            if (in_array($resource, $configResource))
