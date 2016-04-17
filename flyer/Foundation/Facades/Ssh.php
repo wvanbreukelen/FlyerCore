@@ -2,7 +2,7 @@
 
 namespace Flyer\Foundation\Facades;
 
-class Ssh extends Facade
+class SSH extends Facade
 {
 	public static function getFacadeAccessor() { return 'server.ssh'; }
 }

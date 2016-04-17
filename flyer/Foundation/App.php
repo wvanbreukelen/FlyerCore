@@ -14,6 +14,7 @@ use Flyer\Components\Config;
 use Flyer\Components\Logging\Debugger;
 use Flyer\Components\Router\Router;
 use Flyer\Components\Console\ConsoleHandler;
+use Flyer\Components\Performance\Timer;
 
 /**
  * The main application object, simply the core of your application. Extends the Illuminate container, for binding instances and stuff
@@ -115,6 +116,11 @@ class App extends Container
 	public function debugger()
 	{
 		return $this->make('application.debugger');
+	}
+
+	public function performance()
+	{
+		return $this->make('performance.timer');
 	}
 
 	/**
@@ -309,6 +315,14 @@ class App extends Container
 		return $this->make('application.debugger');
 	}
 
+	public function setPerformanceMonitor(Timer $timer)
+	{
+		// Creating new section
+		//$timer->openSection();
+
+		$this->attach('performance.timer', $timer);
+	}
+
 	 /**
 	 * Set the application console handler
 	 * @param Console $console The console handler that is the paste between comminucation with the framework and the console application
@@ -341,7 +355,8 @@ class App extends Container
 	 */
 	public function resolveDebugFile()
 	{
-		try {
+		try
+		{
 			$configDebugFile = $this->access('env')['defaultDebugFile'];
 
 			if (strlen($configDebugFile) > 0)
@@ -412,7 +427,7 @@ class App extends Container
 	{
 		$this->instance('path', $this->path());
 
-		foreach (['app', 'base', 'bindings', 'config', 'debug', 'models', 'storage', 'views'] as $path)
+		foreach (['app', 'base', 'config', 'debug', 'models', 'storage', 'views'] as $path)
 		{
 			$this->instance('path.' . $path, $this->{$path . 'Path'}());
 		}
@@ -443,15 +458,6 @@ class App extends Container
 	public function appPath()
 	{
 		return $this->basePath() . 'app' . DIRECTORY_SEPARATOR;
-	}
-
-	/**
-	 * Get the bindings path
-	 * @return string Bindings path
-	 */
-	public function bindingsPath()
-	{
-		return $this->appPath() . 'bindings' . DIRECTORY_SEPARATOR;
 	}
 
 	/**
@@ -635,11 +641,20 @@ class App extends Container
 
 	/**
 	 * Is the application running in debug mode
-	 * @return boolean The status
+	 * @return boolean
 	 */
 	public function isRunningDebug()
 	{
 		return $this->config()->get('environment')['debug'];
+	}
+
+	/**
+	 * Is the application logging performance
+	 * @return boolean
+	 */
+	public function isLoggingPerformance()
+	{
+		return $this->config()->get('environment')['logperformance'];
 	}
 
 	/**

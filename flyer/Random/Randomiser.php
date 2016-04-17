@@ -19,6 +19,7 @@ class Randomiser implements RandomiserInterface
 		{
 			return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
 		}
+
 		return substr(str_shuffle($allowedChars), 0, $length);
 	}
 
@@ -29,20 +30,18 @@ class Randomiser implements RandomiserInterface
 	 * @param  integer $length The length of the random integer
 	 * @return integer         The random generated integer
 	 */
-	public function randomInteger($min, $max, $length)
+	public function randomInteger($min, $max)
 	{
-		// @wvanbreukelen Maybe to a one-time check on this?
+		$rand = null;
+
 		if (is_int($min) && is_int($max))
 		{
 			$rand = rand($min, $max);
 		} else if (is_null($min) && is_null($max)) {
 			$rand = rand(1, 999999999);
-		} else {
-			$rand = null;
 		}
 
-		return (is_null($length)) ? $rand : substr($rand, 0, 0 - $length);
-		//throw new RandomiserException("Cannot create a random integer with minimum of " . $min . " and maximum of " . $max);
+		return $rand;
 	}
 
 	/**

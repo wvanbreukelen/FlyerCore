@@ -10,10 +10,11 @@ class RandomServiceProvider extends ServiceProvider
 {
 	public function register()
 	{
-		$random = new Random(new Randomiser);
+		$this->share('random', new Random(new Randomiser));
+	}
 
-		$this->share('random', $random);
-
+	public function boot()
+	{
 		$this->package('flyer/random');
 	}
 }

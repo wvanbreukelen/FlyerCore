@@ -27,7 +27,7 @@ class Router
 	/**
 	 * The current HTTP request
 	 */
-	private $request;
+	private static $request;
 
 	/**
 	 * Resolve the route of the given request
@@ -36,13 +36,15 @@ class Router
 	 */
 	public function route()
 	{
-		if (in_array($this->request['method'], $this->methods))
+		$request = self::getRequest();
+
+		if (in_array($request['method'], $this->methods))
 		{
 			foreach (self::$routes as $listener => $route)
 			{
-				$uri = explode('/', ltrim($this->request['path'], '/'));
-				
-				if ($this->request['method'] == $route['method'])
+				$uri = explode('/', ltrim($this->getRequest()['path'], '/'));
+
+				if ($request['method'] == $route['method'])
 				{
 					if (strtolower($uri[0]) == $listener)
 					{
@@ -78,7 +80,7 @@ class Router
 			throw new RuntimeException("Cannot determine variable type of route, has to be a string or closure");
 		}
 	}
-	
+
 	/**
 	 * Sets the request, so the router can compare the routes with the current request
 	 *
@@ -89,13 +91,16 @@ class Router
 	{
 		if ($request instanceof Request)
 		{
-			$this->request = array('method' => $request->server->get('REQUEST_METHOD'), 'path' => $request->getPathInfo());
+			self::$request = array(
+				'method' => $request->server->get('REQUEST_METHOD'),
+				'path' => $request->getPathInfo()
+			);
 			return;
 		}
 
 		if (is_array($request))
 		{
-			$this->request = $request;
+			self::$request = $request;
 			return;
 		}
 
@@ -103,18 +108,8 @@ class Router
 	}
 
 	/**
-	 * Returns the given request
-	 *
-	 * @return  mixed
-	 */
-	public function getRequest()
-	{
-		return $this->request;
-	}
-
-	/**
 	 * Triggers the error page, developer has to give the HTTP error code
-	 * 
+	 *
 	 * @param $error The HTTP error code
 	 * @return mixed
 	 */
@@ -129,12 +124,12 @@ class Router
 	 *
 	 * @param  closure Route
 	 * @param Closure $route
-	 * 
+	 *
 	 * @return  void
 	 */
 	protected function handleClosure($route)
 	{
-		App::bind('application.route', function () use ($route) 
+		App::bind('application.route', function () use ($route)
 		{
 			// Call the closure that corresponds to the correct route
 
@@ -154,7 +149,7 @@ class Router
 	{
 		$route = $this->resolveController($route, App::make('request.get'));
 
-		App::bind('application.route', function () use ($route) 
+		App::bind('application.route', function () use ($route)
 		{
 			// Call the controller with the controller class en method, with the resolved parameters
 
@@ -173,7 +168,7 @@ class Router
 	protected function resolveController($route, $request)
 	{
 		$resolver = new ControllerResolver($route, $request);
-		
+
 		return array (
 			'controller' => $resolver->getResolvedAsset('controller'),
 			'method'     => $resolver->getResolvedAsset('method'),
@@ -189,7 +184,7 @@ class Router
 	 * @param  mixed Route, can be an array or a closure
 	 * @param string $method
 	 *
-	 * @return  void 
+	 * @return  void
 	 */
 	public static function addRoute($method, $listener, $route)
 	{
@@ -209,5 +204,29 @@ class Router
 	public static function getRoutes()
 	{
 		return self::$routes;
+	}
+
+	/**
+	 * Returns the given request
+	 *
+	 * @return  mixed
+	 */
+	public static function getRequest()
+	{
+		return self::$request;
+	}
+
+	/**
+	 * Return the current URI, based on request
+	 * @return string The URI
+	 */
+	public static function getRequestURI($displayRoot = false)
+	{
+		if (isset(explode('/', ltrim(self::getRequest()['path'], '/'))[0]))
+		{
+			return explode('/', ltrim(self::getRequest()['path'], '/'))[0];
+		}
+
+		return ($displayRoot) ? '/' : null;
 	}
 }

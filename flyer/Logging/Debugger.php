@@ -5,6 +5,7 @@ namespace Flyer\Components\Logging;
 use Flyer\Components\Config;
 use Flyer\Components\Logging\Writer;
 use Flyer\Components\Logging\DebuggerException;
+use Flyer\Components\Performance\Timer;
 
 class Debugger
 {
@@ -21,13 +22,16 @@ class Debugger
 	 */
 	protected $config;
 
+	protected $prevIdentifier = null;
+
 	/**
 	 * Create a new debugger instance
 	 * @param Config $config The config instance that is used in the application
 	 */
-	public function __construct(Config $config)
+	public function __construct(Config $config, Timer $timer)
 	{
 		$this->config = $config->get('debugMessages');
+		$this->timer = $timer;
 	}
 
 	/**
@@ -43,10 +47,29 @@ class Debugger
 			throw new DebuggerException("Cannot load debug message for [" . $identifier . "] identifier");
 		}
 
-		$this->points[$identifier] = array(
-			'message' => $this->config[$identifier],
-			'level' => $level
-		);
+		// @wvanbreukelen May need to use another approach to access application instance
+		if (app()->isLoggingPerformance())
+		{
+			// Get the performance of the previous point
+			$pf = $this->getPerformance($this->prevIdentifier);
+
+			// Set the previous identifier equal to the current
+			$this->prevIdentifier = $identifier;
+
+			// Start the timer!
+			$this->timer->start($identifier);
+
+			// Add point, append timespan and memory usage
+			$this->points[$identifier] = array(
+				'message' => $this->config[$identifier] . " TIME: " . $pf['elapsed'] . " MEM: " . $pf['mem'],
+				'level' => $level,
+			);
+		} else {
+			$this->points[$identifier] = array(
+				'message' => $this->config[$identifier],
+				'level' => $level,
+			);
+		}
 	}
 
 	public function exception($exception)
@@ -129,5 +152,21 @@ class Debugger
 	public function clean()
 	{
 		unset($this->points);
+	}
+
+	protected function getPerformance($prevIdentifier)
+	{
+		$memory = null;
+		$elapsedTime = null;
+
+		// Stop the previous point, so we can receive all kind of information about the period between two points
+		if (!is_null($prevIdentifier))
+		{
+			$event = $this->timer->stop($prevIdentifier);
+			$memory = $event->getMemory();
+			$elapsedTime = ($event->getEndTime()) - ($event->getStartTime());
+		}
+
+		return ['elapsed' => $elapsedTime, 'mem' => $memory];
 	}
 }

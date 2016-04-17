@@ -3,7 +3,9 @@
 namespace Flyer\Foundation;
 
 use Flyer\App;
+use Exception;
 use ReflectionClass;
+use ViewFinder;
 
 /**
  * The mother of service providers. Every service provider has to extend this abstract class.
@@ -34,32 +36,34 @@ abstract class ServiceProvider
 
 
 	/**
-	 * "Will be removed in the future"
+	 * Add package to Flyer PHP framework
 	 *
 	 * @param string $package
 	 */
-	public function package($package, $namespace = null, $path = null)
+	public function package($package, $packagePath = null)
 	{
 		//$namespace = $this->resolvePackageNamespace($package, $namespace);
 
-		$path = $path ?: $this->guessPackagePath();
+		// Resolving some paths
+		// @wvanbreukelen Might change helper views_path() to views_path($basepath)
+		$paths = $this->guessPackagePaths($packagePath);
 
 		// Processing views
-
-		$views = $path . '/views';
-
-		if ($this->app()['folder']->is($views))
+		if (isset($paths['views']))
 		{
-
+			// Add the view path to the ViewFinder
+			$vFinder = $this->app()->make('application.view.finder');
+			$vFinder->addViewsPath($paths['views']);
 		}
 
 		// Processing routes
-
+		if (isset($paths['routes'])) {}
 
 		// Processing models
-
+		if (isset($paths['models'])) {}
 
 		// Processing controllers
+		if (isset($paths['controllers'])) {}
 	}
 
 	/**
@@ -101,23 +105,46 @@ abstract class ServiceProvider
 
 	public function app()
 	{
-		return static::$app;
+		return app();
 	}
 
 	/**
-	 * Guess the path of a installed package
+	 * Guess the paths of a installed package
 	 *
 	 * @return String The package class
 	 */
-	protected function guessPackagePath()
+	protected function guessPackagePaths($path)
 	{
-		$path = (new ReflectionClass($this))->getFileName();
+		// Path storage in array
+		$paths = array();
 
-		return realpath(dirname($path . '/../../'));
+		// Resolve package path & realpath
+		if (is_null($path)) $path = (new ReflectionClass($this))->getFileName();
+		$realPath = realpath(dirname($path)) . DIRECTORY_SEPARATOR;
+
+		// Getting Flyer\Components\Filesystem\Folder instance
+		$folder = $this->app()->make('folder');
+
+		// Make sure the path and service provider are actually on the place we want
+		if (!$folder->is($realPath) && !$folder->is($path))
+		{
+			throw new Exception("Package path " . $realPath . " is invalid");
+		}
+
+		// @wvanbreukelen Might use views_paths helper in the future.
+		// @wvanbreukelen Change function from views_paths() to views_path($basepath)
+
+		if ($folder->is($viewsPath = $realPath . 'views')) $paths['views'] = $viewsPath;
+		if ($folder->is($ctrlPath = $realPath . 'controllers')) $paths['controllers'] = $ctrlPath;
+		if ($folder->is($modelsPath = $realPath . 'models')) $paths['models'] = $modelsPath;
+		// Maybe process config files too in the future
+
+		return $paths;
 	}
 
 	/**
 	 * Sets the application instance
+	 * @wvanbreukelen May be removed in the near future
 	 *
 	 * @param  App $app The application
 	 * @return  void

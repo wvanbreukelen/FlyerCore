@@ -14,9 +14,7 @@ class LoggingServiceProvider extends ServiceProvider
 	public function register()
 	{
 		// Create a new file logger
-		$this->logger = new Writer(
-			new Logger('flyer')
-		);
+		$this->logger = new Writer(new Logger('flyer'));
 
 		// Resolve the logging file location and pass that to Monolog
 		$this->logger->useFiles($this->app()->resolveDebugFile());

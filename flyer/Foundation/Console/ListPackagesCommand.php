@@ -66,6 +66,7 @@ class ListPackagesCommand extends Command
 	protected function guessPackageName($filename)
 	{
 		$parts = explode('\\', $filename);
+
 		if (count($parts) == 1)
 		{
 			$parts = explode('/', $filename);

@@ -11,45 +11,60 @@ use File;
  */
 class ViewFinder
 {
+	/**
+	 * Contains all the views paths
+	 * @var array
+	 */
 	protected $views = array();
 
 	/**
 	 * Adds a view path and registers them
 	 * @param string $path      The path where the views have been located
-	 * @param string $extension Search for this type of extension, default is '.php'
+	 * @param string $extension Search for this type of extension, default is 'php'
 	 */
-	public function addViewsPath($path, $extension = 'php')
+	public function addViewsPath($path, $extension = 'php', $overwrite = true)
 	{
-		if (Folder::is($path))
+		// Does views folder exists?
+		if (!Folder::is($path))
 		{
-			$views = Folder::listFiles($path);
-
-			foreach ($views as $path)
-			{
-				$explode = explode('.', File::filename($path));
-
-				if (end($explode) == $extension)
-				{
-					$this->views[$explode[0]] = $path;
-				}
-			}
-
-			return;
+			throw new Exception("Cannot find views for path: " . $path . ", folder doesn't exists");
 		}
 
-		throw new Exception("Cannot find views in path: " . $path . ", because the folder does not exists");
+		// List all views paths
+		$views = Folder::listFiles($path);
+
+		// Loop through every view and add them when possible
+		foreach ($views as $path)
+		{
+			$explode = explode('.', File::filename($path));
+
+			if (end($explode) == $extension)
+			{
+				// Resolve view name
+				$viewName = $explode[0];
+
+				// Make sure the view does not exists beforehand, only allow with overwrite enabled
+				if ($this->viewExists($viewName) && !$overwrite)
+				{
+					throw new Exception("View " . $viewName . ", with path " . $path . " does already exists! Remove dublicate or enable overwrite.");
+				}
+
+				// Make overwrite possible
+				unset($this->views[$viewName]);
+				// Add the view
+				$this->views[$viewName] = $path;
+			}
+		}
 	}
 
 	/**
-	 * Add a view to the view finder
-	 * @param  $path The path of the view
+	 * Does a given view exists
+	 * @param  string $viewName Name of the view
+	 * @return bool
 	 */
-	public function addView($path)
+	public function viewExists($viewName)
 	{
-		if (File::is($path))
-		{
-			$this->views[] = $path; 
-		}
+		return isset($this->views[$viewName]);
 	}
 
 	/**
@@ -57,14 +72,14 @@ class ViewFinder
 	 * @param  string $view The view
 	 * @return mixed        The results
 	 */
-	public function getViewPath($view)
+	public function getViewPath($viewName)
 	{
-		if (isset($this->views[$view]))
+		if ($this->viewExists($viewName))
 		{
-			return $this->views[$view];
+			return $this->views[$viewName];
 		}
 
-		throw new Exception("Cannot find path for " . $view . " view, make sure that you added the right paths!");
+		throw new Exception("Cannot find path for " . $viewName . " view, make sure that you added the right paths!");
 	}
 
 	/**
