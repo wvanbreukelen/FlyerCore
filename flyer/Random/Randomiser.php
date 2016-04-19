@@ -27,7 +27,6 @@ class Randomiser implements RandomiserInterface
 	 * Create a random integer
 	 * @param  integer $min    The minimum length of a random integer
 	 * @param  integer $max    The maximal length of a random integer
-	 * @param  integer $length The length of the random integer
 	 * @return integer         The random generated integer
 	 */
 	public function randomInteger($min, $max)
