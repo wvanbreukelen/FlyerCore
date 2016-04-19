@@ -69,7 +69,6 @@ class ViewFinder
 
 	/**
 	 * Get any view path
-	 * @param  string $view The view
 	 * @return mixed        The results
 	 */
 	public function getViewPath($viewName)

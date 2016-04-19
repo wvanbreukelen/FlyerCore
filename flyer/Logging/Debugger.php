@@ -106,6 +106,7 @@ class Debugger
 	/**
 	 * Add a error message to the debugger
 	 * @param  mixed
+	 * @param string $mixed
 	 * @return mixed
 	 */
 	public function error($mixed)
