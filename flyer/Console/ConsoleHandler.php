@@ -6,14 +6,15 @@ use wvanbreukelen\Commandr;
 use Commandr\Core\Config as CommandrConfig;
 use Commandr\Core\Application as CommandrApplication;
 use Commandr\Core\Output;
+use Flyer\Console\Application as ConsoleApplication;
 
 class ConsoleHandler
 {
 	/**
-	 * Holds the commandr application instance
-	 * @var object Commandr\Core\Application
+	 * Holds the console application instance
+	 * @var object Flyer\Console\Application
 	 */
-	protected $commandr;
+	protected $app;
 
 	/**
 	 * Construct a new console application handler
@@ -22,24 +23,8 @@ class ConsoleHandler
 	 */
 	public function __construct($name, $version)
 	{
-		$app = new CommandrApplication(
-			new \Commandr\Core\Input,
-			new \Commandr\Core\Output,
-			new \Commandr\Core\Dialog,
-			$name,
-			$version
-		);
-
-		$this->setCommandr($app);
-	}
-
-	/**
-	 * Set the configuration for the console application
-	 * @param CommandrConfig $config The console config file
-	 */
-	public function setConfig(CommandrConfig $config)
-	{
-		$this->getCommandr()->setConfig($config);
+		$app = new ConsoleApplication($name, $version);
+		$this->setApplication($app);
 	}
 
 	/**
@@ -49,46 +34,36 @@ class ConsoleHandler
 	 */
 	public function registerCommands(array $commands = array())
 	{
-		$this->getCommandr()->addCommands($commands);
-	}
-
-	/**
-	 * Match the given argv arguments with a command
-	 */
-	public function match()
-	{
-		$this->getCommandr()->match();
+		foreach ($commands as $command)
+		{
+			$this->getApplication()->addCommand($command);
+		}
 	}
 
 	/**
 	 * Run the console application
 	 * @param mixed  $output An output object
 	 */
-	public function run($output = null)
+	public function run()
 	{
-		if (is_null($output))
-		{
-			$output = new \Commandr\Core\Output;
-		}
-
-		$this->getCommandr()->run($output);
+		$this->getApplication()->run();
 	}
 
 	/**
 	 * Set the Commandr console application instance
 	 * @param CommandrApplication $commandr The Commandr instance
 	 */
-	public function setCommandr(CommandrApplication $commandr)
+	public function setApplication(ConsoleApplication $app)
 	{
-		$this->commandr = $commandr;
+		$this->app = $app;
 	}
 
 	/**
 	 * Get the Commandr console application instance
 	 * @return CommandrApplication $commandr The Commandr instance
 	 */
-	public function getCommandr()
+	public function getApplication()
 	{
-		return $this->commandr;
+		return $this->app;
 	}
 }

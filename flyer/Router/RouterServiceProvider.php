@@ -30,7 +30,7 @@ class RouterServiceProvider extends ServiceProvider
 	 */
 	protected function registerCommands()
 	{
-		$this->command('Flyer\Components\Router\Console\RouteListCommand');
-		$this->command('Flyer\Components\Router\Console\SimulateRouteCommand');
+		$this->command(new \Flyer\Components\Router\Console\RouteListCommand);
+		$this->command(new \Flyer\Components\Router\Console\SimulateRouteCommand);
 	}
 }

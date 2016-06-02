@@ -2,7 +2,8 @@
 
 namespace Flyer\Components\Router\Console;
 
-use Commandr\Core\Command;
+use Flyer\Console\Commands\Command;
+use Flyer\Console\Input\InputArgument;
 use Flyer\Components\Router\Router;
 use Debugger;
 use App;
@@ -10,22 +11,20 @@ use ReflectionClass;
 
 class SimulateRouteCommand extends Command
 {
-	public $callsign = 'simulate';
+ 	protected $name = 'route:simulate';
+
+	protected $description = 'Simulate a HTTP route request';
 
 	public function prepare()
 	{
-		$this->setConfig(
-			array("arguments" => array("route", "method")
-		));
-
-		$this->setDescription("With this command you can simulate your own routes very easy");
-		$this->setSummary("Simulate a http route request");
+		$this->addArgument('route', InputArgument::REQUIRED, 'Route name');
+		$this->addArgument('method', InputArgument::REQUIRED, 'HTTP method');
 	}
 
-	public function action()
+	public function handle()
 	{
-		$route = $this->getArgument("route");
-		$method = $this->getArgument("method");
+		$route = $this->argument('route');
+		$method = $this->argument('method');
 
 		Debugger::info("Getting routes...");
 
@@ -43,14 +42,14 @@ class SimulateRouteCommand extends Command
 
 		if (!is_array($route))
 		{
-			$this->output->error("Unable to simulate " . ucfirst($this->getArgument("route")) . " route, because the route does not exists!");
+			$this->error("Unable to simulate " . ucfirst($this->argument("route")) . " route, because the route does not exists!");
 
 			return;
 		}
 
 		if (strtolower($route['method']) != strtolower($method))
 		{
-			$this->output->error("Unable to simulate " . ucfirst($this->getArgument('route')) . " route, because the route does not match with the HTTP request method!");
+			$this->error("Unable to simulate " . ucfirst($this->argument('route')) . " route, because the route does not match with the HTTP request method!");
 
 			return;
 		}
@@ -59,10 +58,7 @@ class SimulateRouteCommand extends Command
 
 		$output = App::make('application.route');
 
-		$this->output->writeln();
-		$this->output->success("Route simulation for " . ucfirst($this->getArgument('route')));
-		$this->output->writeln();
-		$this->output->writeln();
+		$this->success("Route simulation for " . ucfirst($this->argument('route')));
 
 		if (is_string($route['route']) && strpos($route['route'], '@') !== false)
 		{
@@ -72,25 +68,23 @@ class SimulateRouteCommand extends Command
 			$reflector = new ReflectionClass($controller);
 			$controllerLocation = explode(base_path(), $reflector->getFileName())[1];
 
-			Debugger::info("Simulating route with URI " . $this->getArgument('route') . " HTTP method " . $route['method'] . " and controller " . $controller);
+			Debugger::info("Simulating route with URI " . $this->argument('route') . " HTTP method " . $route['method'] . " and controller " . $controller);
 
-			$this->output->writeln("ROUTE: ");
-			$this->output->success("    HTTP method -> " . $route['method']);
-			$this->output->success("    Controller -> " . $controller);
-			$this->output->success("    Controller location -> " . $controllerLocation);
-			$this->output->success("    Controller method -> " . $method);
-			$this->output->writeln();
+			$this->writeln("ROUTE: ");
+			$this->success("    HTTP method -> " . $route['method']);
+			$this->success("    Controller -> " . $controller);
+			$this->success("    Controller location -> " . $controllerLocation);
+			$this->success("    Controller method -> " . $method);
 		} else {
 			Debugger::info("Simulating route with URI " . $this->getArgument('route') . " HTTP method " . $route['method'] . ", route is a closure");
 
-			$this->output->writeln("ROUTE: ");
-			$this->output->writeln("    HTTP method -> " . $route['method']);
-			$this->output->writeln("    Closure => true");
-			$this->output->writeln();
+			$this->writeln("ROUTE: ");
+			$this->writeln("    HTTP method -> " . $route['method']);
+			$this->writeln("    Closure => true");
 		}
 
 		Debugger::info("Displaying route output to console");
-		$this->output->writeln("OUTPUT: ");
-		$this->output->info("    " . $output);
+		$this->writeln("OUTPUT: ");
+		$this->info("    " . $output);
 	}
 }

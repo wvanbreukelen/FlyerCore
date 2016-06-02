@@ -269,11 +269,9 @@ class App extends Container
 		{
 			if (is_string($command))
 			{
-				$this->commands[] = $command;
+				$this->commands[] = new $command;
 			} else if (is_object($command)) {
-				$this->commands[] = get_class($command);
-			} else if (is_array($command)) {
-				$this->commands = array_merge($command, $this->commands);
+				$this->commands[] = $command;
 			} else {
 				throw new Exception("Not able to register this kind of command");
 			}

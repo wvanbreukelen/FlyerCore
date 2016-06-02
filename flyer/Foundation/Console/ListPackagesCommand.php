@@ -2,7 +2,7 @@
 
 namespace Flyer\Foundation\Console;
 
-use Commandr\Core\Command;
+use Flyer\Console\Commands\Command;
 use Flyer\App;
 use Debugger;
 use ReflectionClass;
@@ -13,22 +13,11 @@ use Exception;
  */
 class ListPackagesCommand extends Command
 {
-	// Command callsign
-	public $callsign = 'packagelist';
+	protected $name = 'package:list';
 
-	// Prepare the command, not running it!
-	public function prepare()
-	{
-		$this->setConfig(
-			array("arguments" => array()
-		));
+	protected $description = 'List all the packages of Flyer';
 
-		$this->setDescription("List the registered packages");
-		$this->setSummary("Listes the application registered packages");
-	}
-
-	// Run a command
-	public function action()
+	public function handle()
 	{
 		$providers = App::getInstance()->getProviders();
 		$packageNames = array();
@@ -46,20 +35,15 @@ class ListPackagesCommand extends Command
 
 			Debugger::info("Guessed package name of " . $classname . ", " . $packageName . "?");
 
-			$this->output->success($packageName);
-			$this->output->writeln();
-			$this->output->success("   [Class Name] -> " . $classname);
-			$this->output->success("   [Package Location] -> " . $filename);
-			$this->output->success("   [Service Provider Location] -> " . $filename);
-			$this->output->writeln();
+			$this->writelnphp ($packageName);
+			$this->success("   [Class Name] -> " . $classname);
+			$this->success("   [Package Location] -> " . $filename);
+			$this->success("   [Service Provider Location] -> " . $filename);
 		}
 
 		sort($packageNames);
 
-		$this->output->write("Shortly: " . implode(", ", $packageNames));
-
-		$this->output->writeln();
-		$this->output->writeln();
+		$this->write("Shortly: " . implode(", ", $packageNames));
 	}
 
 	// Guess the name of any given package filename
