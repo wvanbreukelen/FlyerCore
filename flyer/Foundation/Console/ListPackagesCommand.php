@@ -35,7 +35,7 @@ class ListPackagesCommand extends Command
 
 			Debugger::info("Guessed package name of " . $classname . ", " . $packageName . "?");
 
-			$this->writelnphp ($packageName);
+			$this->writeln($packageName);
 			$this->success("   [Class Name] -> " . $classname);
 			$this->success("   [Package Location] -> " . $filename);
 			$this->success("   [Service Provider Location] -> " . $filename);

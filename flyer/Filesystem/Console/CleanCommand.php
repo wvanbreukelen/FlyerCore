@@ -13,7 +13,7 @@ class CleanCommand extends Command
 {
 		protected $name = 'clean';
 
-		protected $description = 'Clean up your application';
+		protected $description = 'Clean up your Flyer application';
 
 		private $file, $folder;
 
@@ -25,23 +25,23 @@ class CleanCommand extends Command
 
 		public function handle()
 		{
+			$this->info("Clearing debugging cache");
+
 			// Remove all the debug files
 			if ($this->file->exists(App::getInstance()->resolveDebugFile()))
 			{
-				$this->success("Removing debug files...");
 				$this->file->delete(App::getInstance()->resolveDebugFile());
 			}
 
 			// Remove the debug folder itself
 			if ($this->file->exists(App::getInstance()->appPath() . 'debug'))
 			{
-				$this->success("Removing debug folder...");
 				$this->folder->delete(App::getInstance()->appPath() . 'debug');
 			}
 
 			// Create a new debug folder for future debugging
-			$this->success("Creating debug folder...");
 			$this->folder->create(App::getInstance()->appPath() . 'debug');
-			$this->success("Done!");
+
+			$this->success("All cleared up, ready to use!");
 		}
 }
