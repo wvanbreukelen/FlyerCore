@@ -3,6 +3,7 @@
 namespace Flyer\Components;
 
 use Flyer\Components\View\ViewEngine;
+use Flyer\Components\View\ViewFinder;
 
 /**
  * Handles everything with views
@@ -18,14 +19,17 @@ class View
 	 */
 	protected $engine;
 
+	protected $finder;
+
 	/**
 	 * Construct a new View class, expects a engine instance for compiling views
 	 *
 	 * @param object The view engine instance
 	 */
-	public function __construct(ViewEngine $viewEngine)
+	public function __construct(ViewEngine $viewEngine, ViewFinder $viewFinder)
 	{
 		$this->engine = $viewEngine;
+		$this->finder = $viewFinder;
 	}
 
 	/**
@@ -41,5 +45,10 @@ class View
 	public function render($view, $values = null, $id = null)
 	{
 		return $this->engine->compile($view, $values, $id);
+	}
+
+	public function exists($view)
+	{
+		return $this->finder->viewExists($view);
 	}
 }
