@@ -15,6 +15,7 @@ use Flyer\Components\Logging\Debugger;
 use Flyer\Components\Router\Router;
 use Flyer\Components\Console\ConsoleHandler;
 use Flyer\Components\Performance\Timer;
+use Flyer\Foundation\Console\ListPackagesCommand as FlyerListPackagesCmd;
 
 /**
  * The main application object, simply the core of your application. Extends the Illuminate container, for binding instances and stuff
@@ -84,8 +85,6 @@ class App extends Container
 	{
 		$this->setBasePath($basePath);
 		self::$app = $this;
-
-		ServiceProvider::setApp($this);
 	}
 
 	/**
@@ -228,7 +227,7 @@ class App extends Container
 					// Create service provider instance
 					$provider = new $provider;
 
-					// Run service provider register
+					// Run service provider register method
 					$provider->register();
 
 					// Add service provider to providers array
@@ -241,20 +240,30 @@ class App extends Container
 
 			// Register view compilers
 			$this->registerViewCompilers();
-			$this->registerCommand(new Foundation\Console\ListPackagesCommand);
-		} else if (is_object($providerCollection)) {
-			$provider = new $providerCollection;
 
-			$provider->register();
-			$this->providers[] = $provider;
+			// Register list packages command
+			$this->registerCommand(new FlyerListPackagesCmd);
+		} else if (is_object($providerCollection)) {
+			if (class_exists($providerCollection))
+			{
+				$provider = new $providerCollection;
+
+				// Run service provider register method
+				$provider->register();
+
+				// Add service provider to providers array
+				$this->providers[] = $provider;
+			} else {
+				throw new Exception("Cannot load " . $provider . " service provider, because the provider does not exists!");
+			}
 
 			// Register all view compilers
 			$this->registerViewCompilers();
 
-			// Register command
-			$this->registerCommand(new Foundation\Console\ListPackagesCommand);
+			// Register list packages command
+			$this->registerCommand(new FlyerListPackagesCmd);
 		} else {
-			throw new Exception("Unable to register provider, given input variable has to be an array or object, not a " . gettype($providerCollection));
+			throw new Exception("Unable to register provider, given input variable has to be an array or object, not an " . gettype($providerCollection));
 		}
 	}
 
@@ -425,7 +434,7 @@ class App extends Container
 	{
 		$this->instance('path', $this->path());
 
-		foreach (['app', 'base', 'config', 'debug', 'models', 'storage', 'views'] as $path)
+		foreach (['app', 'base', 'config', 'controllers', 'debug', 'models', 'storage', 'views'] as $path)
 		{
 			$this->instance('path.' . $path, $this->{$path . 'Path'}());
 		}
@@ -460,7 +469,7 @@ class App extends Container
 
 	/**
 	 * Get the config path
-	 * @return string Config path
+	 * @return string Config containing path
 	 */
 	public function configPath()
 	{
@@ -468,8 +477,17 @@ class App extends Container
 	}
 
 	/**
+	 * Get the path where the controllers are located
+	 * @return string Controller containing path
+	 */
+	public function controllersPath()
+	{
+		return $this->appPath() . 'controllers' . DIRECTORY_SEPARATOR;
+	}
+
+	/**
 	 * Get the debug path
-	 * @return string Debug path
+	 * @return string Debug containing path
 	 */
 	public function debugPath()
 	{
@@ -478,7 +496,7 @@ class App extends Container
 
 	/**
 	 * Get the models path
-	 * @return string Debug path
+	 * @return string Models containing path
 	 */
 	public function modelsPath()
 	{
@@ -487,7 +505,7 @@ class App extends Container
 
 	/**
 	 * Get the storage path
-	 * @return string Storage path
+	 * @return string Storage containing path
 	 */
 	public function storagePath()
 	{
@@ -496,7 +514,7 @@ class App extends Container
 
 	/**
 	 * The views path
-	 * @return string Views path
+	 * @return string Views containing path
 	 */
 	public function viewsPath()
 	{
