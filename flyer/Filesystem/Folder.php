@@ -3,6 +3,7 @@
 namespace Flyer\Components\Filesystem;
 
 use Exception;
+use App;
 
 class Folder
 {
@@ -99,7 +100,7 @@ class Folder
 		{
 			$optPath = $path . $filePos;
 
-			if (\File::is($optPath))
+			if (App::make('file')->is($optPath))
 			{
 				$list[] = $optPath;
 			}
