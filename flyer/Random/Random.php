@@ -43,9 +43,9 @@ class Random
 	 * @param  integer $length The length of the random integer
 	 * @return integer         The random integer
 	 */
-	public function integer($min = null, $max = null, $length = null)
+	public function integer($min = null, $max = null)
 	{
-		return $this->randomiser->randomInteger($min, $max, $length);
+		return $this->randomiser->randomInteger($min, $max);
 	}
 
 	/**

@@ -46,8 +46,6 @@ class RandomiserTest extends PHPUnit_Framework_TestCase
 		$this->assertTrue($customIntegerRandomiser >= 64 && $customIntegerRandomiser <= 3200);
 
 		$customIntegerRandomiserWithLength = $this->random->integer(4000, 9800, 2);
-
-		$this->assertTrue(strlen($customIntegerRandomiserWithLength) == 2);
 	}
 
 	public function testBooleanRandomiser()

@@ -77,7 +77,7 @@ class FilesystemTest extends PHPUnit_Framework_TestCase
 	}
 
 	public function testCountFilesInCurrentFolder()
-	{   
+	{
 		$this->assertEquals(count($this->folder->listFiles(__DIR__)), 1);
 	}
 }
