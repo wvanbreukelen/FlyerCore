@@ -4,10 +4,16 @@ namespace Flyer\Components\Router;
 
 use Flyer\Foundation\ServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
+use Flyer\Components\Router\Console\RouteListCommand as FlyerRouteListCmd;
+use Flyer\Components\Router\Console\SimulateRouteCommand as FlyerSimulateRouteCmd;
 
 class RouterServiceProvider extends ServiceProvider
 {
 
+	/**
+	 * HTTP router instance
+	 * @var object \Flyer\Components\Router\Router
+	 */
 	protected $router;
 
 	public function register()
@@ -21,6 +27,7 @@ class RouterServiceProvider extends ServiceProvider
 
 	public function boot()
 	{
+		// Perform actual routing
 		$this->router->route();
 	}
 
@@ -30,7 +37,10 @@ class RouterServiceProvider extends ServiceProvider
 	 */
 	protected function registerCommands()
 	{
-		$this->command(new \Flyer\Components\Router\Console\RouteListCommand);
-		$this->command(new \Flyer\Components\Router\Console\SimulateRouteCommand);
+		// Flyer\Components\Router\Console\RouteListCommand
+		$this->command(new FlyerRouteListCmd);
+
+		// Flyer\Components\Router\Console\SimulateRouteCommand
+		$this->command(new FlyerSimulateRouteCmd);
 	}
 }

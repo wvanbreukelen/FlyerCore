@@ -174,6 +174,7 @@ class Router
 			'method'     => $resolver->getResolvedAsset('method'),
 			'params'     => $resolver->generateArgumentList()
 		);
+
 	}
 
 	/**
@@ -204,6 +205,21 @@ class Router
 	public static function getRoutes()
 	{
 		return self::$routes;
+	}
+
+	public static function removeRoute($listener)
+	{
+		$listener = ltrim($listener, '/');
+
+		if (isset(self::$routes[$listener]))
+		{
+			unset(self::$routes[$listener]);
+		}
+	}
+
+	public static function removeRoutes()
+	{
+		self::$routes = [];
 	}
 
 	/**
