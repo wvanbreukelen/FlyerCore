@@ -23,12 +23,12 @@ class ViewServiceProvider extends ServiceProvider
 			'cache' => storage_path() . 'cache' . DIRECTORY_SEPARATOR,
 			'auto_reload' => true
 		));
-		
+
 		$this->share('application.view.compiler', new ViewCompiler());
 		$this->share('application.view.engine', new ViewEngine($this->twig, $this->app(), $this->make('application.view.compiler')));
 		$this->share('application.view.finder', new ViewFinder());
-		
-		$this->share('view', new View($this->make('application.view.engine')));
+
+		$this->share('view', new View($this->make('application.view.engine'), $this->make('application.view.finder')));
 	}
 
 	public function boot()
