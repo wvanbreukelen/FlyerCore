@@ -23,7 +23,7 @@ abstract class ServiceProvider
 	/**
 	 * Register is for the prework, like setting up database connections
 	 *
-	 * @return [type] [description]
+	 * @return mixed
 	 */
 	abstract public function register();
 
@@ -109,9 +109,9 @@ abstract class ServiceProvider
 	}
 
 	/**
-	 * Guess the paths of a installed package
+	 * Guess the paths of an installed package
 	 *
-	 * @return String The package class
+	 * @return array All of the resolved package paths
 	 */
 	protected function guessPackagePaths($path)
 	{
@@ -119,39 +119,38 @@ abstract class ServiceProvider
 		$paths = array();
 
 		// Resolve package path & realpath
-		if (is_null($path)) $path = (new ReflectionClass($this))->getFileName();
+		if (is_null($path))
+		{
+			try {
+				$path = (new ReflectionClass($this))->getFileName();
+			} catch (Exception $e) {
+				throw new Exception("Unable to reflect " . $path);
+			}
+		}
+
+		// Resolve the realpath of the package
 		$realPath = realpath(dirname($path)) . DIRECTORY_SEPARATOR;
 
-		// Getting Flyer\Components\Filesystem\Folder instance
+		// Receiving instance of Flyer Folder component
 		$folder = $this->app()->make('folder');
 
 		// Make sure the path and service provider are actually on the place we want
-		if (!$folder->is($realPath) && !$folder->is($path))
+		if ($folder->is($realPath) && $folder->is($path))
 		{
-			throw new Exception("Package path " . $realPath . " is invalid");
+			throw new Exception("Unexpected exception. Reflected package path " . $path . " was not found");
 		}
 
 		// @wvanbreukelen Might use views_paths helper in the future.
+		// Original: $viewsPath = $realPath . 'views'
+		// $ctrlPath = $realPath . 'controllers'
+		// $modelsPath = $realPath . 'models'
 		// @wvanbreukelen Change function from views_paths() to views_path($basepath)
 
-		if ($folder->is($viewsPath = $realPath . 'views')) $paths['views'] = $viewsPath;
+		if ($folder->is(views_path($realPath))) $paths['views'] = $viewsPath;
 		if ($folder->is($ctrlPath = $realPath . 'controllers')) $paths['controllers'] = $ctrlPath;
 		if ($folder->is($modelsPath = $realPath . 'models')) $paths['models'] = $modelsPath;
-		// Maybe process config files too in the future
+		// @wvanbreukelen Maybe process config files too in the future
 
 		return $paths;
-	}
-
-	/**
-	 * Sets the application instance
-	 * @wvanbreukelen May be removed in the near future
-	 *
-	 * @param  App $app The application
-	 * @return  void
-	 */
-
-	public static function setApp(App $app)
-	{
-		static::$app = $app;
 	}
 }
