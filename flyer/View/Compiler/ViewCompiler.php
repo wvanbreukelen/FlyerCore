@@ -36,8 +36,6 @@ class ViewCompiler
 
 	public function compile($id, $path, $view, $values)
 	{
-		$contents = $this->resolveViewContents($path);
-
 		if (is_null($values))
 		{
 			$values = array();
@@ -45,10 +43,10 @@ class ViewCompiler
 
 		if (isset($this->compilers[$id]))
 		{
-			return $this->compilers[$id]->compile($contents, $view, $values);
+			return $this->compilers[$id]->compile($path, $view, $values);
 		}
 
-		throw new Exception("Compiler " . $id . " does not exists");
+		throw new Exception("Default view compiler " . $id . " does not exists");
 	}
 
 	/**
