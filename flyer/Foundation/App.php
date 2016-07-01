@@ -119,6 +119,11 @@ class App extends Container
 
 	public function performance()
 	{
+		if (!$this->exists('performance.timer'))
+		{
+			throw new Exception("Unable to resolve Performance instance, check service providers");
+		}
+
 		return $this->make('performance.timer');
 	}
 
@@ -282,7 +287,7 @@ class App extends Container
 			} else if (is_object($command)) {
 				$this->commands[] = $command;
 			} else {
-				throw new Exception("Not able to register this kind of command");
+				throw new Exception("Únable to register command with the type of " . gettype($command));
 			}
 		}
 	}
@@ -299,7 +304,7 @@ class App extends Container
 			{
 				$this->viewCompiler()->addCompiler($viewCompilerID, new $viewCompiler);
 			} else {
-				throw new Exception("Unable to register " . $viewCompiler . " view compiler, because the compiler is not registered to this application");
+				throw new Exception("Unable to register " . $viewCompiler . " view compiler. May include view compiler in config");
 			}
 		}
 	}
@@ -434,7 +439,9 @@ class App extends Container
 	{
 		$this->instance('path', $this->path());
 
-		foreach (['app', 'base', 'config', 'controllers', 'debug', 'models', 'storage', 'views'] as $path)
+		$paths = array('app', 'base', 'config', 'cache', 'controllers', 'debug', 'models', 'storage', 'views');
+
+		foreach ($paths as $path)
 		{
 			$this->instance('path.' . $path, $this->{$path . 'Path'}());
 		}
@@ -450,15 +457,6 @@ class App extends Container
 	}
 
 	/**
-	 * Get the base path
-	 * @return string Base path
-	 */
-	public function basePath()
-	{
-		return $this->basePath;
-	}
-
-	/**
 	 * Get the application path
 	 * @return string The app path
 	 */
@@ -468,12 +466,30 @@ class App extends Container
 	}
 
 	/**
+	 * Get the base path
+	 * @return string Base path
+	 */
+	public function basePath()
+	{
+		return $this->basePath;
+	}
+
+	/**
 	 * Get the config path
 	 * @return string Config containing path
 	 */
 	public function configPath()
 	{
 		return $this->appPath() . 'config' . DIRECTORY_SEPARATOR;
+	}
+
+	/**
+	 * Get the cache path
+	 * @return string Cache containing path
+	 */
+	public function cachePath()
+	{
+		return $this->appPath() . 'cache' . DIRECTORY_SEPARATOR;
 	}
 
 	/**
@@ -536,7 +552,7 @@ class App extends Container
 	}
 
 	/**
-	 * Boot the application, boots all of the imported Service Providers
+	 * Boot the application, boots all of the registered service providers
 	 *
 	 * @return  void
 	 */
@@ -585,7 +601,7 @@ class App extends Container
 			} else if ($this->exists('application.error.404')) {
 				$response = Router::triggerErrorPage(404);
 			} else {
-				throw new RuntimeException("No route found, unable to return response");
+				throw new RuntimeException("No route/404 route found, unable to return response");
 			}
 		}
 
